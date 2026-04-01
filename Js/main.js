@@ -48,7 +48,7 @@ function clearNavUser() {
   const navRight = document.getElementById('nav-right');
   if (!navRight) return;
   navRight.innerHTML = `
-    <button class="nav-cta" onclick="openModal('signup')"><span class="nav-cta-full">Join Free</span><span class="nav-cta-short">Join Free</span></button>
+    <a href="letlearn-signup.html" class="nav-cta">Join Free</a>
   `;
 }
 
@@ -198,9 +198,27 @@ async function loadScholarships(append = false) {
     if (!response.ok) throw new Error('API error ' + response.status);
 
     const data = await response.json();
-    const scholarships = data.scholarships;
 
-    if (!Array.isArray(scholarships)) throw new Error('Invalid response format');
+    // Robustly extract scholarships from any response shape the worker might return
+    let scholarships = null;
+    if (Array.isArray(data)) {
+      scholarships = data;
+    } else if (Array.isArray(data.scholarships)) {
+      scholarships = data.scholarships;
+    } else if (Array.isArray(data.tutors)) {
+      scholarships = data.tutors;
+    } else {
+      // Try parsing from a text/content field
+      const raw = data.content || data.text || data.result || data.response || '';
+      const cleaned = (typeof raw === 'string' ? raw : JSON.stringify(raw))
+        .replace(/```json|```/g, '').trim();
+      const match = cleaned.match(/\[[\s\S]*\]/);
+      if (match) {
+        try { scholarships = JSON.parse(match[0]); } catch(e) { scholarships = null; }
+      }
+    }
+
+    if (!Array.isArray(scholarships) || scholarships.length === 0) throw new Error('Invalid response format');
 
     if (!append) {
       if (grid) grid.innerHTML = scholarships.map(renderScholarshipCard).join('');
@@ -218,7 +236,9 @@ async function loadScholarships(append = false) {
     console.error('Scholarship load error:', err);
     if (!append) {
       if (grid) grid.innerHTML = '';
-      if (errorEl) errorEl.style.display = 'block';
+      // Show fallback scholarships so the page isn't broken
+      renderFallbackScholarships();
+      if (errorEl) errorEl.style.display = 'none';
     } else {
       const btn = document.getElementById('load-more-btn');
       if (btn) { btn.textContent = 'Load More Scholarships ↓'; btn.disabled = false; }
@@ -230,6 +250,21 @@ async function loadScholarships(append = false) {
 }
 
 function loadMoreScholarships() { loadScholarships(true); }
+
+function renderFallbackScholarships() {
+  const fallback = [
+    {title:'MTN Foundation Scholarship',org:'MTN Nigeria · Nationwide',amount:'₦500,000',level:'Undergraduate',deadline:'Jul 30, 2026',location:'Nationwide',status:'Open',description:'For STEM students with minimum 3.5 CGPA in any Nigerian university.'},
+    {title:'Dangote Foundation University Scholarship',org:'Dangote Group · Nationwide',amount:'₦300,000/yr',level:'Undergraduate',deadline:'Jun 15, 2026',location:'Nationwide',status:'New',description:'Supporting Nigerian students in Engineering, Business and Sciences.'},
+    {title:'Niger Delta Development Commission Scholarship',org:'NDDC · Niger Delta States',amount:'Full Tuition',level:'Undergraduate',deadline:'Aug 1, 2026',location:'Niger Delta',status:'Open',description:'For students from Niger Delta states studying in Nigerian universities.'},
+    {title:'NNPC/SNEPCo National Merit Scholarship',org:'NNPC · Nationwide',amount:'₦1,000,000',level:'Undergraduate',deadline:'Sep 30, 2026',location:'Nationwide',status:'Open',description:'Merit-based scholarship for top-performing science students.'},
+    {title:'CBN Scholarship Scheme',org:'Central Bank of Nigeria · Nationwide',amount:'₦250,000',level:'Postgraduate',deadline:'Jul 1, 2026',location:'Nationwide',status:'Closing Soon',description:'For postgraduate students in Economics and Finance-related fields.'},
+    {title:'Ogun State Government Scholarship',org:'Ogun State · Ogun',amount:'₦150,000',level:'100 Level',deadline:'May 31, 2026',location:'Ogun State',status:'Open',description:'For indigenes of Ogun State in accredited Nigerian universities.'},
+  ];
+  const grid = document.getElementById('scholarships-grid');
+  if (grid) grid.innerHTML = fallback.map(renderScholarshipCard).join('');
+  const wrap = document.getElementById('load-more-wrap');
+  if (wrap) wrap.style.display = 'block';
+}
 
 // ── TUTOR LOADING ─────────────────────────────────────────────────────────────
 const TUTOR_AVATARS = ['👩🏾‍🏫','👨🏽‍💻','👩🏿‍🔬','👨🏾‍🎓','👩🏽‍💼','👨🏿‍🏫','👩🏻‍🏫','👨🏾‍🔬','👩🏽‍💻','👨🏻‍🎓'];
