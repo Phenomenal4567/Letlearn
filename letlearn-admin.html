@@ -1,0 +1,960 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>LetLearn Admin – Performance & Content Hub</title>
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Nunito+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
+  <style>
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+    :root{
+      --blue-deep:#0A2463;--blue-mid:#1B4FD8;--blue-bright:#3B82F6;
+      --blue-light:#EFF6FF;--white:#FFFFFF;--gray-soft:#F8FAFF;
+      --gray-text:#64748B;--gray-border:#E2E8F0;--gold:#F59E0B;
+      --green:#10B981;--red:#EF4444;--purple:#7C3AED;--orange:#F97316;
+      --shadow:0 4px 24px rgba(10,36,99,0.10);--shadow-lg:0 8px 40px rgba(10,36,99,0.15);
+    }
+    html{scroll-behavior:smooth;}
+    body{font-family:'Nunito Sans',Arial,sans-serif;background:#F0F4FF;color:var(--blue-deep);min-height:100vh;}
+
+    /* ── SIDEBAR ── */
+    .sidebar{
+      position:fixed;top:0;left:0;bottom:0;width:240px;
+      background:var(--blue-deep);
+      display:flex;flex-direction:column;z-index:100;
+      box-shadow:4px 0 20px rgba(10,36,99,0.2);
+    }
+    .sidebar-logo{
+      padding:1.5rem 1.4rem 1.2rem;
+      font-family:'Nunito',Arial,sans-serif;font-weight:900;font-size:1.4rem;
+      color:white;letter-spacing:-0.5px;border-bottom:1px solid rgba(255,255,255,0.1);
+    }
+    .sidebar-logo span{color:var(--blue-bright);}
+    .sidebar-badge{
+      display:inline-block;background:rgba(245,158,11,0.2);
+      color:var(--gold);font-size:0.62rem;font-weight:800;
+      letter-spacing:1px;text-transform:uppercase;
+      border-radius:4px;padding:0.15rem 0.45rem;margin-left:0.4rem;
+    }
+    .nav-section-label{
+      padding:1.2rem 1.4rem 0.4rem;
+      font-size:0.62rem;font-weight:800;letter-spacing:2px;
+      text-transform:uppercase;color:rgba(255,255,255,0.35);
+    }
+    .nav-item{
+      display:flex;align-items:center;gap:0.75rem;
+      padding:0.75rem 1.4rem;cursor:pointer;
+      font-size:0.85rem;font-weight:600;color:rgba(255,255,255,0.65);
+      transition:all 0.2s;border-left:3px solid transparent;
+      text-decoration:none;
+    }
+    .nav-item:hover{color:white;background:rgba(255,255,255,0.06);}
+    .nav-item.active{color:white;background:rgba(59,130,246,0.18);border-left-color:var(--blue-bright);}
+    .nav-item-icon{font-size:1rem;flex-shrink:0;width:20px;text-align:center;}
+    .nav-badge{
+      margin-left:auto;background:var(--red);color:white;
+      border-radius:50px;padding:0.1rem 0.5rem;font-size:0.68rem;font-weight:800;
+    }
+    .sidebar-footer{
+      margin-top:auto;padding:1rem 1.4rem;
+      border-top:1px solid rgba(255,255,255,0.1);
+    }
+    .admin-avatar{
+      display:flex;align-items:center;gap:0.7rem;
+    }
+    .avatar-circle{
+      width:36px;height:36px;border-radius:50%;
+      background:var(--blue-bright);color:white;
+      display:flex;align-items:center;justify-content:center;
+      font-family:'Nunito',Arial,sans-serif;font-weight:900;font-size:0.9rem;
+    }
+    .avatar-name{font-size:0.8rem;font-weight:700;color:white;}
+    .avatar-role{font-size:0.68rem;color:rgba(255,255,255,0.5);}
+
+    /* ── MAIN LAYOUT ── */
+    .main{margin-left:240px;min-height:100vh;}
+    .topbar{
+      background:white;height:64px;
+      display:flex;align-items:center;justify-content:space-between;
+      padding:0 2rem;border-bottom:1.5px solid var(--gray-border);
+      position:sticky;top:0;z-index:50;
+      box-shadow:0 2px 12px rgba(10,36,99,0.05);
+    }
+    .topbar-title{font-family:'Nunito',Arial,sans-serif;font-weight:900;font-size:1.15rem;}
+    .topbar-right{display:flex;align-items:center;gap:1rem;}
+    .topbar-date{font-size:0.78rem;color:var(--gray-text);}
+    .export-btn{
+      background:var(--blue-mid);color:white;border:none;
+      border-radius:50px;padding:0.45rem 1.1rem;
+      font-family:'Nunito',Arial,sans-serif;font-weight:700;font-size:0.8rem;
+      cursor:pointer;transition:all 0.2s;
+    }
+    .export-btn:hover{background:var(--blue-deep);}
+
+    .page{padding:2rem;display:none;}
+    .page.active{display:block;}
+
+    /* ── KPI CARDS ── */
+    .kpi-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:1.2rem;margin-bottom:2rem;}
+    .kpi-card{
+      background:white;border-radius:16px;padding:1.4rem;
+      box-shadow:var(--shadow);border:1.5px solid rgba(59,130,246,0.06);
+      position:relative;overflow:hidden;
+    }
+    .kpi-card::before{
+      content:'';position:absolute;top:-20px;right:-20px;
+      width:80px;height:80px;border-radius:50%;
+      background:radial-gradient(circle,var(--kpi-color,rgba(59,130,246,0.1)) 0%,transparent 70%);
+    }
+    .kpi-label{font-size:0.72rem;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--gray-text);margin-bottom:0.5rem;}
+    .kpi-value{font-family:'Nunito',Arial,sans-serif;font-weight:900;font-size:2rem;color:var(--blue-deep);line-height:1;}
+    .kpi-change{font-size:0.76rem;font-weight:700;margin-top:0.4rem;}
+    .kpi-change.up{color:var(--green);}
+    .kpi-change.down{color:var(--red);}
+    .kpi-icon{font-size:1.6rem;margin-bottom:0.5rem;}
+
+    /* ── SECTION HEADER ── */
+    .section-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:1.2rem;}
+    .section-title{font-family:'Nunito',Arial,sans-serif;font-weight:900;font-size:1.1rem;color:var(--blue-deep);}
+    .section-sub{font-size:0.78rem;color:var(--gray-text);margin-top:0.2rem;}
+
+    /* ── LEADERBOARD ── */
+    .leaderboard-table{background:white;border-radius:16px;box-shadow:var(--shadow);overflow:hidden;}
+    .lb-head{
+      display:grid;grid-template-columns:40px 1fr 100px 90px 90px 100px 110px;
+      padding:0.9rem 1.4rem;background:var(--gray-soft);
+      font-size:0.7rem;font-weight:800;text-transform:uppercase;
+      letter-spacing:0.8px;color:var(--gray-text);
+      border-bottom:1.5px solid var(--gray-border);
+    }
+    .lb-row{
+      display:grid;grid-template-columns:40px 1fr 100px 90px 90px 100px 110px;
+      padding:1rem 1.4rem;align-items:center;
+      border-bottom:1px solid var(--gray-border);
+      transition:background 0.15s;cursor:pointer;
+    }
+    .lb-row:last-child{border-bottom:none;}
+    .lb-row:hover{background:#FAFCFF;}
+    .lb-rank{font-family:'Nunito',Arial,sans-serif;font-weight:900;font-size:1rem;color:var(--gray-text);}
+    .lb-rank.r1{color:#F59E0B;}
+    .lb-rank.r2{color:#94A3B8;}
+    .lb-rank.r3{color:#CD7F32;}
+    .tutor-info{display:flex;align-items:center;gap:0.7rem;}
+    .tutor-avi{
+      width:36px;height:36px;border-radius:50%;
+      display:flex;align-items:center;justify-content:center;
+      font-size:1.1rem;flex-shrink:0;
+    }
+    .tutor-nm{font-weight:700;font-size:0.88rem;color:var(--blue-deep);}
+    .tutor-subj{font-size:0.73rem;color:var(--gray-text);}
+    .stars-mini{font-size:0.78rem;color:var(--gold);}
+    .rating-val{font-family:'Nunito',Arial,sans-serif;font-weight:800;font-size:0.88rem;}
+    .sessions-val{font-family:'Nunito',Arial,sans-serif;font-weight:700;font-size:0.9rem;}
+    .earnings-val{font-family:'Nunito',Arial,sans-serif;font-weight:800;font-size:0.88rem;color:var(--green);}
+    .tier-badge{
+      display:inline-flex;align-items:center;gap:0.3rem;
+      border-radius:50px;padding:0.25rem 0.7rem;
+      font-size:0.68rem;font-weight:800;
+    }
+    .tier-elite{background:#FEF3C7;color:#92400E;}
+    .tier-pro{background:#EDE9FE;color:#5b21b6;}
+    .tier-rising{background:#D1FAE5;color:#065f46;}
+    .tier-new{background:var(--blue-light);color:var(--blue-mid);}
+
+    /* ── TIER EXPLANATION CARDS ── */
+    .tier-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:1rem;margin-bottom:2rem;}
+    .tier-card{
+      background:white;border-radius:14px;padding:1.2rem;
+      box-shadow:var(--shadow);border-top:4px solid var(--tc,var(--blue-mid));
+    }
+    .tier-card-icon{font-size:1.6rem;margin-bottom:0.6rem;}
+    .tier-card-name{font-family:'Nunito',Arial,sans-serif;font-weight:900;font-size:0.95rem;margin-bottom:0.3rem;}
+    .tier-card-req{font-size:0.75rem;color:var(--gray-text);line-height:1.6;}
+    .tier-card-perk{
+      margin-top:0.7rem;font-size:0.73rem;font-weight:700;
+      color:white;background:var(--tc,var(--blue-mid));
+      border-radius:50px;padding:0.2rem 0.65rem;display:inline-block;
+    }
+
+    /* ── CONTENT STRATEGY PAGE ── */
+    .content-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:1.5rem;}
+    .content-card{
+      background:white;border-radius:16px;padding:1.5rem;
+      box-shadow:var(--shadow);border:1.5px solid rgba(59,130,246,0.06);
+    }
+    .content-card-header{display:flex;align-items:center;gap:0.8rem;margin-bottom:1rem;}
+    .content-platform-icon{
+      width:44px;height:44px;border-radius:14px;
+      display:flex;align-items:center;justify-content:center;font-size:1.3rem;
+    }
+    .content-card-title{font-family:'Nunito',Arial,sans-serif;font-weight:900;font-size:1rem;}
+    .content-card-sub{font-size:0.76rem;color:var(--gray-text);margin-top:0.15rem;}
+    .post-preview{
+      background:var(--gray-soft);border-radius:12px;padding:1rem;
+      font-size:0.82rem;color:var(--blue-deep);line-height:1.65;
+      border-left:3px solid var(--blue-bright);margin-bottom:0.8rem;
+      position:relative;
+    }
+    .post-preview-label{
+      font-size:0.64rem;font-weight:800;letter-spacing:1px;
+      text-transform:uppercase;color:var(--blue-bright);margin-bottom:0.4rem;
+    }
+    .post-tip{
+      background:#FEF3C7;border-radius:10px;padding:0.7rem 0.9rem;
+      font-size:0.78rem;color:#92400E;line-height:1.5;
+      display:flex;gap:0.5rem;align-items:flex-start;margin-top:0.5rem;
+    }
+    .copy-btn{
+      width:100%;padding:0.6rem;background:var(--blue-light);color:var(--blue-mid);
+      border:none;border-radius:10px;font-family:'Nunito',Arial,sans-serif;
+      font-weight:700;font-size:0.8rem;cursor:pointer;transition:all 0.2s;margin-top:0.5rem;
+    }
+    .copy-btn:hover{background:var(--blue-mid);color:white;}
+
+    /* ── MOST WANTED ── */
+    .most-wanted-card{
+      background:linear-gradient(135deg,var(--blue-deep) 0%,#1e40af 100%);
+      border-radius:16px;padding:1.6rem;color:white;
+      box-shadow:var(--shadow-lg);grid-column:1/-1;
+      position:relative;overflow:hidden;
+    }
+    .most-wanted-card::before{
+      content:'🔥';font-size:8rem;position:absolute;
+      right:-1rem;top:-1rem;opacity:0.08;
+    }
+    .most-wanted-title{font-family:'Nunito',Arial,sans-serif;font-weight:900;font-size:1.2rem;margin-bottom:0.3rem;}
+    .most-wanted-sub{font-size:0.82rem;opacity:0.8;margin-bottom:1.2rem;}
+    .wanted-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:1rem;}
+    .wanted-item{
+      background:rgba(255,255,255,0.1);border-radius:12px;padding:1rem;
+      border:1px solid rgba(255,255,255,0.15);
+    }
+    .wanted-rank{font-size:0.65rem;font-weight:800;letter-spacing:1px;opacity:0.7;text-transform:uppercase;margin-bottom:0.3rem;}
+    .wanted-subject{font-family:'Nunito',Arial,sans-serif;font-weight:900;font-size:1.1rem;}
+    .wanted-searches{font-size:0.75rem;opacity:0.7;margin-top:0.2rem;}
+    .wanted-tutors{margin-top:0.7rem;display:flex;gap:0.3rem;flex-wrap:wrap;}
+    .wanted-tutor-tag{
+      background:rgba(255,255,255,0.15);border-radius:50px;
+      padding:0.2rem 0.55rem;font-size:0.68rem;font-weight:700;
+    }
+    .generate-post-btn{
+      margin-top:1.2rem;padding:0.7rem 1.5rem;
+      background:var(--gold);color:var(--blue-deep);border:none;
+      border-radius:50px;font-family:'Nunito',Arial,sans-serif;
+      font-weight:800;font-size:0.85rem;cursor:pointer;transition:all 0.2s;
+    }
+    .generate-post-btn:hover{background:white;}
+
+    /* ── GENERATED POST MODAL ── */
+    .gen-overlay{
+      display:none;position:fixed;inset:0;z-index:9999;
+      background:rgba(10,36,99,0.5);backdrop-filter:blur(5px);
+      align-items:center;justify-content:center;padding:1rem;
+    }
+    .gen-overlay.open{display:flex;}
+    .gen-modal{
+      background:white;border-radius:20px;padding:2rem;
+      max-width:540px;width:100%;box-shadow:var(--shadow-lg);
+      animation:genIn 0.3s cubic-bezier(0.22,1,0.36,1);
+    }
+    @keyframes genIn{from{opacity:0;transform:translateY(20px);}to{opacity:1;transform:translateY(0);}}
+    .gen-modal h3{font-family:'Nunito',Arial,sans-serif;font-weight:900;font-size:1.1rem;margin-bottom:1rem;}
+    .gen-platform-tabs{display:flex;gap:0.4rem;margin-bottom:1rem;}
+    .gen-ptab{
+      padding:0.4rem 0.9rem;border:none;border-radius:50px;
+      font-family:'Nunito',Arial,sans-serif;font-weight:700;font-size:0.78rem;
+      cursor:pointer;transition:all 0.2s;background:var(--gray-soft);color:var(--gray-text);
+    }
+    .gen-ptab.active{background:var(--blue-mid);color:white;}
+    .gen-post-box{
+      background:var(--gray-soft);border-radius:12px;padding:1rem;
+      font-size:0.83rem;line-height:1.7;color:var(--blue-deep);
+      min-height:120px;border:1.5px solid var(--gray-border);
+      white-space:pre-wrap;
+    }
+    .gen-actions{display:flex;gap:0.7rem;margin-top:1rem;}
+    .gen-copy{flex:1;padding:0.7rem;background:var(--blue-mid);color:white;border:none;border-radius:10px;font-family:'Nunito',Arial,sans-serif;font-weight:700;font-size:0.85rem;cursor:pointer;transition:all 0.2s;}
+    .gen-copy:hover{background:var(--blue-deep);}
+    .gen-close{padding:0.7rem 1.2rem;background:var(--gray-soft);color:var(--gray-text);border:none;border-radius:10px;font-family:'Nunito',Arial,sans-serif;font-weight:700;font-size:0.85rem;cursor:pointer;}
+
+    /* ── TOAST ── */
+    .toast{
+      position:fixed;bottom:1.5rem;right:1.5rem;z-index:99999;
+      background:var(--green);color:white;padding:0.75rem 1.3rem;
+      border-radius:12px;font-weight:700;font-size:0.85rem;
+      box-shadow:var(--shadow-lg);transform:translateY(80px);opacity:0;transition:all 0.4s;
+    }
+    .toast.show{transform:translateY(0);opacity:1;}
+
+    @media(max-width:900px){
+      .sidebar{width:60px;}
+      .sidebar-logo,.nav-section-label,.nav-item span,.sidebar-footer .avatar-name,.sidebar-footer .avatar-role,.nav-badge{display:none;}
+      .nav-item{justify-content:center;padding:0.85rem;}
+      .main{margin-left:60px;}
+      .lb-head,.lb-row{grid-template-columns:36px 1fr 80px 80px 90px;}
+      .lb-head > *:nth-child(5),.lb-row > *:nth-child(5),
+      .lb-head > *:nth-child(6),.lb-row > *:nth-child(6){display:none;}
+    }
+    @media(max-width:600px){
+      .kpi-grid{grid-template-columns:1fr 1fr;}
+      .lb-head,.lb-row{grid-template-columns:30px 1fr 70px 80px;}
+      .lb-head > *:nth-child(4),.lb-row > *:nth-child(4){display:none;}
+      .page{padding:1rem;}
+    }
+  </style>
+</head>
+<body>
+
+<!-- SIDEBAR -->
+<nav class="sidebar">
+  <div class="sidebar-logo">Let<span>Learn</span> <span class="sidebar-badge">Admin</span></div>
+
+  <div class="nav-section-label">Overview</div>
+  <a class="nav-item active" onclick="showPage('dashboard', this)">
+    <span class="nav-item-icon">📊</span><span>Dashboard</span>
+  </a>
+  <a class="nav-item" onclick="showPage('tutors', this)">
+    <span class="nav-item-icon">👨‍🏫</span><span>Tutor Management</span><span class="nav-badge">3</span>
+  </a>
+  <a class="nav-item" onclick="showPage('leaderboard', this)">
+    <span class="nav-item-icon">🏆</span><span>Leaderboard</span>
+  </a>
+
+  <div class="nav-section-label">Marketing</div>
+  <a class="nav-item" onclick="showPage('content', this)">
+    <span class="nav-item-icon">📱</span><span>Content Strategy</span>
+  </a>
+  <a class="nav-item" onclick="showPage('mostwanted', this)">
+    <span class="nav-item-icon">🔥</span><span>"Most Wanted"</span>
+  </a>
+
+  <div class="nav-section-label">Platform</div>
+  <a class="nav-item" onclick="showPage('scholarships', this)">
+    <span class="nav-item-icon">🎓</span><span>Scholarships</span>
+  </a>
+  <a class="nav-item" onclick="window.location.href='letlearn.html'">
+    <span class="nav-item-icon">🌐</span><span>View Live Site</span>
+  </a>
+
+  <div class="sidebar-footer">
+    <div class="admin-avatar">
+      <div class="avatar-circle">A</div>
+      <div><div class="avatar-name">Admin</div><div class="avatar-role">LetLearn NG</div></div>
+    </div>
+  </div>
+</nav>
+
+<!-- MAIN -->
+<div class="main">
+
+  <!-- TOPBAR -->
+  <div class="topbar">
+    <div class="topbar-title" id="topbar-title">📊 Dashboard Overview</div>
+    <div class="topbar-right">
+      <div class="topbar-date" id="topbar-date"></div>
+      <button class="export-btn" onclick="showToast('📥 Exporting report...')">↓ Export Report</button>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════
+       PAGE: DASHBOARD
+  ══════════════════════════════════════ -->
+  <div class="page active" id="page-dashboard">
+    <div class="kpi-grid" style="--kpi-color:rgba(27,79,216,0.12);">
+      <div class="kpi-card">
+        <div class="kpi-icon">👨‍🏫</div>
+        <div class="kpi-label">Active Tutors</div>
+        <div class="kpi-value">47</div>
+        <div class="kpi-change up">↑ +6 this month</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-icon">📚</div>
+        <div class="kpi-label">Total Bookings</div>
+        <div class="kpi-value">1,284</div>
+        <div class="kpi-change up">↑ +183 this month</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-icon">🎓</div>
+        <div class="kpi-label">Students Registered</div>
+        <div class="kpi-value">12,401</div>
+        <div class="kpi-change up">↑ +892 this month</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-icon">⭐</div>
+        <div class="kpi-label">Avg Platform Rating</div>
+        <div class="kpi-value">4.7</div>
+        <div class="kpi-change up">↑ +0.1 vs last month</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-icon">💰</div>
+        <div class="kpi-label">Platform Revenue</div>
+        <div class="kpi-value">₦2.1M</div>
+        <div class="kpi-change up">↑ +22% this month</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-icon">⏳</div>
+        <div class="kpi-label">Pending Reviews</div>
+        <div class="kpi-value" style="color:var(--orange);">3</div>
+        <div class="kpi-change down">↓ Needs attention</div>
+      </div>
+    </div>
+
+    <div class="section-header">
+      <div><div class="section-title">🔥 Top Subjects This Week</div><div class="section-sub">Based on student search data across all states</div></div>
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:1rem;margin-bottom:2rem;">
+      <div style="background:white;border-radius:14px;padding:1.2rem;box-shadow:var(--shadow);text-align:center;">
+        <div style="font-size:1.8rem;margin-bottom:0.4rem;">🔢</div>
+        <div style="font-family:'Nunito',sans-serif;font-weight:900;font-size:1rem;">Mathematics</div>
+        <div style="color:var(--blue-mid);font-weight:800;font-size:0.8rem;margin-top:0.3rem;">2,140 searches</div>
+        <div style="height:4px;background:var(--blue-mid);border-radius:4px;margin-top:0.7rem;"></div>
+      </div>
+      <div style="background:white;border-radius:14px;padding:1.2rem;box-shadow:var(--shadow);text-align:center;">
+        <div style="font-size:1.8rem;margin-bottom:0.4rem;">⚗️</div>
+        <div style="font-family:'Nunito',sans-serif;font-weight:900;font-size:1rem;">Chemistry</div>
+        <div style="color:var(--purple);font-weight:800;font-size:0.8rem;margin-top:0.3rem;">1,832 searches</div>
+        <div style="height:4px;background:var(--purple);border-radius:4px;margin-top:0.7rem;"></div>
+      </div>
+      <div style="background:white;border-radius:14px;padding:1.2rem;box-shadow:var(--shadow);text-align:center;">
+        <div style="font-size:1.8rem;margin-bottom:0.4rem;">⚛️</div>
+        <div style="font-family:'Nunito',sans-serif;font-weight:900;font-size:1rem;">Physics</div>
+        <div style="color:var(--green);font-weight:800;font-size:0.8rem;margin-top:0.3rem;">1,590 searches</div>
+        <div style="height:4px;background:var(--green);border-radius:4px;margin-top:0.7rem;"></div>
+      </div>
+      <div style="background:white;border-radius:14px;padding:1.2rem;box-shadow:var(--shadow);text-align:center;">
+        <div style="font-size:1.8rem;margin-bottom:0.4rem;">✍️</div>
+        <div style="font-family:'Nunito',sans-serif;font-weight:900;font-size:1rem;">English</div>
+        <div style="color:var(--gold);font-weight:800;font-size:0.8rem;margin-top:0.3rem;">1,204 searches</div>
+        <div style="height:4px;background:var(--gold);border-radius:4px;margin-top:0.7rem;"></div>
+      </div>
+      <div style="background:white;border-radius:14px;padding:1.2rem;box-shadow:var(--shadow);text-align:center;">
+        <div style="font-size:1.8rem;margin-bottom:0.4rem;">📈</div>
+        <div style="font-family:'Nunito',sans-serif;font-weight:900;font-size:1rem;">Economics</div>
+        <div style="color:var(--orange);font-weight:800;font-size:0.8rem;margin-top:0.3rem;">980 searches</div>
+        <div style="height:4px;background:var(--orange);border-radius:4px;margin-top:0.7rem;"></div>
+      </div>
+    </div>
+
+    <div class="section-header">
+      <div><div class="section-title">🗺️ Top States by Activity</div><div class="section-sub">Student engagement by location this month</div></div>
+    </div>
+    <div style="background:white;border-radius:16px;box-shadow:var(--shadow);overflow:hidden;">
+      <div style="display:grid;grid-template-columns:1fr 120px 120px;padding:0.8rem 1.4rem;background:var(--gray-soft);font-size:0.7rem;font-weight:800;text-transform:uppercase;letter-spacing:0.8px;color:var(--gray-text);border-bottom:1.5px solid var(--gray-border);">
+        <div>State</div><div>Students</div><div>Bookings</div>
+      </div>
+      <div id="states-list"></div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════
+       PAGE: LEADERBOARD
+  ══════════════════════════════════════ -->
+  <div class="page" id="page-leaderboard">
+    <div class="section-header" style="margin-bottom:1.2rem;">
+      <div><div class="section-title">🏆 Tutor Performance Leaderboard</div><div class="section-sub">Auto-categorised based on booking history, ratings & session count. Updated monthly.</div></div>
+      <button class="export-btn" onclick="showToast('📊 Leaderboard exported!')">↓ Export</button>
+    </div>
+
+    <!-- Tier explanation -->
+    <div class="tier-grid">
+      <div class="tier-card" style="--tc:#F59E0B;">
+        <div class="tier-card-icon">👑</div>
+        <div class="tier-card-name" style="color:#92400E;">Elite Tutor</div>
+        <div class="tier-card-req">⭐ 4.7+ rating · 50+ sessions completed · &lt;5% cancellation rate</div>
+        <span class="tier-card-perk" style="--tc:#F59E0B;background:#F59E0B;color:#fff;">Priority search placement</span>
+      </div>
+      <div class="tier-card" style="--tc:#7C3AED;">
+        <div class="tier-card-icon">🌟</div>
+        <div class="tier-card-name" style="color:#5b21b6;">Verified Pro</div>
+        <div class="tier-card-req">⭐ 4.0+ rating · 10+ sessions completed · KYC fully verified</div>
+        <span class="tier-card-perk" style="background:#7C3AED;color:#fff;">"Verified Pro" badge</span>
+      </div>
+      <div class="tier-card" style="--tc:#10B981;">
+        <div class="tier-card-icon">🚀</div>
+        <div class="tier-card-name" style="color:#065f46;">Rising Star</div>
+        <div class="tier-card-req">⭐ 3.5+ rating · 3–9 sessions · Building reputation</div>
+        <span class="tier-card-perk" style="background:#10B981;color:#fff;">Featured in "New Tutors"</span>
+      </div>
+      <div class="tier-card" style="--tc:#3B82F6;">
+        <div class="tier-card-icon">✨</div>
+        <div class="tier-card-name" style="color:var(--blue-mid);">New Tutor</div>
+        <div class="tier-card-req">0–2 sessions · Profile live · Awaiting first reviews</div>
+        <span class="tier-card-perk" style="background:var(--blue-mid);color:#fff;">Onboarding support</span>
+      </div>
+    </div>
+
+    <!-- Leaderboard table -->
+    <div class="leaderboard-table">
+      <div class="lb-head">
+        <div>#</div><div>Tutor</div><div>Rating</div><div>Sessions</div><div>Earnings</div><div>Completion %</div><div>Tier</div>
+      </div>
+      <div id="lb-body"></div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════
+       PAGE: CONTENT STRATEGY
+  ══════════════════════════════════════ -->
+  <div class="page" id="page-content">
+    <div class="section-header" style="margin-bottom:1.5rem;">
+      <div><div class="section-title">📱 Social Media Content Strategy</div><div class="section-sub">Use your admin data as a goldmine for TikTok & Instagram marketing content.</div></div>
+    </div>
+
+    <div style="background:linear-gradient(135deg,#FEF3C7,#FDE68A);border-radius:16px;padding:1.3rem 1.5rem;margin-bottom:1.5rem;border-left:4px solid var(--gold);display:flex;gap:1rem;align-items:center;">
+      <div style="font-size:1.8rem;">💡</div>
+      <div>
+        <div style="font-family:'Nunito',sans-serif;font-weight:800;font-size:0.95rem;color:#92400E;">Why This Works</div>
+        <div style="font-size:0.82rem;color:#78350F;line-height:1.6;margin-top:0.2rem;">Every booking, every search, every rating on LetLearn tells a story. Turn that data into social proof — the most powerful form of marketing for Nigerian students on TikTok and Instagram.</div>
+      </div>
+    </div>
+
+    <div class="content-grid">
+
+      <!-- TikTok Strategy -->
+      <div class="content-card">
+        <div class="content-card-header">
+          <div class="content-platform-icon" style="background:#000;color:white;">▶️</div>
+          <div><div class="content-card-title">TikTok Strategy</div><div class="content-card-sub">Short-form video content ideas</div></div>
+        </div>
+        <div class="post-preview">
+          <div class="post-preview-label">📹 Script Idea #1 — "Did You Know?"</div>
+          "This week, over 2,000 students in Lagos searched for a Maths tutor on LetLearn. Here are the Top 3 who are ACTUALLY changing grades 👇 [cut to tutor profile snippets]"
+        </div>
+        <div class="post-preview">
+          <div class="post-preview-label">📹 Script Idea #2 — Transformation Story</div>
+          "Student went from D7 to A1 in Chemistry in 6 weeks using LetLearn. Here's exactly how 🧪✨ [student testimonial + tutor intro]"
+        </div>
+        <div class="post-preview">
+          <div class="post-preview-label">📹 Script Idea #3 — Trending Subjects</div>
+          "POV: You live in Lagos and every other student is panicking about WAEC Maths 😭 — meanwhile LetLearn students already booked their tutors 2 weeks ago 💅"
+        </div>
+        <div class="post-tip">💡 <span>Post between 6–9 PM WAT (Nigeria prime time). Use #WAEC2026 #JAMB2026 #NaijaStudents for organic reach.</span></div>
+        <button class="copy-btn" onclick="openPostModal('tiktok')">✨ Generate This Week's TikTok Post</button>
+      </div>
+
+      <!-- Instagram Strategy -->
+      <div class="content-card">
+        <div class="content-card-header">
+          <div class="content-platform-icon" style="background:linear-gradient(135deg,#833ab4,#fd1d1d,#fcb045);color:white;">📸</div>
+          <div><div class="content-card-title">Instagram Strategy</div><div class="content-card-sub">Feed posts, Stories & Reels</div></div>
+        </div>
+        <div class="post-preview">
+          <div class="post-preview-label">📷 Carousel Post — "Most Wanted"</div>
+          Slide 1: "🔥 This Week's Most-Searched Subjects in Lagos"
+          Slide 2–4: Subject + search count + meet the top tutor for each
+          Slide 5: "Book yours now — link in bio 👆"
+        </div>
+        <div class="post-preview">
+          <div class="post-preview-label">📷 Story Format — Leaderboard Drop</div>
+          "Congratulations to our Top 3 tutors this month! 🏆 Swipe to see who made Elite Tier → [names + ratings + subjects]"
+        </div>
+        <div class="post-preview">
+          <div class="post-preview-label">📷 Infographic Post</div>
+          "LetLearn April Report 📊: 1,284 sessions booked · 47 active tutors · Avg rating: 4.7⭐ — Nigerian students are not playing with their future 🇳🇬"
+        </div>
+        <div class="post-tip">💡 <span>Instagram carousels get 3× more saves than single posts. Use Canva templates — LetLearn blue (#1B4FD8) + gold (#F59E0B) palette.</span></div>
+        <button class="copy-btn" onclick="openPostModal('instagram')">✨ Generate This Week's Instagram Post</button>
+      </div>
+
+      <!-- WhatsApp Broadcast -->
+      <div class="content-card">
+        <div class="content-card-header">
+          <div class="content-platform-icon" style="background:#25D366;color:white;">💬</div>
+          <div><div class="content-card-title">WhatsApp Broadcasts</div><div class="content-card-sub">Direct to student contacts & groups</div></div>
+        </div>
+        <div class="post-preview">
+          <div class="post-preview-label">💬 Broadcast Template — Weekly Digest</div>
+          🎓 *LetLearn Weekly Update* 🇳🇬
+
+📚 This week's most searched: Maths, Chemistry, Physics
+🔥 3 new Elite tutors just joined!
+⏰ WAEC is in 6 weeks — don't wait.
+
+Book a session now 👉 letlearn.ng
+        </div>
+        <div class="post-preview">
+          <div class="post-preview-label">💬 Scholarship Alert Template</div>
+          🚨 *New Scholarship Alert!*
+MTN Foundation — up to ₦500,000
+✅ Open to all Nigerian undergrads
+📅 Deadline: July 30, 2026
+
+Apply now on LetLearn 👆
+(Free registration required)
+        </div>
+        <div class="post-tip">💡 <span>Send broadcasts on Sunday evenings when students are planning their week. Keep under 150 words — long messages get muted.</span></div>
+        <button class="copy-btn" onclick="copyText('🎓 LetLearn Weekly Update 🇳🇬\n\n📚 Most searched this week: Maths, Chemistry, Physics\n🔥 New Elite tutors just joined!\n\nBook a session 👉 letlearn.ng')">📋 Copy Broadcast Template</button>
+      </div>
+
+      <!-- Content Calendar -->
+      <div class="content-card">
+        <div class="content-card-header">
+          <div class="content-platform-icon" style="background:var(--blue-light);color:var(--blue-mid);">📅</div>
+          <div><div class="content-card-title">Weekly Content Calendar</div><div class="content-card-sub">Suggested posting rhythm</div></div>
+        </div>
+        <div id="calendar-grid"></div>
+        <div class="post-tip" style="margin-top:0.8rem;">💡 <span>Consistency beats virality. 3 posts per week over 3 months builds more trust than 1 viral post. Stick to the calendar.</span></div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════
+       PAGE: MOST WANTED
+  ══════════════════════════════════════ -->
+  <div class="page" id="page-mostwanted">
+    <div class="section-header" style="margin-bottom:1.5rem;">
+      <div><div class="section-title">🔥 "Most Wanted" Posts Generator</div><div class="section-sub">Turn this week's search data into ready-to-post social content.</div></div>
+    </div>
+
+    <div class="most-wanted-card" style="margin-bottom:1.5rem;">
+      <div class="most-wanted-title">🔥 This Week's Most-Searched Subjects</div>
+      <div class="most-wanted-sub">Lagos · Week of Apr 1, 2026 · Based on 8,200+ student searches</div>
+      <div class="wanted-grid">
+        <div class="wanted-item">
+          <div class="wanted-rank">#1 Most Wanted</div>
+          <div class="wanted-subject">📐 Mathematics</div>
+          <div class="wanted-searches">2,140 searches · Lagos</div>
+          <div class="wanted-tutors">
+            <span class="wanted-tutor-tag">Adaeze C. ⭐4.9</span>
+            <span class="wanted-tutor-tag">Ibrahim M. ⭐5.0</span>
+            <span class="wanted-tutor-tag">+12 more</span>
+          </div>
+        </div>
+        <div class="wanted-item">
+          <div class="wanted-rank">#2 Most Wanted</div>
+          <div class="wanted-subject">⚗️ Chemistry</div>
+          <div class="wanted-searches">1,832 searches · Lagos</div>
+          <div class="wanted-tutors">
+            <span class="wanted-tutor-tag">Fatima B. ⭐4.9</span>
+            <span class="wanted-tutor-tag">Chidi O. ⭐4.7</span>
+            <span class="wanted-tutor-tag">+8 more</span>
+          </div>
+        </div>
+        <div class="wanted-item">
+          <div class="wanted-rank">#3 Most Wanted</div>
+          <div class="wanted-subject">⚛️ Physics</div>
+          <div class="wanted-searches">1,590 searches · Abuja</div>
+          <div class="wanted-tutors">
+            <span class="wanted-tutor-tag">Emeka O. ⭐4.8</span>
+            <span class="wanted-tutor-tag">Ada N. ⭐4.6</span>
+            <span class="wanted-tutor-tag">+6 more</span>
+          </div>
+        </div>
+      </div>
+      <button class="generate-post-btn" onclick="openPostModal('wanted')">✨ Generate Social Post from This Data</button>
+    </div>
+
+    <div class="section-header">
+      <div><div class="section-title">📍 Most Wanted by State</div><div class="section-sub">Drill down to create location-targeted posts</div></div>
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:1rem;">
+      <div id="state-wanted-grid"></div>
+    </div>
+    <div id="state-cards-grid" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:1rem;"></div>
+  </div>
+
+  <!-- ══════════════════════════════════════
+       PAGE: TUTORS
+  ══════════════════════════════════════ -->
+  <div class="page" id="page-tutors">
+    <div class="section-header" style="margin-bottom:1.2rem;">
+      <div><div class="section-title">👨‍🏫 Tutor Management</div><div class="section-sub">3 applications pending review</div></div>
+    </div>
+    <div style="background:white;border-radius:16px;padding:1.5rem;box-shadow:var(--shadow);margin-bottom:1.5rem;border-left:4px solid var(--orange);">
+      <div style="font-family:'Nunito',sans-serif;font-weight:900;font-size:1rem;margin-bottom:0.5rem;color:var(--orange);">⏳ Pending Applications (3)</div>
+      <div id="pending-list"></div>
+    </div>
+    <div style="background:white;border-radius:16px;padding:1.5rem;box-shadow:var(--shadow);">
+      <div style="font-family:'Nunito',sans-serif;font-weight:900;font-size:1rem;margin-bottom:1rem;">✅ Active Tutors (47)</div>
+      <div id="active-tutors-list"></div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════
+       PAGE: SCHOLARSHIPS
+  ══════════════════════════════════════ -->
+  <div class="page" id="page-scholarships">
+    <div class="section-header" style="margin-bottom:1.2rem;">
+      <div><div class="section-title">🎓 Scholarship Management</div><div class="section-sub">Manage and add scholarship listings</div></div>
+      <button class="export-btn" onclick="showToast('+ New scholarship form coming soon!')">+ Add New</button>
+    </div>
+    <div style="background:white;border-radius:16px;padding:2rem;box-shadow:var(--shadow);text-align:center;">
+      <div style="font-size:3rem;margin-bottom:1rem;">🚧</div>
+      <div style="font-family:'Nunito',sans-serif;font-weight:900;font-size:1.1rem;margin-bottom:0.5rem;">Scholarship CMS Coming Soon</div>
+      <div style="color:var(--gray-text);font-size:0.85rem;">Add, edit and unpublish scholarships from this panel. Currently managed via the AI engine on the live site.</div>
+    </div>
+  </div>
+
+</div><!-- /main -->
+
+<!-- POST GENERATOR MODAL -->
+<div class="gen-overlay" id="genOverlay" onclick="if(event.target===this)closePostModal()">
+  <div class="gen-modal">
+    <h3>✨ Generated Social Post</h3>
+    <div class="gen-platform-tabs">
+      <button class="gen-ptab active" onclick="switchGenTab('tiktok',this)">▶️ TikTok</button>
+      <button class="gen-ptab" onclick="switchGenTab('instagram',this)">📸 Instagram</button>
+      <button class="gen-ptab" onclick="switchGenTab('whatsapp',this)">💬 WhatsApp</button>
+    </div>
+    <div class="gen-post-box" id="gen-post-box"></div>
+    <div class="gen-actions">
+      <button class="gen-copy" onclick="copyCurrentPost()">📋 Copy to Clipboard</button>
+      <button class="gen-close" onclick="closePostModal()">Close</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+  // ── DATA ──────────────────────────────────────────────────────────────────────
+  const tutors = [
+    {name:'Adaeze Chukwu',subj:'Mathematics & Further Maths',rating:4.9,sessions:147,earnings:514500,completion:98,tier:'elite',avi:'👩🏾‍🏫',bg:'#EFF6FF'},
+    {name:'Ibrahim Musa',subj:'Mathematics & Statistics',rating:5.0,sessions:56,earnings:280000,completion:100,tier:'elite',avi:'👨🏿‍🏫',bg:'#EFF6FF'},
+    {name:'Fatima Bello',subj:'Chemistry & Biology',rating:4.9,sessions:201,earnings:603000,completion:97,tier:'elite',avi:'👩🏿‍🔬',bg:'#FFF7ED'},
+    {name:'Emeka Okonkwo',subj:'Physics & Computer Science',rating:4.8,sessions:93,earnings:372000,completion:95,tier:'pro',avi:'👨🏽‍💻',bg:'#F0FDF4'},
+    {name:'Ngozi Eze',subj:'Economics & Commerce',rating:4.8,sessions:112,earnings:358400,completion:96,tier:'pro',avi:'👩🏽‍💼',bg:'#ECFDF5'},
+    {name:'Tunde Adeyemi',subj:'English Language & Literature',rating:4.7,sessions:78,earnings:195000,completion:93,tier:'pro',avi:'👨🏾‍🎓',bg:'#FDF4FF'},
+    {name:'Chinwe Obi',subj:'Biology & Health Science',rating:4.5,sessions:34,earnings:102000,completion:90,tier:'rising',avi:'👩🏾‍⚕️',bg:'#F0FDF4'},
+    {name:'Seun Adesanya',subj:'Geography & Social Studies',rating:4.2,sessions:18,earnings:45000,completion:88,tier:'rising',avi:'👨🏾‍🏫',bg:'#FFFBEB'},
+    {name:'Amaka Nwosu',subj:'French & Yoruba',rating:3.9,sessions:8,earnings:24000,completion:85,tier:'rising',avi:'👩🏿‍💬',bg:'#EDE9FE'},
+    {name:'Kola Fadahunsi',subj:'Computer Science',rating:0,sessions:0,earnings:0,completion:0,tier:'new',avi:'👨🏾‍💻',bg:'#EFF6FF'},
+  ];
+
+  const states = [
+    {name:'Lagos',flag:'🌊',students:4820,bookings:512},
+    {name:'FCT (Abuja)',flag:'🏛️',students:2104,bookings:238},
+    {name:'Rivers',flag:'⚡',students:1342,bookings:145},
+    {name:'Ogun',flag:'🌿',students:987,bookings:112},
+    {name:'Kano',flag:'🌙',students:876,bookings:94},
+    {name:'Anambra',flag:'🦅',students:754,bookings:88},
+    {name:'Delta',flag:'🛢️',students:632,bookings:71},
+    {name:'Oyo',flag:'👑',students:598,bookings:64},
+  ];
+
+  const pending = [
+    {name:'Bola Osei',subj:'Yoruba & Hausa',date:'Apr 1, 2026',kyc:'✅'},
+    {name:'Chukwudi Nze',subj:'Chemistry',date:'Mar 30, 2026',kyc:'⚠️'},
+    {name:'Grace Alli',subj:'Mathematics',date:'Mar 29, 2026',kyc:'✅'},
+  ];
+
+  const posts = {
+    tiktok: `🎓 POV: You're a Lagos student and WAEC is in 6 weeks…
+
+Meanwhile LetLearn students already have their tutors booked 😤💅
+
+This week, Calculus and Chemistry were our #1 most-searched subjects in Lagos.
+
+Meet our Top 3 tutors crushing these subjects right now 👇
+
+1️⃣ Adaeze C. — Maths ⭐4.9 | 147 sessions
+2️⃣ Fatima B. — Chemistry ⭐4.9 | 201 sessions  
+3️⃣ Emeka O. — Physics ⭐4.8 | 93 sessions
+
+Book your tutor before they fill up 🔗 letlearn.ng
+
+#WAEC2026 #NaijaStudents #LetLearn #Lagos #StudyMotivation`,
+    instagram: `🔥 Most Wanted This Week on LetLearn!
+
+📐 #1 — Mathematics → 2,140 searches in Lagos
+⚗️ #2 — Chemistry → 1,832 searches
+⚛️ #3 — Physics → 1,590 searches in Abuja
+
+Our Top Tutors are ready. Are you?
+
+✅ Verified · ⭐ 4.7+ rated · 📍 Online & In-person
+
+Book now — link in bio 👆
+
+#NaijaStudents #WAEC2026 #JAMB2026 #LetLearnNG #ScholarshipAlert #NigeriaEducation #StudyWithMe`,
+    whatsapp: `📚 *LetLearn Weekly Digest* 🇳🇬
+
+🔥 *Most Searched This Week:*
+1. Mathematics — 2,140 searches
+2. Chemistry — 1,832 searches
+3. Physics — 1,590 searches
+
+🏆 *Top Tutors Available Now:*
+• Adaeze C. (Maths) — ⭐4.9 · ₦3,500/hr
+• Fatima B. (Chemistry) — ⭐4.9 · ₦3,000/hr
+• Emeka O. (Physics) — ⭐4.8 · ₦4,000/hr
+
+WAEC is getting closer. Book your session today 👇
+🔗 letlearn.ng
+
+_Reply STOP to opt out_`,
+    wanted: `🔥 *THIS WEEK'S MOST WANTED — Lagos Edition*
+
+Calculus and Chemistry are IN DEMAND.
+
+Our students aren't waiting — they're booking.
+
+Top 3 tutors for Maths in Lagos right now:
+👑 Adaeze C. — ⭐4.9 · 147 sessions
+🌟 Ibrahim M. — ⭐5.0 · 56 sessions
+🚀 Kemi A. — ⭐4.6 · 29 sessions
+
+Find yours now → letlearn.ng
+#LetLearn #Lagos #WAEC2026 #MathsTutor`
+  };
+
+  let currentPostType = 'tiktok';
+
+  // ── RENDER FUNCTIONS ──────────────────────────────────────────────────────────
+  function renderLB() {
+    const tierMap = {elite:'tier-elite',pro:'tier-pro',rising:'tier-rising',new:'tier-new'};
+    const tierLabel = {elite:'👑 Elite Tutor',pro:'🌟 Verified Pro',rising:'🚀 Rising Star',new:'✨ New Tutor'};
+    const sorted = [...tutors].sort((a,b)=>b.sessions-a.sessions||b.rating-a.rating);
+    document.getElementById('lb-body').innerHTML = sorted.map((t,i)=>`
+      <div class="lb-row">
+        <div class="lb-rank ${i===0?'r1':i===1?'r2':i===2?'r3':''}">${i===0?'🥇':i===1?'🥈':i===2?'🥉':i+1}</div>
+        <div class="tutor-info">
+          <div class="tutor-avi" style="background:${t.bg};">${t.avi}</div>
+          <div><div class="tutor-nm">${t.name}</div><div class="tutor-subj">${t.subj}</div></div>
+        </div>
+        <div>
+          <div class="stars-mini">${'★'.repeat(Math.round(t.rating))}${'☆'.repeat(5-Math.round(t.rating))}</div>
+          <div class="rating-val">${t.rating || '—'}</div>
+        </div>
+        <div class="sessions-val">${t.sessions || '0'}</div>
+        <div class="earnings-val">${t.earnings?'₦'+t.earnings.toLocaleString():'—'}</div>
+        <div style="font-weight:700;font-size:0.88rem;">${t.completion?t.completion+'%':'—'}</div>
+        <div><span class="tier-badge ${tierMap[t.tier]}">${tierLabel[t.tier]}</span></div>
+      </div>
+    `).join('');
+  }
+
+  function renderStates() {
+    document.getElementById('states-list').innerHTML = states.map(s=>`
+      <div style="display:grid;grid-template-columns:1fr 120px 120px;padding:0.85rem 1.4rem;align-items:center;border-bottom:1px solid var(--gray-border);">
+        <div style="font-weight:700;font-size:0.88rem;">${s.flag} ${s.name}</div>
+        <div style="font-family:'Nunito',sans-serif;font-weight:800;font-size:0.88rem;">${s.students.toLocaleString()}</div>
+        <div style="font-family:'Nunito',sans-serif;font-weight:800;font-size:0.88rem;color:var(--blue-mid);">${s.bookings}</div>
+      </div>
+    `).join('');
+  }
+
+  function renderCalendar() {
+    const days = [
+      {day:'Mon',platform:'Instagram',type:'Carousel — "Most Wanted" subjects',icon:'📸'},
+      {day:'Wed',platform:'TikTok',type:'Short video — tutor spotlight',icon:'▶️'},
+      {day:'Thu',platform:'WhatsApp',type:'Broadcast — weekly digest',icon:'💬'},
+      {day:'Fri',platform:'Instagram',type:'Story — leaderboard / stats',icon:'📊'},
+      {day:'Sun',platform:'All Platforms',type:'Scholarship alert (if new listing)',icon:'🎓'},
+    ];
+    document.getElementById('calendar-grid').innerHTML = days.map(d=>`
+      <div style="display:flex;gap:0.8rem;align-items:center;padding:0.7rem;background:var(--gray-soft);border-radius:10px;margin-bottom:0.5rem;">
+        <div style="width:36px;height:36px;background:var(--blue-mid);border-radius:10px;display:flex;align-items:center;justify-content:center;color:white;font-family:'Nunito',sans-serif;font-weight:900;font-size:0.72rem;flex-shrink:0;">${d.day}</div>
+        <div>
+          <div style="font-size:0.8rem;font-weight:700;color:var(--blue-deep);">${d.icon} ${d.platform}</div>
+          <div style="font-size:0.73rem;color:var(--gray-text);">${d.type}</div>
+        </div>
+      </div>
+    `).join('');
+  }
+
+  function renderStateCards() {
+    const subjects = ['Mathematics','Chemistry','Physics','English','Economics'];
+    const stateData = states.slice(0,6).map(s=>({
+      state:s.name,flag:s.flag,
+      top:subjects[Math.floor(Math.random()*3)],
+      searches:Math.floor(Math.random()*1200)+400,
+    }));
+    document.getElementById('state-cards-grid').innerHTML = stateData.map(s=>`
+      <div style="background:white;border-radius:14px;padding:1.2rem;box-shadow:var(--shadow);">
+        <div style="font-size:1.4rem;margin-bottom:0.4rem;">${s.flag}</div>
+        <div style="font-family:'Nunito',sans-serif;font-weight:900;font-size:0.95rem;">${s.state}</div>
+        <div style="font-size:0.78rem;color:var(--gray-text);margin:0.3rem 0 0.7rem;">Most searched: <strong>${s.top}</strong> · ${s.searches.toLocaleString()} searches</div>
+        <button class="copy-btn" onclick="openPostModal('wanted')">Generate Post →</button>
+      </div>
+    `).join('');
+  }
+
+  function renderPending() {
+    document.getElementById('pending-list').innerHTML = pending.map(p=>`
+      <div style="display:flex;align-items:center;gap:1rem;padding:0.85rem;background:var(--gray-soft);border-radius:12px;margin-bottom:0.6rem;border:1.5px solid rgba(249,115,22,0.15);">
+        <div style="font-size:1.4rem;">👤</div>
+        <div style="flex:1;">
+          <div style="font-weight:700;font-size:0.88rem;">${p.name}</div>
+          <div style="font-size:0.75rem;color:var(--gray-text);">${p.subj} · Applied ${p.date} · KYC: ${p.kyc}</div>
+        </div>
+        <button onclick="showToast('✅ ${p.name} approved!')" style="padding:0.4rem 0.9rem;background:var(--green);color:white;border:none;border-radius:50px;font-family:'Nunito',sans-serif;font-weight:700;font-size:0.75rem;cursor:pointer;">Approve</button>
+        <button onclick="showToast('❌ ${p.name} rejected.')" style="padding:0.4rem 0.9rem;background:var(--red);color:white;border:none;border-radius:50px;font-family:'Nunito',sans-serif;font-weight:700;font-size:0.75rem;cursor:pointer;">Reject</button>
+      </div>
+    `).join('');
+  }
+
+  function renderActiveTutors() {
+    document.getElementById('active-tutors-list').innerHTML = tutors.filter(t=>t.tier!=='new').slice(0,5).map(t=>`
+      <div style="display:flex;align-items:center;gap:0.8rem;padding:0.75rem;background:var(--gray-soft);border-radius:12px;margin-bottom:0.5rem;">
+        <div style="width:36px;height:36px;border-radius:50%;background:${t.bg};display:flex;align-items:center;justify-content:center;font-size:1.1rem;">${t.avi}</div>
+        <div style="flex:1;">
+          <div style="font-weight:700;font-size:0.85rem;">${t.name}</div>
+          <div style="font-size:0.73rem;color:var(--gray-text);">${t.subj} · ⭐${t.rating} · ${t.sessions} sessions</div>
+        </div>
+        <span style="font-size:0.7rem;font-weight:800;padding:0.2rem 0.6rem;border-radius:50px;background:#D1FAE5;color:#065f46;">Active</span>
+      </div>
+    `).join('') + `<div style="text-align:center;padding:1rem;color:var(--gray-text);font-size:0.82rem;">Showing 5 of 47 active tutors</div>`;
+  }
+
+  // ── NAV ───────────────────────────────────────────────────────────────────────
+  const pageTitles = {
+    dashboard:'📊 Dashboard Overview',
+    leaderboard:'🏆 Tutor Performance Leaderboard',
+    content:'📱 Social Media Content Strategy',
+    mostwanted:'🔥 "Most Wanted" Posts',
+    tutors:'👨‍🏫 Tutor Management',
+    scholarships:'🎓 Scholarship Management',
+  };
+
+  function showPage(id, el) {
+    document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+    document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active'));
+    document.getElementById('page-'+id).classList.add('active');
+    if(el) el.classList.add('active');
+    document.getElementById('topbar-title').textContent = pageTitles[id]||id;
+  }
+
+  // ── POST MODAL ────────────────────────────────────────────────────────────────
+  function openPostModal(type) {
+    currentPostType = type || 'tiktok';
+    document.querySelectorAll('.gen-ptab').forEach(t=>t.classList.remove('active'));
+    const map = {tiktok:0,instagram:1,whatsapp:2,wanted:0};
+    document.querySelectorAll('.gen-ptab')[map[currentPostType]||0].classList.add('active');
+    document.getElementById('gen-post-box').textContent = posts[currentPostType] || posts.tiktok;
+    document.getElementById('genOverlay').classList.add('open');
+  }
+  function closePostModal() { document.getElementById('genOverlay').classList.remove('open'); }
+  function switchGenTab(type, btn) {
+    currentPostType = type;
+    document.querySelectorAll('.gen-ptab').forEach(t=>t.classList.remove('active'));
+    btn.classList.add('active');
+    document.getElementById('gen-post-box').textContent = posts[type] || '';
+  }
+  function copyCurrentPost() {
+    copyText(posts[currentPostType]||'');
+  }
+  function copyText(text) {
+    navigator.clipboard.writeText(text).then(()=>showToast('📋 Copied to clipboard!')).catch(()=>showToast('⚠️ Copy failed — try manually'));
+  }
+
+  // ── TOAST ─────────────────────────────────────────────────────────────────────
+  function showToast(msg) {
+    const t = document.getElementById('toast');
+    t.textContent = msg; t.classList.add('show');
+    clearTimeout(t._t);
+    t._t = setTimeout(()=>t.classList.remove('show'), 3500);
+  }
+
+  // ── INIT ──────────────────────────────────────────────────────────────────────
+  document.getElementById('topbar-date').textContent = new Date().toLocaleDateString('en-NG',{weekday:'long',year:'numeric',month:'long',day:'numeric'});
+  renderLB();
+  renderStates();
+  renderCalendar();
+  renderStateCards();
+  renderPending();
+  renderActiveTutors();
+</script>
+</body>
+</html>
