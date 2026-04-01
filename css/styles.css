@@ -654,12 +654,16 @@ footer { background: var(--blue-deep); }
 @media (max-width: 900px) {
   .hero-inner { flex-direction: column; gap: 2rem; }
   .hero-visual { display: none; }
-  .nav-links { display: none; }
-  .nav-tutor-btn { display: none; }
-  .hamburger { display: flex; }
-  nav { grid-template-columns: 1fr auto; }
+  .nav-links { gap: 1.2rem; }
+  .nav-links a { font-size: 0.8rem; }
+  nav { grid-template-columns: auto 1fr auto; }
   .tutor-cta-inner { flex-direction: column; }
   .tutor-cta-visual { width: 100%; }
+}
+
+@media (max-width: 640px) {
+  nav { grid-template-columns: 1fr auto; }
+  .nav-links { display: none; }
 }
 
 @media (max-width: 600px) {
