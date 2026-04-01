@@ -40,7 +40,6 @@ function updateNavForUser(user) {
       <div class="nav-avatar">${initial}</div>
       <span>${name.split(' ')[0]}</span>
     </div>
-    <a href="letlearn-tutor-signup.html" class="nav-tutor-btn">✦ <span>Become a Tutor</span></a>
     <button class="nav-cta" onclick="signOut()">Sign Out</button>
   `;
 }
@@ -49,8 +48,7 @@ function clearNavUser() {
   const navRight = document.getElementById('nav-right');
   if (!navRight) return;
   navRight.innerHTML = `
-    <a href="letlearn-tutor-signup.html" class="nav-tutor-btn">✦ <span>Become a Tutor</span></a>
-    <button class="nav-cta" onclick="openModal('signup')"><span class="nav-cta-full">Sign Up Free</span><span class="nav-cta-short">Join Free</span></button>
+    <button class="nav-cta" onclick="openModal('signup')"><span class="nav-cta-full">Join Free</span><span class="nav-cta-short">Join Free</span></button>
   `;
 }
 
@@ -393,8 +391,6 @@ let searchDebounce;
 function handleSearch() {
   clearTimeout(searchDebounce);
 
-  const query = (document.getElementById('searchInput')?.value || '').toLowerCase();
-
   const activeTab = document.querySelector('.tab-btn.active');
   const isScholarshipsTab = !activeTab || activeTab.textContent.includes('Scholarship');
 
@@ -403,9 +399,11 @@ function handleSearch() {
       currentSearchQuery = document.getElementById('searchInput')?.value.trim() || '';
       currentLevel = document.getElementById('filterLevel')?.value || '';
       currentState = document.getElementById('filterState')?.value || '';
+      loadMoreOffset = 0;
       loadScholarships();
     }, 700);
   } else {
+    const query = (document.getElementById('searchInput')?.value || '').toLowerCase();
     // Filter visible tutor cards client-side first
     document.querySelectorAll('.tutor-card').forEach(card => {
       const text = card.innerText.toLowerCase();
@@ -413,6 +411,7 @@ function handleSearch() {
     });
     // Debounce API reload
     searchDebounce = setTimeout(() => {
+      tutorOffset = 0;
       loadTutors();
     }, 800);
   }
@@ -422,6 +421,8 @@ function applyFilters() {
   currentSearchQuery = document.getElementById('searchInput')?.value.trim() || '';
   currentLevel = document.getElementById('filterLevel')?.value || '';
   currentState = document.getElementById('filterState')?.value || '';
+  loadMoreOffset = 0;
+  tutorOffset = 0;
 
   const activeTab = document.querySelector('.tab-btn.active');
   if (activeTab && activeTab.textContent.includes('Tutor')) {
