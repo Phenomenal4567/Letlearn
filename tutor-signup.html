@@ -1,0 +1,492 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Become a Tutor — LetLearn</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link href="https://fonts.googleapis.com/css2?family=Clash+Display:wght@400;500;600;700&family=Syne:wght@400;500;600;700;800&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500&display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="styles.css"/>
+</head>
+<body>
+
+<nav id="nav">
+  <div class="nav-inner">
+    <a href="index.html" class="logo">Let<span>Learn</span></a>
+    <div class="nav-actions" style="margin-left:auto">
+      <a href="index.html" class="btn-ghost">← Back to Home</a>
+    </div>
+  </div>
+</nav>
+
+<div class="tutor-signup-page">
+  <!-- Hero strip -->
+  <div style="background:linear-gradient(135deg,#0A2463,#1B4FD8);padding:2.5rem 5vw;text-align:center;margin-bottom:0">
+    <div class="section-label light" style="margin-bottom:.5rem">7-Step Application</div>
+    <h1 style="font-family:'Syne',sans-serif;color:white;font-size:clamp(1.5rem,3vw,2.2rem);font-weight:800;margin-bottom:.5rem">Apply to Teach on LetLearn</h1>
+    <p style="color:rgba(255,255,255,.7);font-size:.9rem">Join 500+ verified tutors earning ₦50,000–₦200,000/month</p>
+  </div>
+
+  <!-- SUCCESS SCREEN -->
+  <div class="container">
+    <div id="successScreen" class="success-screen" style="display:none">
+      <div class="success-icon">🎉</div>
+      <h2>Application Submitted!</h2>
+      <p>Thank you for applying to LetLearn. Our team will review your application within 24–48 hours and contact you at the email you provided.</p>
+      <a href="index.html" class="btn-primary">Go Back to Home</a>
+    </div>
+  </div>
+
+  <div class="ts-layout" id="mainLayout">
+    <!-- Sidebar -->
+    <div class="ts-sidebar">
+      <div class="ts-sidebar-title">Your Progress</div>
+      <!-- Progress bar -->
+      <div class="ts-progress"><div class="ts-progress-bar" id="progressBar" style="width:14%"></div></div>
+
+      <div class="ts-step active" id="st-1"><div class="ts-circle" id="sc-1">1</div><div class="ts-step-label">Personal Details</div></div>
+      <div class="ts-step" id="st-2"><div class="ts-circle" id="sc-2">2</div><div class="ts-step-label">Account Setup</div></div>
+      <div class="ts-step" id="st-3"><div class="ts-circle" id="sc-3">3</div><div class="ts-step-label">Qualifications</div></div>
+      <div class="ts-step" id="st-4"><div class="ts-circle" id="sc-4">4</div><div class="ts-step-label">Subjects & Rate</div></div>
+      <div class="ts-step" id="st-5"><div class="ts-circle" id="sc-5">5</div><div class="ts-step-label">Bio & Links</div></div>
+      <div class="ts-step" id="st-6"><div class="ts-circle" id="sc-6">6</div><div class="ts-step-label">Photo Verification</div></div>
+      <div class="ts-step" id="st-7"><div class="ts-circle" id="sc-7">7</div><div class="ts-step-label">Review & Submit</div></div>
+    </div>
+
+    <!-- Panes -->
+    <div>
+
+      <!-- STEP 1: Personal Details -->
+      <div class="ts-pane active" id="pane-1">
+        <h2>Personal Details</h2>
+        <p class="ts-desc">Tell us about yourself. All information is kept confidential.</p>
+        <div class="ts-form-grid">
+          <div class="form-group"><label>First Name *</label><input type="text" id="firstName" class="form-input" placeholder="e.g. Adaobi"/></div>
+          <div class="form-group"><label>Last Name *</label><input type="text" id="lastName" class="form-input" placeholder="e.g. Okafor"/></div>
+          <div class="form-group"><label>Date of Birth *</label><input type="date" id="dob" class="form-input"/></div>
+          <div class="form-group">
+            <label>State *</label>
+            <select id="state" class="form-input">
+              <option value="">Select state</option>
+              <option>Abia</option><option>Adamawa</option><option>Akwa Ibom</option>
+              <option>Anambra</option><option>Bauchi</option><option>Bayelsa</option>
+              <option>Benue</option><option>Borno</option><option>Cross River</option>
+              <option>Delta</option><option>Ebonyi</option><option>Edo</option>
+              <option>Ekiti</option><option>Enugu</option><option>FCT Abuja</option>
+              <option>Gombe</option><option>Imo</option><option>Jigawa</option>
+              <option>Kaduna</option><option>Kano</option><option>Katsina</option>
+              <option>Kebbi</option><option>Kogi</option><option>Kwara</option>
+              <option>Lagos</option><option>Nasarawa</option><option>Niger</option>
+              <option>Ogun</option><option>Ondo</option><option>Osun</option>
+              <option>Oyo</option><option>Plateau</option><option>Rivers</option>
+              <option>Sokoto</option><option>Taraba</option><option>Yobe</option><option>Zamfara</option>
+            </select>
+          </div>
+          <div class="form-group full"><label>Home Address *</label><input type="text" id="address" class="form-input" placeholder="e.g. 12 Bode Thomas Street, Surulere"/></div>
+        </div>
+        <div class="ts-nav"><span></span><button class="btn-primary" onclick="goStep(1)">Next: Account Setup →</button></div>
+      </div>
+
+      <!-- STEP 2: Account Setup -->
+      <div class="ts-pane" id="pane-2">
+        <h2>Account Setup</h2>
+        <p class="ts-desc">Create your LetLearn login credentials.</p>
+        <div class="ts-form-grid">
+          <div class="form-group full"><label>Email Address *</label><input type="email" id="email" class="form-input" placeholder="your@email.com"/></div>
+          <div class="form-group full"><label>Phone Number *</label><input type="tel" id="phone" class="form-input" placeholder="e.g. 08012345678"/></div>
+          <div class="form-group">
+            <label>Password *</label>
+            <div style="position:relative">
+              <input type="password" id="password" class="form-input" placeholder="Minimum 8 characters" style="padding-right:3rem"/>
+              <button onclick="togglePw('password',this)" style="position:absolute;right:1rem;top:50%;transform:translateY(-50%);color:var(--gray-light)">👁️</button>
+            </div>
+          </div>
+          <div class="form-group">
+            <label>Confirm Password *</label>
+            <div style="position:relative">
+              <input type="password" id="confirmPassword" class="form-input" placeholder="Repeat password" style="padding-right:3rem"/>
+              <button onclick="togglePw('confirmPassword',this)" style="position:absolute;right:1rem;top:50%;transform:translateY(-50%);color:var(--gray-light)">👁️</button>
+            </div>
+          </div>
+        </div>
+        <div class="ts-nav">
+          <button class="btn-ghost" onclick="goStep(2,true)">← Back</button>
+          <button class="btn-primary" onclick="goStep(2)">Next: Qualifications →</button>
+        </div>
+      </div>
+
+      <!-- STEP 3: Qualifications -->
+      <div class="ts-pane" id="pane-3">
+        <h2>Qualifications</h2>
+        <p class="ts-desc">Tell us about your educational background and experience.</p>
+        <div class="ts-form-grid">
+          <div class="form-group">
+            <label>Highest Qualification *</label>
+            <select id="qualification" class="form-input">
+              <option value="">Select qualification</option>
+              <option>B.Sc / B.A / B.Ed</option>
+              <option>M.Sc / M.A / MBA</option>
+              <option>Ph.D</option>
+              <option>HND</option>
+              <option>NCE</option>
+              <option>OND</option>
+            </select>
+          </div>
+          <div class="form-group"><label>Institution *</label><input type="text" id="institution" class="form-input" placeholder="e.g. University of Lagos"/></div>
+          <div class="form-group"><label>Graduation Year</label><input type="number" id="gradYear" class="form-input" placeholder="e.g. 2020" min="1980" max="2026"/></div>
+          <div class="form-group"><label>Years of Teaching Experience</label><select id="experience" class="form-input"><option value="">Select</option><option>Less than 1 year</option><option>1–2 years</option><option>3–5 years</option><option>6–10 years</option><option>10+ years</option></select></div>
+          <div class="form-group full"><label>Professional Certifications (Optional)</label><input type="text" id="certifications" class="form-input" placeholder="e.g. TOEFL, ICAN, NTI Teaching Certificate"/></div>
+        </div>
+        <div class="ts-nav">
+          <button class="btn-ghost" onclick="goStep(3,true)">← Back</button>
+          <button class="btn-primary" onclick="goStep(3)">Next: Subjects & Rate →</button>
+        </div>
+      </div>
+
+      <!-- STEP 4: Subjects & Rate -->
+      <div class="ts-pane" id="pane-4">
+        <h2>Subjects & Rate</h2>
+        <p class="ts-desc">Select the subjects you teach and set your hourly rate in Naira.</p>
+
+        <div class="form-group">
+          <label>Select Your Subjects * (choose all that apply)</label>
+          <div class="subject-chips">
+            <button class="subject-chip" onclick="toggleSubject('Mathematics',this)">Mathematics</button>
+            <button class="subject-chip" onclick="toggleSubject('Physics',this)">Physics</button>
+            <button class="subject-chip" onclick="toggleSubject('Chemistry',this)">Chemistry</button>
+            <button class="subject-chip" onclick="toggleSubject('Biology',this)">Biology</button>
+            <button class="subject-chip" onclick="toggleSubject('English',this)">English</button>
+            <button class="subject-chip" onclick="toggleSubject('Literature',this)">Literature</button>
+            <button class="subject-chip" onclick="toggleSubject('Further Maths',this)">Further Maths</button>
+            <button class="subject-chip" onclick="toggleSubject('Economics',this)">Economics</button>
+            <button class="subject-chip" onclick="toggleSubject('Government',this)">Government</button>
+            <button class="subject-chip" onclick="toggleSubject('Commerce',this)">Commerce</button>
+            <button class="subject-chip" onclick="toggleSubject('Geography',this)">Geography</button>
+            <button class="subject-chip" onclick="toggleSubject('History',this)">History</button>
+            <button class="subject-chip" onclick="toggleSubject('JAMB Prep',this)">JAMB Prep</button>
+            <button class="subject-chip" onclick="toggleSubject('WAEC Prep',this)">WAEC Prep</button>
+            <button class="subject-chip" onclick="toggleSubject('French',this)">French</button>
+            <button class="subject-chip" onclick="toggleSubject('Yoruba',this)">Yoruba</button>
+            <button class="subject-chip" onclick="toggleSubject('Igbo',this)">Igbo</button>
+            <button class="subject-chip" onclick="toggleSubject('Hausa',this)">Hausa</button>
+          </div>
+        </div>
+
+        <div class="ts-form-grid" style="margin-top:1.5rem">
+          <div class="form-group">
+            <label>Hourly Rate (₦) *</label>
+            <input type="number" id="hourlyRate" class="form-input" placeholder="e.g. 3000" min="500" max="50000"/>
+          </div>
+          <div class="form-group">
+            <label>Session Type</label>
+            <select id="sessionType" class="form-input">
+              <option>Online (Google Meet)</option>
+              <option>In-Person</option>
+              <option>Both Online & In-Person</option>
+            </select>
+          </div>
+          <div class="form-group full">
+            <label>Availability</label>
+            <select id="availability" class="form-input">
+              <option>Weekdays (Monday–Friday)</option>
+              <option>Weekends (Saturday–Sunday)</option>
+              <option>Weekdays & Weekends</option>
+              <option>Evenings Only</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="ts-nav">
+          <button class="btn-ghost" onclick="goStep(4,true)">← Back</button>
+          <button class="btn-primary" onclick="goStep(4)">Next: Bio & Links →</button>
+        </div>
+      </div>
+
+      <!-- STEP 5: Bio & Links -->
+      <div class="ts-pane" id="pane-5">
+        <h2>Bio & Links</h2>
+        <p class="ts-desc">Help students understand your teaching style and background.</p>
+        <div class="form-group">
+          <label>Teaching Bio * (min 50 words)</label>
+          <textarea id="bio" class="form-input" rows="5" placeholder="Describe your teaching experience, approach, and what makes you a great tutor. Include specific achievements or results from your students." style="resize:vertical;line-height:1.6"></textarea>
+        </div>
+        <div class="form-group">
+          <label>LinkedIn Profile URL (Optional)</label>
+          <input type="url" id="linkedin" class="form-input" placeholder="https://linkedin.com/in/yourprofile"/>
+        </div>
+        <div class="form-group">
+          <label>Preferred Teaching Style</label>
+          <select id="teachingStyle" class="form-input">
+            <option>Structured & Methodical</option>
+            <option>Conversational & Interactive</option>
+            <option>Problem-Solving Focused</option>
+            <option>Exam-Technique Focused</option>
+            <option>Mixed Approach</option>
+          </select>
+        </div>
+        <div class="ts-nav">
+          <button class="btn-ghost" onclick="goStep(5,true)">← Back</button>
+          <button class="btn-primary" onclick="goStep(5)">Next: Photo Verification →</button>
+        </div>
+      </div>
+
+      <!-- STEP 6: Photo Verification -->
+      <div class="ts-pane" id="pane-6">
+        <h2>Photo Verification</h2>
+        <p class="ts-desc">Upload a clear photo of yourself — this builds trust with students and is required for verification.</p>
+
+        <div style="display:flex;gap:1rem;margin-bottom:1.5rem;flex-wrap:wrap">
+          <button class="btn-primary" onclick="startCamera()" style="flex:1">📷 Use Camera</button>
+          <label class="btn-ghost" style="flex:1;text-align:center;cursor:pointer;display:flex;align-items:center;justify-content:center">
+            📁 Upload Photo
+            <input type="file" id="photoUpload" accept="image/*" onchange="handleUpload(this)" style="display:none"/>
+          </label>
+        </div>
+
+        <div class="camera-wrap" id="cameraWrap">
+          <video id="video" autoplay playsinline style="border-radius:12px;width:100%;max-height:300px;object-fit:cover"></video>
+          <canvas id="canvas"></canvas>
+          <div class="camera-actions">
+            <button class="btn-primary" onclick="takePhoto()">📸 Take Photo</button>
+            <button class="btn-ghost" onclick="stopCamera()">Stop Camera</button>
+          </div>
+        </div>
+
+        <img id="photoPreview" src="" alt="Your photo preview" style="width:100%;max-width:300px;border-radius:12px;display:none;border:2px solid var(--green);margin-top:1rem"/>
+
+        <div style="background:rgba(245,158,11,0.08);border:1.5px solid rgba(245,158,11,0.2);border-radius:12px;padding:1rem;margin-top:1.5rem;font-size:.84rem;color:var(--gold-dark)">
+          📋 <strong>Requirements:</strong> Clear face visible, good lighting, no sunglasses or hats. JPG or PNG, max 5MB.
+        </div>
+
+        <div class="ts-nav">
+          <button class="btn-ghost" onclick="goStep(6,true)">← Back</button>
+          <button class="btn-primary" onclick="goStep(6)">Next: Review & Submit →</button>
+        </div>
+      </div>
+
+      <!-- STEP 7: Review & Submit -->
+      <div class="ts-pane" id="pane-7">
+        <h2>Review & Submit</h2>
+        <p class="ts-desc">Please review your application details before submitting.</p>
+
+        <div id="summaryContent" style="border:1.5px solid rgba(10,36,99,.08);border-radius:12px;padding:1.2rem;margin-bottom:1.5rem;background:var(--gray-soft)">
+          <!-- Filled by JS -->
+        </div>
+
+        <div class="form-group" style="margin-bottom:.8rem">
+          <label style="display:flex;align-items:flex-start;gap:.75rem;cursor:pointer;font-size:.88rem;color:var(--dark)">
+            <input type="checkbox" id="declaration" style="margin-top:2px;accent-color:var(--blue-mid)"/>
+            I declare that all information provided is true and accurate. I understand that providing false information will result in disqualification.
+          </label>
+        </div>
+        <div class="form-group" style="margin-bottom:1.5rem">
+          <label style="display:flex;align-items:flex-start;gap:.75rem;cursor:pointer;font-size:.88rem;color:var(--dark)">
+            <input type="checkbox" id="termsCheck" style="margin-top:2px;accent-color:var(--blue-mid)"/>
+            I agree to the <a href="#" style="color:var(--blue-mid);font-weight:600">Terms of Service</a> and <a href="#" style="color:var(--blue-mid);font-weight:600">Tutor Code of Conduct</a>.
+          </label>
+        </div>
+
+        <div class="ts-nav">
+          <button class="btn-ghost" onclick="goStep(7,true)">← Back</button>
+          <button class="btn-primary" id="submitBtn" onclick="submitApplication()" style="background:var(--green);border-color:var(--green)">🚀 Submit Application</button>
+        </div>
+      </div>
+
+    </div><!-- end panes container -->
+  </div><!-- end ts-layout -->
+</div><!-- end tutor-signup-page -->
+
+<div class="toast" id="toast"></div>
+
+<script>
+// ── STATE ────────────────────────────────────────────────────────────────
+let currentStep = 1;
+const totalSteps = 7;
+let selectedSubjects = [];
+let cameraStream = null;
+
+// ── STEP NAV ──────────────────────────────────────────────────────────────
+function goStep(from, back = false) {
+  if (!back && !validateStep(from)) return;
+  const to = back ? from - 1 : from + 1;
+
+  // Update sidebar
+  const fromEl = document.getElementById('st-' + from);
+  const toEl = document.getElementById('st-' + to);
+  if (!back) {
+    fromEl.classList.remove('active');
+    fromEl.classList.add('done');
+    document.getElementById('sc-' + from).textContent = '✓';
+    toEl.classList.add('active');
+  } else {
+    fromEl.classList.remove('active', 'done');
+    document.getElementById('sc-' + from).textContent = from;
+    toEl.classList.remove('done');
+    toEl.classList.add('active');
+  }
+
+  // Switch panes
+  document.getElementById('pane-' + currentStep).classList.remove('active');
+  currentStep = to;
+  document.getElementById('pane-' + currentStep).classList.add('active');
+
+  // Progress bar
+  const pct = Math.round((currentStep / totalSteps) * 100);
+  document.getElementById('progressBar').style.width = pct + '%';
+
+  if (currentStep === 7) fillSummary();
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+// ── VALIDATION ────────────────────────────────────────────────────────────
+function validateStep(step) {
+  if (step === 1) {
+    const req = ['firstName','lastName','dob','state','address'];
+    for (const id of req) {
+      if (!document.getElementById(id).value.trim()) {
+        showToast('⚠️ Please fill all required fields', true);
+        return false;
+      }
+    }
+  }
+  if (step === 2) {
+    const pw = document.getElementById('password').value;
+    const conf = document.getElementById('confirmPassword').value;
+    const email = document.getElementById('email').value.trim();
+    const phone = document.getElementById('phone').value.trim();
+    if (!email || !phone) { showToast('⚠️ Please enter your email and phone', true); return false; }
+    if (pw.length < 8) { showToast('⚠️ Password must be 8+ characters', true); return false; }
+    if (pw !== conf) { showToast('⚠️ Passwords do not match', true); return false; }
+  }
+  if (step === 3) {
+    if (!document.getElementById('qualification').value) { showToast('⚠️ Please select your qualification', true); return false; }
+    if (!document.getElementById('institution').value.trim()) { showToast('⚠️ Please enter your institution', true); return false; }
+  }
+  if (step === 4) {
+    if (selectedSubjects.length === 0) { showToast('⚠️ Please select at least one subject', true); return false; }
+    if (!document.getElementById('hourlyRate').value) { showToast('⚠️ Please enter your hourly rate', true); return false; }
+  }
+  if (step === 5) {
+    const bio = document.getElementById('bio').value.trim();
+    if (bio.split(' ').length < 20) { showToast('⚠️ Please write a more detailed bio (min 20 words)', true); return false; }
+  }
+  return true;
+}
+
+// ── SUBJECTS ──────────────────────────────────────────────────────────────
+function toggleSubject(subject, btn) {
+  if (selectedSubjects.includes(subject)) {
+    selectedSubjects = selectedSubjects.filter(s => s !== subject);
+    btn.classList.remove('active');
+  } else {
+    selectedSubjects.push(subject);
+    btn.classList.add('active');
+  }
+}
+
+// ── CAMERA ───────────────────────────────────────────────────────────────
+async function startCamera() {
+  try {
+    const wrap = document.getElementById('cameraWrap');
+    const video = document.getElementById('video');
+    wrap.classList.add('show');
+    cameraStream = await navigator.mediaDevices.getUserMedia({ video: true });
+    video.srcObject = cameraStream;
+  } catch(e) { showToast('⚠️ Camera access denied. Please upload a photo instead.', true); }
+}
+
+function takePhoto() {
+  const video = document.getElementById('video');
+  const canvas = document.getElementById('canvas');
+  const preview = document.getElementById('photoPreview');
+  canvas.width = video.videoWidth;
+  canvas.height = video.videoHeight;
+  canvas.getContext('2d').drawImage(video, 0, 0);
+  preview.src = canvas.toDataURL('image/png');
+  preview.style.display = 'block';
+  video.style.display = 'none';
+  stopCamera();
+  showToast('✅ Photo captured!');
+}
+
+function stopCamera() {
+  if (cameraStream) cameraStream.getTracks().forEach(t => t.stop());
+  document.getElementById('cameraWrap').classList.remove('show');
+  document.getElementById('video').style.display = 'block';
+}
+
+function handleUpload(input) {
+  const file = input.files[0];
+  if (!file) return;
+  if (file.size > 5 * 1024 * 1024) { showToast('⚠️ File too large (max 5MB)', true); return; }
+  const reader = new FileReader();
+  reader.onload = e => {
+    const preview = document.getElementById('photoPreview');
+    preview.src = e.target.result;
+    preview.style.display = 'block';
+    showToast('✅ Photo uploaded!');
+  };
+  reader.readAsDataURL(file);
+}
+
+// ── SUMMARY ───────────────────────────────────────────────────────────────
+function fillSummary() {
+  const name = (document.getElementById('firstName').value + ' ' + document.getElementById('lastName').value).trim();
+  const email = document.getElementById('email').value;
+  const qualification = document.getElementById('qualification').value;
+  const institution = document.getElementById('institution').value;
+  const subjs = selectedSubjects.join(', ') || 'None selected';
+  const rate = document.getElementById('hourlyRate').value;
+  const state = document.getElementById('state').value;
+  const sessionType = document.getElementById('sessionType').value;
+
+  document.getElementById('summaryContent').innerHTML = `
+    <div class="summary-item"><strong>Full Name:</strong> ${name}</div>
+    <div class="summary-item"><strong>Email:</strong> ${email}</div>
+    <div class="summary-item"><strong>State:</strong> ${state}</div>
+    <div class="summary-item"><strong>Qualification:</strong> ${qualification} — ${institution}</div>
+    <div class="summary-item"><strong>Subjects:</strong> ${subjs}</div>
+    <div class="summary-item"><strong>Hourly Rate:</strong> ₦${Number(rate).toLocaleString()}/hr</div>
+    <div class="summary-item"><strong>Session Type:</strong> ${sessionType}</div>
+    <div class="summary-item"><strong>Status:</strong> <span style="color:var(--gold-dark);font-weight:600">Pending Admin Review</span></div>
+  `;
+}
+
+// ── SUBMIT ────────────────────────────────────────────────────────────────
+function submitApplication() {
+  const decl = document.getElementById('declaration').checked;
+  const terms = document.getElementById('termsCheck').checked;
+  if (!decl || !terms) { showToast('⚠️ Please accept the declaration and terms', true); return; }
+
+  const btn = document.getElementById('submitBtn');
+  btn.textContent = '⏳ Submitting...';
+  btn.disabled = true;
+
+  // Simulate submission (in production: POST to Supabase tutor_applications)
+  setTimeout(() => {
+    document.getElementById('mainLayout').style.display = 'none';
+    document.getElementById('successScreen').style.display = 'block';
+    showToast('🎉 Application submitted successfully!');
+  }, 2000);
+}
+
+// ── UTILS ─────────────────────────────────────────────────────────────────
+function togglePw(id, btn) {
+  const el = document.getElementById(id);
+  el.type = el.type === 'password' ? 'text' : 'password';
+  btn.textContent = el.type === 'password' ? '👁️' : '🙈';
+}
+
+function showToast(msg, isError = false) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.className = isError ? 'toast error show' : 'toast show';
+  setTimeout(() => t.classList.remove('show'), 4000);
+}
+
+window.addEventListener('scroll', () => {
+  document.getElementById('nav').classList.toggle('scrolled', window.scrollY > 20);
+});
+</script>
+</body>
+</html>

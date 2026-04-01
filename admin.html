@@ -1,0 +1,589 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Admin Dashboard — LetLearn</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link href="https://fonts.googleapis.com/css2?family=Clash+Display:wght@400;500;600;700&family=Syne:wght@400;500;600;700;800&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500&display=swap" rel="stylesheet"/>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'DM Sans',sans-serif;background:#F1F5F9;color:#0F172A;display:flex;min-height:100vh}
+a{text-decoration:none;color:inherit}
+button{cursor:pointer;border:none;font-family:inherit}
+
+:root{
+  --blue:#0A2463;--mid:#1B4FD8;--bright:#3B82F6;--gold:#F59E0B;
+  --green:#10B981;--red:#EF4444;--gray:#64748B;--soft:#F1F5F9;--white:#fff;
+  --shadow:0 2px 12px rgba(10,36,99,.07);--radius:14px;
+}
+
+/* SIDEBAR */
+.sidebar{width:240px;background:var(--blue);min-height:100vh;flex-shrink:0;display:flex;flex-direction:column;position:sticky;top:0}
+.sb-logo{padding:1.5rem 1.4rem;font-family:'Clash Display',sans-serif;font-weight:700;font-size:1.4rem;color:white;border-bottom:1px solid rgba(255,255,255,.08)}
+.sb-logo span{color:var(--gold)}
+.sb-section{font-size:.65rem;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:rgba(255,255,255,.35);padding:.8rem 1.4rem .4rem}
+.sb-item{display:flex;align-items:center;gap:.7rem;padding:.65rem 1.4rem;font-size:.86rem;font-weight:500;color:rgba(255,255,255,.6);cursor:pointer;transition:all .2s;border-left:3px solid transparent}
+.sb-item:hover{background:rgba(255,255,255,.06);color:white}
+.sb-item.active{background:rgba(255,255,255,.1);color:white;border-left-color:var(--gold)}
+.sb-item .icon{font-size:1rem;width:20px;text-align:center}
+.sb-badge{margin-left:auto;background:var(--gold);color:var(--blue);font-size:.65rem;font-weight:800;padding:.15rem .45rem;border-radius:50px}
+.sb-footer{margin-top:auto;padding:1.2rem 1.4rem;border-top:1px solid rgba(255,255,255,.08)}
+.sb-user{display:flex;align-items:center;gap:.7rem}
+.sb-avatar{width:34px;height:34px;border-radius:50%;background:var(--gold);color:var(--blue);display:flex;align-items:center;justify-content:center;font-weight:800;font-size:.85rem;flex-shrink:0}
+.sb-name{font-size:.82rem;font-weight:600;color:rgba(255,255,255,.8)}
+.sb-role{font-size:.72rem;color:rgba(255,255,255,.4)}
+
+/* MAIN */
+.main{flex:1;overflow-y:auto}
+.topbar{background:white;padding:1rem 2rem;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid rgba(10,36,99,.06);position:sticky;top:0;z-index:10;box-shadow:var(--shadow)}
+.topbar-title{font-family:'Syne',sans-serif;font-weight:700;font-size:1.1rem;color:var(--blue)}
+.topbar-actions{display:flex;align-items:center;gap:.8rem}
+.btn-sm{padding:.4rem 1rem;border-radius:50px;font-size:.8rem;font-weight:600;transition:all .2s}
+.btn-primary-sm{background:var(--mid);color:white}
+.btn-primary-sm:hover{background:var(--blue)}
+.btn-danger-sm{background:rgba(239,68,68,.1);color:#DC2626}
+.btn-success-sm{background:rgba(16,185,129,.1);color:var(--green)}
+.btn-ghost-sm{background:var(--soft);color:var(--gray)}
+
+.content{padding:2rem;display:none}
+.content.active{display:block}
+
+/* KPI CARDS */
+.kpi-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:1rem;margin-bottom:2rem}
+.kpi{background:white;border-radius:var(--radius);padding:1.4rem;box-shadow:var(--shadow);border-left:4px solid transparent;position:relative;overflow:hidden}
+.kpi.blue{border-color:var(--mid)}
+.kpi.gold{border-color:var(--gold)}
+.kpi.green{border-color:var(--green)}
+.kpi.red{border-color:#EF4444}
+.kpi-label{font-size:.75rem;font-weight:600;color:var(--gray);text-transform:uppercase;letter-spacing:.5px;margin-bottom:.5rem}
+.kpi-value{font-family:'Syne',sans-serif;font-size:2rem;font-weight:800;color:var(--blue);line-height:1}
+.kpi-sub{font-size:.75rem;color:var(--gray);margin-top:.4rem}
+.kpi-icon{position:absolute;right:1rem;top:1rem;font-size:1.8rem;opacity:.15}
+
+/* SECTION */
+.sec-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:1.2rem}
+.sec-title{font-family:'Syne',sans-serif;font-weight:800;font-size:1rem;color:var(--blue)}
+.sec-sub{font-size:.75rem;color:var(--gray);margin-top:.2rem}
+
+/* TABLE */
+.table-wrap{background:white;border-radius:var(--radius);box-shadow:var(--shadow);overflow:hidden}
+table{width:100%;border-collapse:collapse}
+thead{background:var(--soft)}
+th{padding:.9rem 1rem;text-align:left;font-size:.72rem;font-weight:700;color:var(--gray);text-transform:uppercase;letter-spacing:.5px;white-space:nowrap}
+td{padding:.85rem 1rem;font-size:.85rem;color:#334155;border-top:1px solid rgba(10,36,99,.05)}
+tr:hover td{background:rgba(27,79,216,.02)}
+
+/* STATUS CHIPS */
+.chip{display:inline-block;font-size:.68rem;font-weight:700;padding:.2rem .65rem;border-radius:50px;letter-spacing:.3px}
+.chip.pending{background:rgba(245,158,11,.12);color:#B45309}
+.chip.approved{background:rgba(16,185,129,.1);color:var(--green)}
+.chip.rejected{background:rgba(239,68,68,.1);color:#DC2626}
+.chip.open{background:rgba(16,185,129,.1);color:var(--green)}
+
+/* LEADERBOARD */
+.lb-row{display:flex;align-items:center;gap:1rem;padding:.9rem 1.2rem;border-top:1px solid rgba(10,36,99,.05)}
+.lb-rank{font-family:'Syne',sans-serif;font-weight:800;font-size:1.1rem;width:28px;text-align:center;color:var(--gray);flex-shrink:0}
+.lb-rank.top{color:var(--gold)}
+.lb-avatar{width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,var(--mid),var(--bright));color:white;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:.8rem;flex-shrink:0}
+.lb-info{flex:1}
+.lb-name{font-weight:600;font-size:.88rem}
+.lb-meta{font-size:.75rem;color:var(--gray)}
+.lb-score{font-family:'Syne',sans-serif;font-weight:800;font-size:.95rem;color:var(--mid)}
+
+/* SUBJECT BARS */
+.subj-bar-wrap{background:white;border-radius:var(--radius);box-shadow:var(--shadow);padding:1.2rem}
+.subj-row{margin-bottom:1rem}
+.subj-top{display:flex;justify-content:space-between;font-size:.82rem;font-weight:600;margin-bottom:.4rem}
+.bar{height:8px;border-radius:50px;background:var(--soft);overflow:hidden}
+.bar-fill{height:100%;border-radius:50px;background:linear-gradient(90deg,var(--mid),var(--bright));transition:width .8s ease}
+
+/* STATE CARDS */
+.state-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:.75rem}
+.state-card{background:white;border-radius:12px;box-shadow:var(--shadow);padding:1rem;text-align:center}
+.state-name{font-weight:700;font-size:.88rem;color:var(--blue);margin-bottom:.3rem}
+.state-count{font-family:'Syne',sans-serif;font-size:1.4rem;font-weight:800;color:var(--mid)}
+.state-label{font-size:.72rem;color:var(--gray)}
+
+/* GEN CONTENT */
+.gen-tabs{display:flex;gap:.4rem;margin-bottom:1rem}
+.gen-tab{padding:.45rem 1rem;border-radius:50px;font-size:.8rem;font-weight:600;background:var(--soft);color:var(--gray);transition:all .2s}
+.gen-tab.active{background:var(--mid);color:white}
+.gen-content{background:white;border-radius:var(--radius);box-shadow:var(--shadow);padding:1.5rem}
+.gen-post{background:var(--soft);border-radius:12px;padding:1.2rem;font-size:.88rem;line-height:1.7;color:#334155;margin-bottom:1rem;white-space:pre-wrap;font-family:'DM Sans',sans-serif}
+.gen-actions{display:flex;gap:.8rem;flex-wrap:wrap}
+
+/* CALENDAR */
+.cal-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:.3rem}
+.cal-head{text-align:center;font-size:.68rem;font-weight:700;color:var(--gray);padding:.3rem;text-transform:uppercase}
+.cal-day{aspect-ratio:1;display:flex;align-items:center;justify-content:center;border-radius:8px;font-size:.8rem;cursor:pointer;transition:all .2s;position:relative}
+.cal-day:hover{background:rgba(27,79,216,.08)}
+.cal-day.today{background:var(--mid);color:white;font-weight:700}
+.cal-day.has-booking::after{content:'';position:absolute;bottom:3px;left:50%;transform:translateX(-50%);width:4px;height:4px;border-radius:50%;background:var(--gold)}
+.cal-day.empty{opacity:0}
+
+/* Toast */
+.toast{position:fixed;bottom:2rem;left:50%;transform:translateX(-50%) translateY(100px);background:#0F172A;color:white;padding:.7rem 1.4rem;border-radius:50px;font-size:.85rem;font-weight:600;z-index:999;transition:transform .3s;box-shadow:0 8px 32px rgba(0,0,0,.2)}
+.toast.show{transform:translateX(-50%) translateY(0)}
+
+/* Responsive */
+@media(max-width:768px){
+  .sidebar{display:none}
+  .content{padding:1rem}
+  .topbar{padding:.8rem 1rem}
+}
+</style>
+</head>
+<body>
+
+<!-- SIDEBAR -->
+<div class="sidebar">
+  <div class="sb-logo">Let<span>Learn</span> <span style="font-size:.65rem;opacity:.4;font-family:'DM Sans';font-weight:400">Admin</span></div>
+
+  <div class="sb-section">Overview</div>
+  <div class="sb-item active" onclick="showPage('overview',this)"><span class="icon">📊</span> Dashboard</div>
+  <div class="sb-item" onclick="showPage('analytics',this)"><span class="icon">📈</span> Analytics</div>
+  <div class="sb-item" onclick="showPage('calendar',this)"><span class="icon">📅</span> Bookings Calendar</div>
+
+  <div class="sb-section">Platform</div>
+  <div class="sb-item" onclick="showPage('tutors',this)">
+    <span class="icon">👨‍🏫</span> Tutor Management
+    <span class="sb-badge" id="pendingBadge">3</span>
+  </div>
+  <div class="sb-item" onclick="showPage('scholarships',this)"><span class="icon">🎓</span> Scholarships</div>
+
+  <div class="sb-section">Marketing</div>
+  <div class="sb-item" onclick="showPage('social',this)"><span class="icon">📱</span> Content Generator</div>
+
+  <div class="sb-footer">
+    <div class="sb-user">
+      <div class="sb-avatar">AD</div>
+      <div>
+        <div class="sb-name">Admin User</div>
+        <div class="sb-role">Super Admin</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- MAIN -->
+<div class="main">
+
+  <!-- TOP BAR -->
+  <div class="topbar">
+    <div class="topbar-title" id="topbarTitle">Dashboard Overview</div>
+    <div class="topbar-actions">
+      <span style="font-size:.8rem;color:var(--gray)">Wed, Apr 1 2026</span>
+      <a href="index.html" class="btn-sm btn-ghost-sm">← View Site</a>
+    </div>
+  </div>
+
+  <!-- OVERVIEW -->
+  <div class="content active" id="page-overview">
+    <div class="kpi-grid">
+      <div class="kpi blue"><div class="kpi-icon">👤</div><div class="kpi-label">Total Students</div><div class="kpi-value">2,841</div><div class="kpi-sub">↑ 312 this month</div></div>
+      <div class="kpi green"><div class="kpi-icon">✅</div><div class="kpi-label">Active Tutors</div><div class="kpi-value">147</div><div class="kpi-sub">↑ 23 this month</div></div>
+      <div class="kpi gold"><div class="kpi-icon">📋</div><div class="kpi-label">Pending Applications</div><div class="kpi-value">3</div><div class="kpi-sub">Awaiting review</div></div>
+      <div class="kpi red"><div class="kpi-icon">📅</div><div class="kpi-label">Bookings This Month</div><div class="kpi-value">489</div><div class="kpi-sub">↑ 18% vs last month</div></div>
+    </div>
+
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:1.5rem">
+      <!-- Top Subjects -->
+      <div>
+        <div class="sec-header"><div><div class="sec-title">🔥 Top Subjects This Week</div><div class="sec-sub">Based on search & booking data</div></div></div>
+        <div class="subj-bar-wrap" id="subjectBars"></div>
+      </div>
+
+      <!-- Top States -->
+      <div>
+        <div class="sec-header"><div><div class="sec-title">🗺️ Top States by Activity</div><div class="sec-sub">Student engagement by location</div></div></div>
+        <div class="state-grid" id="stateGrid"></div>
+      </div>
+    </div>
+
+    <!-- Leaderboard -->
+    <div style="margin-top:1.5rem">
+      <div class="sec-header"><div><div class="sec-title">🏆 Tutor Leaderboard</div><div class="sec-sub">Ranked by bookings, ratings & sessions</div></div></div>
+      <div class="table-wrap" id="leaderboard"></div>
+    </div>
+  </div>
+
+  <!-- ANALYTICS -->
+  <div class="content" id="page-analytics">
+    <div class="kpi-grid">
+      <div class="kpi blue"><div class="kpi-label">Scholarship Searches / Day</div><div class="kpi-value">1,240</div><div class="kpi-sub">↑ 8% vs last week</div></div>
+      <div class="kpi green"><div class="kpi-label">Avg Session Rating</div><div class="kpi-value">4.8</div><div class="kpi-sub">Based on 1,203 reviews</div></div>
+      <div class="kpi gold"><div class="kpi-label">Tutor Approval Rate</div><div class="kpi-value">74%</div><div class="kpi-sub">Last 30 days</div></div>
+      <div class="kpi red"><div class="kpi-label">Avg Time to Approval</div><div class="kpi-value">1.4d</div><div class="kpi-sub">Days from application</div></div>
+    </div>
+    <div style="background:white;border-radius:var(--radius);box-shadow:var(--shadow);padding:2rem;text-align:center;color:var(--gray)">
+      <div style="font-size:3rem;margin-bottom:1rem">📊</div>
+      <div style="font-weight:600;margin-bottom:.5rem">Full Analytics Dashboard</div>
+      <div style="font-size:.85rem">Connect to Supabase & Cloudflare Analytics for live charts and funnel data.</div>
+    </div>
+  </div>
+
+  <!-- CALENDAR -->
+  <div class="content" id="page-calendar">
+    <div style="background:white;border-radius:var(--radius);box-shadow:var(--shadow);padding:1.5rem;max-width:480px;margin-bottom:1.5rem">
+      <div class="sec-header" style="margin-bottom:1rem">
+        <div class="sec-title">📅 April 2026</div>
+        <div style="display:flex;gap:.5rem">
+          <button class="btn-sm btn-ghost-sm">←</button>
+          <button class="btn-sm btn-ghost-sm">→</button>
+        </div>
+      </div>
+      <div class="cal-grid" id="calendar"></div>
+    </div>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Date</th><th>Student</th><th>Tutor</th><th>Subject</th><th>Type</th><th>Status</th></tr></thead>
+        <tbody id="bookingsTable"></tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- TUTORS -->
+  <div class="content" id="page-tutors">
+    <div class="sec-header">
+      <div><div class="sec-title">👨‍🏫 Tutor Management</div><div class="sec-sub" id="pendingCount">3 applications pending review</div></div>
+    </div>
+    <div class="table-wrap" style="margin-bottom:1.5rem">
+      <table>
+        <thead><tr><th>Name</th><th>Subjects</th><th>Rate</th><th>State</th><th>Status</th><th>Applied</th><th>Actions</th></tr></thead>
+        <tbody id="tutorTable"></tbody>
+      </table>
+    </div>
+    <div class="sec-header" style="margin-top:2rem"><div><div class="sec-title">✅ Active Tutors</div><div class="sec-sub">Currently visible on the platform</div></div></div>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Name</th><th>Subjects</th><th>State</th><th>Rating</th><th>Sessions</th><th>Rate</th></tr></thead>
+        <tbody id="activeTutorTable"></tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- SCHOLARSHIPS -->
+  <div class="content" id="page-scholarships">
+    <div class="sec-header">
+      <div><div class="sec-title">🎓 Scholarship Management</div><div class="sec-sub">Manage and curate scholarship listings</div></div>
+      <button class="btn-sm btn-primary-sm" onclick="showToast('Feature coming in Phase 1!')">+ Add Scholarship</button>
+    </div>
+    <div style="background:white;border-radius:var(--radius);box-shadow:var(--shadow);padding:2rem;text-align:center;color:var(--gray)">
+      <div style="font-size:3rem;margin-bottom:1rem">🤖</div>
+      <div style="font-weight:600;margin-bottom:.5rem">AI-Powered (Current)</div>
+      <div style="font-size:.85rem;max-width:400px;margin:0 auto 1.5rem">Scholarships are currently generated dynamically by Claude AI. Manual curation and override is scheduled for Phase 1.</div>
+      <button class="btn-sm btn-primary-sm" onclick="showToast('This will connect to your Supabase scholarships table in Phase 1')">Set Up Manual Listings</button>
+    </div>
+  </div>
+
+  <!-- SOCIAL -->
+  <div class="content" id="page-social">
+    <div class="sec-header">
+      <div><div class="sec-title">📱 Social Media Content Generator</div><div class="sec-sub">Turn platform data into ready-to-post content</div></div>
+    </div>
+    <div class="gen-tabs">
+      <button class="gen-tab active" onclick="switchGenTab('tiktok',this)">▶️ TikTok</button>
+      <button class="gen-tab" onclick="switchGenTab('instagram',this)">📸 Instagram</button>
+      <button class="gen-tab" onclick="switchGenTab('whatsapp',this)">💬 WhatsApp</button>
+    </div>
+    <div class="gen-content">
+      <div style="margin-bottom:1.2rem">
+        <label style="font-size:.82rem;font-weight:600;color:var(--gray);display:block;margin-bottom:.5rem">Topic</label>
+        <div style="display:flex;gap:.5rem;flex-wrap:wrap" id="topicPills">
+          <button class="gen-tab active" onclick="selectTopic(this,'Most Wanted Subjects')">Most Wanted Subjects</button>
+          <button class="gen-tab" onclick="selectTopic(this,'Lagos Scholarships')">Lagos Scholarships</button>
+          <button class="gen-tab" onclick="selectTopic(this,'JAMB Tips')">JAMB Tips</button>
+          <button class="gen-tab" onclick="selectTopic(this,'New Tutors')">New Tutors</button>
+        </div>
+      </div>
+      <div class="gen-post" id="genPost">Loading post...</div>
+      <div class="gen-actions">
+        <button class="btn-sm btn-primary-sm" onclick="generatePost()">🔄 Regenerate</button>
+        <button class="btn-sm btn-ghost-sm" onclick="copyPost()">📋 Copy to Clipboard</button>
+      </div>
+    </div>
+  </div>
+
+</div><!-- end main -->
+
+<div class="toast" id="toast"></div>
+
+<script>
+// ── DATA ─────────────────────────────────────────────────────────────────
+const SUBJECTS_DATA = [
+  { name: 'Mathematics', count: 1240, pct: 100 },
+  { name: 'JAMB Prep', count: 980, pct: 79 },
+  { name: 'Physics', count: 760, pct: 61 },
+  { name: 'Chemistry', count: 620, pct: 50 },
+  { name: 'English', count: 540, pct: 44 },
+  { name: 'Biology', count: 410, pct: 33 },
+];
+
+const STATES_DATA = [
+  { name: 'Lagos', count: 842 },
+  { name: 'Abuja', count: 614 },
+  { name: 'Kano', count: 381 },
+  { name: 'Enugu', count: 267 },
+  { name: 'Rivers', count: 241 },
+  { name: 'Ogun', count: 198 },
+];
+
+const LEADERBOARD = [
+  { name: 'Adaobi Gbolahan', initials: 'AG', subjects: 'Math, Physics', state: 'Lagos', rating: 4.9, sessions: 143, tier: 'Gold' },
+  { name: 'Babatunde Lawal', initials: 'BL', subjects: 'Economics', state: 'Lagos', rating: 4.9, sessions: 127, tier: 'Gold' },
+  { name: 'Emeka Okonkwo', initials: 'EO', subjects: 'Chemistry, Bio', state: 'Enugu', rating: 4.8, sessions: 108, tier: 'Silver' },
+  { name: 'Usman Danbatta', initials: 'UD', subjects: 'Physics, Maths', state: 'Kaduna', rating: 4.8, sessions: 95, tier: 'Silver' },
+  { name: 'Yetunde Adebisi', initials: 'YA', subjects: 'Biology, Chem', state: 'Ogun', rating: 4.7, sessions: 84, tier: 'Bronze' },
+];
+
+const PENDING_APPS = [
+  { id: 1, name: 'Chioma Nwosu', subjects: 'Mathematics, Further Maths', rate: '₦4,000', state: 'Imo', status: 'pending', date: 'Mar 29, 2026' },
+  { id: 2, name: 'Abubakar Musa', subjects: 'Physics, JAMB Prep', rate: '₦3,000', state: 'Sokoto', status: 'pending', date: 'Mar 30, 2026' },
+  { id: 3, name: 'Temitope Adeyemi', subjects: 'English, Literature', rate: '₦2,500', state: 'Oyo', status: 'pending', date: 'Mar 31, 2026' },
+];
+
+const ACTIVE_TUTORS_DB = [
+  { name: 'Adaobi Gbolahan', subjects: 'Math, Physics, JAMB', state: 'Lagos', rating: '4.9 ★', sessions: 143, rate: '₦3,500' },
+  { name: 'Emeka Okonkwo', subjects: 'Chemistry, Biology, WAEC', state: 'Enugu', rating: '4.8 ★', sessions: 93, rate: '₦2,800' },
+  { name: 'Fatima Al-Hassan', subjects: 'English, Literature, JAMB', state: 'Kano', rating: '4.7 ★', sessions: 84, rate: '₦2,500' },
+  { name: 'Babatunde Lawal', subjects: 'Economics, Commerce', state: 'Lagos', rating: '4.9 ★', sessions: 127, rate: '₦3,200' },
+];
+
+const BOOKINGS = [
+  { date: 'Apr 2', student: 'Amaka O.', tutor: 'Adaobi G.', subject: 'Mathematics', type: 'Online', status: 'confirmed' },
+  { date: 'Apr 3', student: 'Emeka I.', tutor: 'Emeka O.', subject: 'Chemistry', type: 'In-Person', status: 'confirmed' },
+  { date: 'Apr 5', student: 'Ngozi A.', tutor: 'Fatima H.', subject: 'English', type: 'Online', status: 'pending' },
+  { date: 'Apr 7', student: 'Chidi U.', tutor: 'Babatunde L.', subject: 'Economics', type: 'Online', status: 'confirmed' },
+  { date: 'Apr 10', student: 'Femi T.', tutor: 'Adaobi G.', subject: 'Physics', type: 'In-Person', status: 'pending' },
+];
+
+// ── RENDERS ──────────────────────────────────────────────────────────────
+function renderSubjectBars() {
+  const el = document.getElementById('subjectBars');
+  if (!el) return;
+  el.innerHTML = SUBJECTS_DATA.map(s => `
+    <div class="subj-row">
+      <div class="subj-top"><span>${s.name}</span><span>${s.count.toLocaleString()} searches</span></div>
+      <div class="bar"><div class="bar-fill" style="width:${s.pct}%"></div></div>
+    </div>
+  `).join('');
+}
+
+function renderStates() {
+  const el = document.getElementById('stateGrid');
+  if (!el) return;
+  el.innerHTML = STATES_DATA.map(s => `
+    <div class="state-card">
+      <div class="state-name">${s.name}</div>
+      <div class="state-count">${s.count}</div>
+      <div class="state-label">students</div>
+    </div>
+  `).join('');
+}
+
+function renderLeaderboard() {
+  const el = document.getElementById('leaderboard');
+  if (!el) return;
+  el.innerHTML = LEADERBOARD.map((t, i) => `
+    <div class="lb-row">
+      <div class="lb-rank ${i < 2 ? 'top' : ''}">${i === 0 ? '🥇' : i === 1 ? '🥈' : i === 2 ? '🥉' : '#' + (i+1)}</div>
+      <div class="lb-avatar">${t.initials}</div>
+      <div class="lb-info">
+        <div class="lb-name">${t.name}</div>
+        <div class="lb-meta">${t.subjects} · ${t.state}</div>
+      </div>
+      <div style="text-align:right">
+        <div class="lb-score">${t.rating} ★</div>
+        <div style="font-size:.72rem;color:var(--gray)">${t.sessions} sessions</div>
+      </div>
+      <div style="margin-left:.8rem">
+        <span class="chip ${t.tier === 'Gold' ? 'approved' : t.tier === 'Silver' ? 'pending' : 'open'}">${t.tier}</span>
+      </div>
+    </div>
+  `).join('');
+}
+
+function renderTutorTable() {
+  const el = document.getElementById('tutorTable');
+  if (!el) return;
+  el.innerHTML = PENDING_APPS.map(a => `
+    <tr id="app-${a.id}">
+      <td><strong>${a.name}</strong></td>
+      <td style="font-size:.8rem">${a.subjects}</td>
+      <td>${a.rate}/hr</td>
+      <td>${a.state}</td>
+      <td><span class="chip ${a.status}">${a.status}</span></td>
+      <td style="color:var(--gray);font-size:.8rem">${a.date}</td>
+      <td>
+        <div style="display:flex;gap:.4rem">
+          <button class="btn-sm btn-success-sm" onclick="approveApp(${a.id},'${a.name}')">✓ Approve</button>
+          <button class="btn-sm btn-danger-sm" onclick="rejectApp(${a.id},'${a.name}')">✗ Reject</button>
+        </div>
+      </td>
+    </tr>
+  `).join('');
+}
+
+function renderActiveTutors() {
+  const el = document.getElementById('activeTutorTable');
+  if (!el) return;
+  el.innerHTML = ACTIVE_TUTORS_DB.map(t => `
+    <tr>
+      <td><strong>${t.name}</strong></td>
+      <td style="font-size:.8rem">${t.subjects}</td>
+      <td>${t.state}</td>
+      <td style="color:#B45309;font-weight:600">${t.rating}</td>
+      <td>${t.sessions}</td>
+      <td><strong>${t.rate}/hr</strong></td>
+    </tr>
+  `).join('');
+}
+
+function renderCalendar() {
+  const el = document.getElementById('calendar');
+  if (!el) return;
+  const days = ['Su','Mo','Tu','We','Th','Fr','Sa'];
+  let html = days.map(d => `<div class="cal-head">${d}</div>`).join('');
+  // April 2026 starts on Wednesday (day index 3)
+  for (let i = 0; i < 3; i++) html += `<div class="cal-day empty"></div>`;
+  const bookingDays = [2, 3, 5, 7, 10, 14, 17, 21, 24, 28];
+  for (let d = 1; d <= 30; d++) {
+    const isToday = d === 1;
+    const hasBook = bookingDays.includes(d);
+    html += `<div class="cal-day${isToday?' today':''}${hasBook?' has-booking':''}">${d}</div>`;
+  }
+  el.innerHTML = html;
+}
+
+function renderBookingsTable() {
+  const el = document.getElementById('bookingsTable');
+  if (!el) return;
+  el.innerHTML = BOOKINGS.map(b => `
+    <tr>
+      <td>${b.date}</td>
+      <td>${b.student}</td>
+      <td>${b.tutor}</td>
+      <td>${b.subject}</td>
+      <td style="font-size:.8rem">${b.type}</td>
+      <td><span class="chip ${b.status}">${b.status}</span></td>
+    </tr>
+  `).join('');
+}
+
+// ── ACTIONS ──────────────────────────────────────────────────────────────
+function approveApp(id, name) {
+  const row = document.getElementById('app-' + id);
+  if (row) {
+    row.querySelector('td:nth-child(5)').innerHTML = '<span class="chip approved">approved</span>';
+    row.querySelector('td:last-child').innerHTML = '<span style="font-size:.8rem;color:var(--green);font-weight:600">✓ Approved</span>';
+  }
+  // Update badge
+  const badge = document.getElementById('pendingBadge');
+  const pending = document.querySelectorAll('.chip.pending').length;
+  badge.textContent = pending;
+  showToast(`✅ ${name} has been approved!`);
+}
+
+function rejectApp(id, name) {
+  const row = document.getElementById('app-' + id);
+  if (row) {
+    row.querySelector('td:nth-child(5)').innerHTML = '<span class="chip rejected">rejected</span>';
+    row.querySelector('td:last-child').innerHTML = '<span style="font-size:.8rem;color:#DC2626;font-weight:600">✗ Rejected</span>';
+  }
+  showToast(`${name}'s application has been rejected.`);
+}
+
+// ── SOCIAL GEN ─────────────────────────────────────────────────────────
+const POSTS = {
+  tiktok: {
+    'Most Wanted Subjects': `🔥 The #1 most searched subject on LetLearn this week? MATHEMATICS.\n\nNot surprised?\n\nHere's what we know:\n✅ 1,240 students searched for Maths tutors\n✅ Lagos alone has 400+ searches\n✅ Average tutor rate: ₦3,200/hr\n\nIf you're a Maths tutor in Nigeria — JOIN NOW 👇\n\n#LetLearn #NigerianTutor #Mathematics #JAMB2026`,
+    'Lagos Scholarships': `📢 ATTENTION Lagos Students!\n\nWe just found 6 open scholarships specifically for Lagos students.\n\nDeadlines range from July to October 2026.\n\nSome are up to ₦300,000 🤑\n\nSearch "Lagos" on LetLearn right now before they close!\n\nLink in bio 👆\n\n#LetLearn #LagosStudent #Scholarship2026`,
+    'JAMB Tips': `JAMB tip that literally nobody talks about 👇\n\nThe students who score 280+ don't just read more.\n\nThey do PAST QUESTIONS every single day.\n\n40 minutes. Every day. For 8 weeks.\n\nWant a tutor to guide you through this?\n\nFind one on LetLearn 📚\n\n#JAMB2026 #LetLearn #NigerianStudents`,
+    'New Tutors': `We just approved 23 new tutors this month! 🎉\n\nSubjects: Maths, Physics, Chemistry, English, Economics...\n\nStates: Lagos, Abuja, Kano, Enugu, Rivers...\n\nAll verified. All ready to book.\n\nFind your tutor on LetLearn 👇\n\n#LetLearn #NigerianTutor #Education`,
+  },
+  instagram: {
+    'Most Wanted Subjects': `📊 Platform Data Drop!\n\nMathematics is the #1 most-searched subject on LetLearn this week with over 1,200 student searches.\n\nOur verified Mathematics tutors are available across 30+ Nigerian states, starting from ₦2,500/hr.\n\nFind your tutor at the link in bio.\n\n#LetLearnNG #MathsTutor #NigerianStudents #Education #JAMB2026 #WAEC2026`,
+    'Lagos Scholarships': `🎓 Lagos Students — This one is for you!\n\nWe found 6 scholarships open RIGHT NOW specifically for Lagos indigenes or students in Lagos state.\n\nAmounts: ₦150,000 – ₦300,000\nDeadlines: July – October 2026\n\nSearch "Lagos" on LetLearn to see all of them. Free to access.\n\n#Scholarship2026 #LagosStudents #LetLearnNG`,
+    'JAMB Tips': `The formula for JAMB success is simpler than you think:\n\n📌 Consistent past questions practice\n📌 Subject-specific tutor support\n📌 Understanding exam technique (not just content)\n\nOur JAMB-specialist tutors are available from ₦2,500/hr.\n\nBook a trial session on LetLearn. Link in bio.\n\n#JAMB2026 #LetLearnNG #NigerianEducation`,
+    'New Tutors': `23 new tutors joined LetLearn this month — all verified, all rated.\n\nWe approve every single tutor manually before they go live. Qualifications checked. Background reviewed. References confirmed.\n\nBrowse our full tutor directory at the link in bio.\n\n#LetLearnNG #VerifiedTutors #NigerianTutors #Education`,
+  },
+  whatsapp: {
+    'Most Wanted Subjects': `Hey 👋\n\nQuick question — are you or your child struggling with Mathematics?\n\nThis week alone, over 1,200 students on LetLearn searched for Mathematics tutors.\n\nWe have 50+ verified Maths tutors available starting from ₦2,500/hr — online or in-person.\n\nCheck it out here: https://letlearn-eight.vercel.app\n\nForward to any parent or student who needs this! 🙏`,
+    'Lagos Scholarships': `Lagos students, pay attention! 🚨\n\nThere are currently 6 scholarships OPEN for Lagos students right now — some up to ₦300,000.\n\nDeadlines are coming up soon. Don't miss them!\n\nFind them all here (free): https://letlearn-eight.vercel.app\n\nPlease share with your classmates, siblings, and friends! 🎓`,
+    'JAMB Tips': `JAMB 2026 candidates — this is for you.\n\nThe single most effective JAMB prep strategy: 40 mins of past questions every day for 8 weeks.\n\nNeed a tutor to guide you? Our JAMB specialists are available from ₦2,500/hr.\n\nBook here: https://letlearn-eight.vercel.app\n\n📣 Share with any JAMB candidate you know!`,
+    'New Tutors': `Great news! 🎉 LetLearn just onboarded 23 new verified tutors this month.\n\nSubjects: Maths, Physics, Chemistry, English, Biology, Economics & more.\n\nAll tutors are manually reviewed and approved by our team.\n\nFind your tutor here: https://letlearn-eight.vercel.app\n\nShare with anyone looking for a tutor! 🙏`,
+  }
+};
+
+let currentTab = 'tiktok';
+let currentTopic = 'Most Wanted Subjects';
+
+function switchGenTab(tab, btn) {
+  document.querySelectorAll('.gen-tab').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  currentTab = tab;
+  updatePost();
+}
+
+function selectTopic(btn, topic) {
+  document.querySelectorAll('#topicPills .gen-tab').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  currentTopic = topic;
+  updatePost();
+}
+
+function updatePost() {
+  const el = document.getElementById('genPost');
+  if (!el) return;
+  el.textContent = POSTS[currentTab][currentTopic] || 'Post content...';
+}
+
+function generatePost() {
+  const el = document.getElementById('genPost');
+  if (!el) return;
+  el.textContent = '⏳ Regenerating...';
+  setTimeout(() => { el.textContent = POSTS[currentTab][currentTopic]; }, 800);
+}
+
+function copyPost() {
+  const el = document.getElementById('genPost');
+  if (!el) return;
+  navigator.clipboard.writeText(el.textContent).then(() => showToast('📋 Copied to clipboard!'));
+}
+
+// ── NAVIGATION ──────────────────────────────────────────────────────────
+const TITLES = { overview:'Dashboard Overview', analytics:'Analytics', calendar:'Bookings Calendar', tutors:'Tutor Management', scholarships:'Scholarship Management', social:'Content Generator' };
+
+function showPage(id, el) {
+  document.querySelectorAll('.content').forEach(c => c.classList.remove('active'));
+  document.querySelectorAll('.sb-item').forEach(i => i.classList.remove('active'));
+  document.getElementById('page-' + id)?.classList.add('active');
+  el.classList.add('active');
+  document.getElementById('topbarTitle').textContent = TITLES[id] || id;
+}
+
+// ── TOAST ────────────────────────────────────────────────────────────────
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 3500);
+}
+
+// ── INIT ──────────────────────────────────────────────────────────────────
+document.addEventListener('DOMContentLoaded', () => {
+  renderSubjectBars();
+  renderStates();
+  renderLeaderboard();
+  renderTutorTable();
+  renderActiveTutors();
+  renderCalendar();
+  renderBookingsTable();
+  updatePost();
+  // Animate bars
+  setTimeout(() => document.querySelectorAll('.bar-fill').forEach(b => {}), 100);
+});
+</script>
+</body>
+</html>
