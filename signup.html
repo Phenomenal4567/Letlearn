@@ -40,8 +40,8 @@
     <div class="auth-form-wrap">
       <a href="index.html" class="logo">Let<span>Learn</span></a>
 
-      <!-- Tab switcher -->
-      <div style="display:flex;gap:0;border:1.5px solid rgba(10,36,99,0.1);border-radius:12px;overflow:hidden;margin-bottom:2rem">
+      <!-- Tab switcher — hidden when forgot-password is active -->
+      <div id="mainTabs" style="display:flex;gap:0;border:1.5px solid rgba(10,36,99,0.1);border-radius:12px;overflow:hidden;margin-bottom:2rem">
         <button id="tabSignup" onclick="switchTab('signup')" style="flex:1;padding:.7rem;font-weight:700;font-size:.88rem;background:var(--blue-mid);color:white;border:none;cursor:pointer;font-family:inherit;transition:all .2s">Create Account</button>
         <button id="tabLogin" onclick="switchTab('login')" style="flex:1;padding:.7rem;font-weight:700;font-size:.88rem;background:white;color:var(--gray);border:none;cursor:pointer;font-family:inherit;transition:all .2s">Sign In</button>
       </div>
@@ -127,33 +127,290 @@
             <button onclick="togglePw('loginPassword',this)" style="position:absolute;right:1rem;top:50%;transform:translateY(-50%);color:var(--gray-light)">👁️</button>
           </div>
         </div>
-        <div style="text-align:right;margin-bottom:1rem"><a href="#" style="font-size:.82rem;color:var(--blue-mid);font-weight:600">Forgot password?</a></div>
+        <div style="text-align:right;margin-bottom:1rem">
+          <a href="#" onclick="switchTab('forgot')" style="font-size:.82rem;color:var(--blue-mid);font-weight:600">Forgot password?</a>
+        </div>
         <button class="btn-primary full" onclick="signIn()">Sign In</button>
         <div class="auth-switch">Don't have an account? <a href="#" onclick="switchTab('signup')">Create one free</a></div>
       </div>
+
+      <!-- ═══════════════════════════════════════════ -->
+      <!-- FORGOT PASSWORD — 3-step flow               -->
+      <!-- ═══════════════════════════════════════════ -->
+      <div id="forgotForm" style="display:none">
+
+        <!-- STEP 1 — Enter email -->
+        <div id="fp-step1">
+          <button onclick="switchTab('login')" style="display:inline-flex;align-items:center;gap:0.4rem;background:none;border:none;color:var(--gray);font-size:0.82rem;font-weight:600;cursor:pointer;padding:0;margin-bottom:1.5rem;font-family:inherit">
+            ← Back to Sign In
+          </button>
+          <div style="width:56px;height:56px;border-radius:16px;background:rgba(27,79,216,0.08);display:flex;align-items:center;justify-content:center;font-size:1.6rem;margin-bottom:1.2rem">🔑</div>
+          <h1 style="font-size:1.6rem;margin-bottom:0.4rem">Forgot Password?</h1>
+          <p class="sub" style="margin-bottom:1.6rem">No worries. Enter your email and we'll send you a reset link right away.</p>
+
+          <div class="form-group">
+            <label>Email Address</label>
+            <input type="email" id="fpEmail" class="form-input" placeholder="Enter your registered email"/>
+          </div>
+
+          <!-- Progress dots -->
+          <div style="display:flex;align-items:center;gap:0.4rem;margin-bottom:1.4rem">
+            <div style="width:28px;height:4px;border-radius:2px;background:var(--blue-mid)"></div>
+            <div style="width:10px;height:4px;border-radius:2px;background:rgba(10,36,99,0.12)"></div>
+            <div style="width:10px;height:4px;border-radius:2px;background:rgba(10,36,99,0.12)"></div>
+            <span style="font-size:0.72rem;color:var(--gray-light);margin-left:0.3rem">Step 1 of 3</span>
+          </div>
+
+          <button class="btn-primary full" onclick="sendResetEmail()">Send Reset Link →</button>
+          <div class="auth-switch" style="margin-top:1rem">Remember your password? <a href="#" onclick="switchTab('login')">Sign in</a></div>
+        </div>
+
+        <!-- STEP 2 — Check your email -->
+        <div id="fp-step2" style="display:none">
+          <div style="text-align:center;padding:1rem 0">
+            <div style="font-size:3.5rem;margin-bottom:1rem;animation:fp-bounce 0.6s ease">📬</div>
+            <h1 style="font-size:1.55rem;margin-bottom:0.6rem">Check Your Email</h1>
+            <p class="sub" style="max-width:320px;margin:0 auto 1.6rem">We sent a password reset link to <strong id="fpEmailDisplay" style="color:var(--blue-deep)"></strong>. It expires in 15 minutes.</p>
+
+            <!-- Progress dots -->
+            <div style="display:flex;align-items:center;justify-content:center;gap:0.4rem;margin-bottom:1.8rem">
+              <div style="width:10px;height:4px;border-radius:2px;background:rgba(27,79,216,0.2)"></div>
+              <div style="width:28px;height:4px;border-radius:2px;background:var(--blue-mid)"></div>
+              <div style="width:10px;height:4px;border-radius:2px;background:rgba(10,36,99,0.12)"></div>
+              <span style="font-size:0.72rem;color:var(--gray-light);margin-left:0.3rem">Step 2 of 3</span>
+            </div>
+
+            <div style="background:rgba(27,79,216,0.05);border:1.5px solid rgba(27,79,216,0.1);border-radius:14px;padding:1.1rem 1.3rem;text-align:left;margin-bottom:1.5rem">
+              <div style="font-size:0.8rem;font-weight:700;color:var(--blue-deep);margin-bottom:0.6rem">What to do next:</div>
+              <div style="font-size:0.82rem;color:var(--gray);line-height:1.8">
+                1. Open the email from <strong>no-reply@letlearn.ng</strong><br>
+                2. Click the <strong>"Reset Password"</strong> button<br>
+                3. Create a new strong password
+              </div>
+            </div>
+
+            <!-- Demo: simulate clicking the link -->
+            <button class="btn-primary full" onclick="simulateEmailClick()" style="margin-bottom:0.75rem">I've clicked the link →</button>
+
+            <div style="display:flex;align-items:center;justify-content:center;gap:1rem;flex-wrap:wrap">
+              <button onclick="resendEmail()" id="resendBtn" style="font-size:0.82rem;font-weight:600;color:var(--blue-mid);background:none;border:none;cursor:pointer;font-family:inherit">Resend email</button>
+              <span style="color:var(--gray-light);font-size:0.75rem">·</span>
+              <button onclick="switchTab('forgot')" style="font-size:0.82rem;font-weight:600;color:var(--gray);background:none;border:none;cursor:pointer;font-family:inherit">Wrong email?</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- STEP 3 — Set new password -->
+        <div id="fp-step3" style="display:none">
+          <button onclick="goToStep(2)" style="display:inline-flex;align-items:center;gap:0.4rem;background:none;border:none;color:var(--gray);font-size:0.82rem;font-weight:600;cursor:pointer;padding:0;margin-bottom:1.5rem;font-family:inherit">
+            ← Back
+          </button>
+          <div style="width:56px;height:56px;border-radius:16px;background:rgba(16,185,129,0.1);display:flex;align-items:center;justify-content:center;font-size:1.6rem;margin-bottom:1.2rem">🔒</div>
+          <h1 style="font-size:1.6rem;margin-bottom:0.4rem">Set New Password</h1>
+          <p class="sub" style="margin-bottom:1.6rem">Choose a strong password you haven't used before.</p>
+
+          <!-- Progress dots -->
+          <div style="display:flex;align-items:center;gap:0.4rem;margin-bottom:1.4rem">
+            <div style="width:10px;height:4px;border-radius:2px;background:rgba(27,79,216,0.2)"></div>
+            <div style="width:10px;height:4px;border-radius:2px;background:rgba(27,79,216,0.2)"></div>
+            <div style="width:28px;height:4px;border-radius:2px;background:var(--blue-mid)"></div>
+            <span style="font-size:0.72rem;color:var(--gray-light);margin-left:0.3rem">Step 3 of 3</span>
+          </div>
+
+          <div class="form-group">
+            <label>New Password</label>
+            <div style="position:relative">
+              <input type="password" id="fpNewPw" class="form-input" placeholder="Minimum 8 characters" style="padding-right:3rem" oninput="checkPwStrength(this.value)"/>
+              <button onclick="togglePw('fpNewPw',this)" style="position:absolute;right:1rem;top:50%;transform:translateY(-50%);color:var(--gray-light);font-size:1rem;background:none;border:none;cursor:pointer">👁️</button>
+            </div>
+            <!-- Strength indicator -->
+            <div style="margin-top:0.6rem">
+              <div style="height:4px;border-radius:2px;background:rgba(10,36,99,0.08);overflow:hidden">
+                <div id="pwStrengthBar" style="height:100%;width:0%;border-radius:2px;transition:all 0.3s;background:var(--green)"></div>
+              </div>
+              <div id="pwStrengthLabel" style="font-size:0.72rem;color:var(--gray-light);margin-top:0.35rem;font-weight:600"></div>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label>Confirm New Password</label>
+            <div style="position:relative">
+              <input type="password" id="fpConfirmPw" class="form-input" placeholder="Repeat your new password" style="padding-right:3rem"/>
+              <button onclick="togglePw('fpConfirmPw',this)" style="position:absolute;right:1rem;top:50%;transform:translateY(-50%);color:var(--gray-light);font-size:1rem;background:none;border:none;cursor:pointer">👁️</button>
+            </div>
+          </div>
+
+          <!-- Password rules -->
+          <div style="background:var(--gray-soft);border-radius:10px;padding:0.8rem 1rem;margin-bottom:1.4rem">
+            <div id="rule-len"  class="pw-rule">✗ At least 8 characters</div>
+            <div id="rule-upper" class="pw-rule">✗ One uppercase letter</div>
+            <div id="rule-num"  class="pw-rule">✗ One number</div>
+            <div id="rule-sym"  class="pw-rule">✗ One special character (!@#$...)</div>
+          </div>
+
+          <button class="btn-primary full" onclick="resetPassword()" style="background:var(--green);border-color:var(--green)">Reset Password ✓</button>
+        </div>
+
+        <!-- STEP 4 — Success -->
+        <div id="fp-step4" style="display:none;text-align:center;padding:1rem 0">
+          <div style="font-size:3.5rem;margin-bottom:1rem">🎉</div>
+          <h1 style="font-size:1.55rem;margin-bottom:0.6rem">Password Reset!</h1>
+          <p class="sub" style="max-width:300px;margin:0 auto 2rem">Your password has been updated. You can now sign in with your new password.</p>
+          <button class="btn-primary full" onclick="switchTab('login')" style="margin-bottom:0.75rem">Sign In Now →</button>
+        </div>
+
+      </div>
+      <!-- END FORGOT PASSWORD -->
+
     </div>
   </div>
 </div>
 
 <div class="toast" id="toast"></div>
 
+<style>
+.pw-rule {
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--gray-light);
+  padding: 0.18rem 0;
+  transition: color 0.2s;
+}
+.pw-rule.pass { color: var(--green); }
+
+@keyframes fp-bounce {
+  0%   { transform: scale(0.6); opacity: 0; }
+  60%  { transform: scale(1.12); }
+  100% { transform: scale(1); opacity: 1; }
+}
+</style>
+
 <script>
+// ── TAB SWITCHER ──────────────────────────────────────────────────────
 function switchTab(tab) {
-  const su = document.getElementById('signupForm');
-  const li = document.getElementById('loginForm');
+  const su  = document.getElementById('signupForm');
+  const li  = document.getElementById('loginForm');
+  const fp  = document.getElementById('forgotForm');
+  const tabs = document.getElementById('mainTabs');
   const tsu = document.getElementById('tabSignup');
   const tli = document.getElementById('tabLogin');
+
+  // Reset all
+  su.style.display = 'none';
+  li.style.display = 'none';
+  fp.style.display = 'none';
+
   if (tab === 'signup') {
-    su.style.display='block'; li.style.display='none';
-    tsu.style.background='var(--blue-mid)'; tsu.style.color='white';
-    tli.style.background='white'; tli.style.color='var(--gray)';
-  } else {
-    su.style.display='none'; li.style.display='block';
-    tli.style.background='var(--blue-mid)'; tli.style.color='white';
-    tsu.style.background='white'; tsu.style.color='var(--gray)';
+    su.style.display = 'block';
+    tabs.style.display = 'flex';
+    tsu.style.background = 'var(--blue-mid)'; tsu.style.color = 'white';
+    tli.style.background = 'white'; tli.style.color = 'var(--gray)';
+  } else if (tab === 'login') {
+    li.style.display = 'block';
+    tabs.style.display = 'flex';
+    tli.style.background = 'var(--blue-mid)'; tli.style.color = 'white';
+    tsu.style.background = 'white'; tsu.style.color = 'var(--gray)';
+  } else if (tab === 'forgot') {
+    fp.style.display = 'block';
+    tabs.style.display = 'none'; // hide the tab bar for forgot flow
+    goToStep(1);
   }
 }
 
+// ── FORGOT PASSWORD STEPS ─────────────────────────────────────────────
+function goToStep(n) {
+  [1,2,3,4].forEach(i => {
+    const el = document.getElementById('fp-step' + i);
+    if (el) el.style.display = i === n ? 'block' : 'none';
+  });
+}
+
+let resendCountdown = null;
+
+function sendResetEmail() {
+  const email = document.getElementById('fpEmail').value.trim();
+  if (!email || !email.includes('@')) {
+    showToast('⚠️ Please enter a valid email address', true); return;
+  }
+  document.getElementById('fpEmailDisplay').textContent = email;
+  goToStep(2);
+  showToast('📧 Reset link sent to ' + email);
+  startResendCooldown();
+}
+
+function startResendCooldown() {
+  const btn = document.getElementById('resendBtn');
+  if (!btn) return;
+  let secs = 30;
+  btn.disabled = true;
+  btn.style.opacity = '0.5';
+  btn.textContent = `Resend in ${secs}s`;
+  resendCountdown = setInterval(() => {
+    secs--;
+    btn.textContent = secs > 0 ? `Resend in ${secs}s` : 'Resend email';
+    if (secs <= 0) {
+      clearInterval(resendCountdown);
+      btn.disabled = false;
+      btn.style.opacity = '1';
+    }
+  }, 1000);
+}
+
+function resendEmail() {
+  const email = document.getElementById('fpEmail').value.trim();
+  showToast('📧 Reset link resent to ' + (email || 'your email'));
+  startResendCooldown();
+}
+
+function simulateEmailClick() {
+  goToStep(3);
+}
+
+// ── PASSWORD STRENGTH ─────────────────────────────────────────────────
+function checkPwStrength(pw) {
+  const rules = {
+    len:   pw.length >= 8,
+    upper: /[A-Z]/.test(pw),
+    num:   /[0-9]/.test(pw),
+    sym:   /[^A-Za-z0-9]/.test(pw),
+  };
+
+  const mark = (id, pass, text) => {
+    const el = document.getElementById(id);
+    el.classList.toggle('pass', pass);
+    el.textContent = (pass ? '✓ ' : '✗ ') + text;
+  };
+  mark('rule-len',   rules.len,   'At least 8 characters');
+  mark('rule-upper', rules.upper, 'One uppercase letter');
+  mark('rule-num',   rules.num,   'One number');
+  mark('rule-sym',   rules.sym,   'One special character (!@#$...)');
+
+  const score = Object.values(rules).filter(Boolean).length;
+  const bar   = document.getElementById('pwStrengthBar');
+  const label = document.getElementById('pwStrengthLabel');
+  const configs = [
+    { w:'0%',   color:'var(--green)',  text:'' },
+    { w:'25%',  color:'#EF4444',       text:'Weak' },
+    { w:'50%',  color:'var(--gold)',   text:'Fair' },
+    { w:'75%',  color:'var(--blue-mid)', text:'Good' },
+    { w:'100%', color:'var(--green)',  text:'Strong ✓' },
+  ];
+  bar.style.width  = configs[score].w;
+  bar.style.background = configs[score].color;
+  label.textContent    = pw.length ? configs[score].text : '';
+  label.style.color    = configs[score].color;
+}
+
+function resetPassword() {
+  const pw  = document.getElementById('fpNewPw').value;
+  const cpw = document.getElementById('fpConfirmPw').value;
+  if (pw.length < 8)  { showToast('⚠️ Password must be at least 8 characters', true); return; }
+  if (pw !== cpw)     { showToast('⚠️ Passwords do not match', true); return; }
+  goToStep(4);
+  showToast('🔒 Password reset successfully!');
+}
+
+// ── AUTH ──────────────────────────────────────────────────────────────
 function togglePw(id, btn) {
   const el = document.getElementById(id);
   el.type = el.type === 'password' ? 'text' : 'password';
@@ -161,9 +418,9 @@ function togglePw(id, btn) {
 }
 
 function signUp() {
-  const name = document.getElementById('signupName').value.trim();
+  const name  = document.getElementById('signupName').value.trim();
   const email = document.getElementById('signupEmail').value.trim();
-  const pw = document.getElementById('signupPassword').value;
+  const pw    = document.getElementById('signupPassword').value;
   const state = document.getElementById('signupState').value;
   if (!name || !email || !pw || !state) { showToast('⚠️ Please fill all fields', true); return; }
   if (pw.length < 8) { showToast('⚠️ Password must be 8+ characters', true); return; }
@@ -173,7 +430,7 @@ function signUp() {
 
 function signIn() {
   const email = document.getElementById('loginEmail').value.trim();
-  const pw = document.getElementById('loginPassword').value;
+  const pw    = document.getElementById('loginPassword').value;
   if (!email || !pw) { showToast('⚠️ Please enter your email and password', true); return; }
   showToast('👋 Signed in successfully!');
   setTimeout(() => window.location.href = 'student-dashboard.html', 1500);
@@ -189,6 +446,12 @@ function showToast(msg, isError = false) {
   t.className = isError ? 'toast error show' : 'toast show';
   setTimeout(() => t.classList.remove('show'), 4000);
 }
+
+// Check URL param — allow direct links like signup.html?tab=forgot
+(function() {
+  const p = new URLSearchParams(window.location.search).get('tab');
+  if (p === 'forgot') switchTab('forgot');
+})();
 </script>
 </body>
 </html>
