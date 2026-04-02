@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 <title>LetLearn — Scholarships & Tutoring for Nigerian Students</title>
 <link rel="preconnect" href="https://fonts.googleapis.com"/>
-<link href="https://fonts.googleapis.com/css2?family=Clash+Display:wght@400;500;600;700&family=Syne:wght@400;500;600;700;800&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Clash+Display:wght@400;500;600;700&family=Syne:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
 <link rel="stylesheet" href="styles.css"/>
 </head>
 <body>
@@ -18,6 +18,7 @@
       <li><a href="#scholarships">Scholarships</a></li>
       <li><a href="#tutors">Tutors</a></li>
       <li><a href="#how">How it Works</a></li>
+      <li><a href="admin.html" class="nav-admin-link">⚙️ Admin</a></li>
     </ul>
     <div class="nav-actions">
       <a href="signup.html" class="btn-ghost">Sign In</a>
@@ -28,10 +29,11 @@
     </div>
   </div>
   <div class="mobile-menu" id="mobileMenu">
-    <a href="#scholarships">Scholarships</a>
-    <a href="#tutors">Tutors</a>
-    <a href="#how">How it Works</a>
-    <a href="signup.html" class="btn-primary" style="display:inline-block;margin-top:.5rem">Join Free</a>
+    <a href="#scholarships">🎓 Scholarships</a>
+    <a href="#tutors">👨‍🏫 Tutors</a>
+    <a href="#how">💡 How it Works</a>
+    <a href="admin.html">⚙️ Admin</a>
+    <a href="signup.html" class="mob-cta">Join Free →</a>
   </div>
 </nav>
 
@@ -212,6 +214,39 @@
     </div>
 
     <div class="tutor-grid" id="tutorGrid"></div>
+
+    <!-- REQUEST A TUTOR -->
+    <div class="tutor-request-box" id="tutorRequest">
+      <div class="trb-inner">
+        <div class="trb-left">
+          <div class="trb-icon">🔎</div>
+          <div>
+            <h3>Can't find your subject?</h3>
+            <p>Tell us what you need — we'll match you with a verified tutor within 24 hours.</p>
+          </div>
+        </div>
+        <div class="trb-form">
+          <input type="text" id="requestSubject" class="trb-input" placeholder="e.g. Further Mathematics, Economics..."/>
+          <select id="requestState" class="trb-input">
+            <option value="">Your State</option>
+            <option>Abia</option><option>Adamawa</option><option>Akwa Ibom</option>
+            <option>Anambra</option><option>Bauchi</option><option>Bayelsa</option>
+            <option>Benue</option><option>Borno</option><option>Cross River</option>
+            <option>Delta</option><option>Ebonyi</option><option>Edo</option>
+            <option>Ekiti</option><option>Enugu</option><option>FCT Abuja</option>
+            <option>Gombe</option><option>Imo</option><option>Jigawa</option>
+            <option>Kaduna</option><option>Kano</option><option>Katsina</option>
+            <option>Kebbi</option><option>Kogi</option><option>Kwara</option>
+            <option>Lagos</option><option>Nasarawa</option><option>Niger</option>
+            <option>Ogun</option><option>Ondo</option><option>Osun</option>
+            <option>Oyo</option><option>Plateau</option><option>Rivers</option>
+            <option>Sokoto</option><option>Taraba</option><option>Yobe</option><option>Zamfara</option>
+          </select>
+          <input type="tel" id="requestPhone" class="trb-input" placeholder="Phone / WhatsApp"/>
+          <button class="trb-btn" onclick="submitTutorRequest()">Request a Tutor →</button>
+        </div>
+      </div>
+    </div>
   </div>
 </section>
 
