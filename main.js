@@ -64,7 +64,7 @@ async function fetchScholarships(query, level, state, offset) {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ prompt }),
-      signal: AbortSignal.timeout(8000)
+      signal: AbortSignal.timeout(25000)
     });
     if (res.ok) {
       const data = await res.json();
