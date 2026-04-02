@@ -57,6 +57,7 @@ Return only the JSON array, no markdown.`;
 }
 
 async function fetchScholarships(query, level, state, offset) {
+  // Call OpenRouter directly from browser
   try {
     const prompt = buildPrompt(query, level, state, offset);
     const res = await fetch('https://openrouter.ai/api/v1/chat/completions', {
@@ -77,7 +78,6 @@ async function fetchScholarships(query, level, state, offset) {
         temperature: 0.7,
       }),
     });
-
     if (res.ok) {
       const data = await res.json();
       const rawText = data.choices?.[0]?.message?.content ?? '';
@@ -85,20 +85,10 @@ async function fetchScholarships(query, level, state, offset) {
       const match = cleaned.match(/\[[\s\S]*\]/);
       if (match) return JSON.parse(match[0]);
     }
-  } catch(e) { /* fall through to demo */ }
+  } catch(e) { /* fall through to demo data */ }
 
-  // Fallback demo data
-  await new Promise(r => setTimeout(r, 800));
-  let pool = [...DEMO_SCHOLARSHIPS];
-  if (query) pool = pool.filter(s => s.title.toLowerCase().includes(query.toLowerCase()) || s.description.toLowerCase().includes(query.toLowerCase()) || s.org.toLowerCase().includes(query.toLowerCase()));
-  if (level) pool = pool.filter(s => s.level === level);
-  if (state) pool = pool.filter(s => s.location === state || s.location === 'Nationwide');
-  if (pool.length === 0) pool = DEMO_SCHOLARSHIPS;
-  const page = pool.slice(offset, offset + 6);
-  return page.length > 0 ? page : DEMO_SCHOLARSHIPS.slice(0, 6);
-}
   // Fallback: filter demo scholarships
-  await new Promise(r => setTimeout(r, 800)); // simulate latency
+  await new Promise(r => setTimeout(r, 800));
   let pool = [...DEMO_SCHOLARSHIPS];
   if (query) pool = pool.filter(s => s.title.toLowerCase().includes(query.toLowerCase()) || s.description.toLowerCase().includes(query.toLowerCase()) || s.org.toLowerCase().includes(query.toLowerCase()));
   if (level) pool = pool.filter(s => s.level === level);
