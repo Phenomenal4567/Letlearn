@@ -57,6 +57,7 @@ Return only the JSON array, no markdown.`;
 }
 
 async function fetchScholarships(query, level, state, offset) {
+  // Try real Worker first
   try {
     const prompt = buildPrompt(query, level, state, offset);
     const res = await fetch(WORKER_URL, {
@@ -72,16 +73,7 @@ async function fetchScholarships(query, level, state, offset) {
   } catch(e) { /* fall through to demo data */ }
 
   // Fallback: filter demo scholarships
-  await new Promise(r => setTimeout(r, 800));
-  let pool = [...DEMO_SCHOLARSHIPS];
-  if (query) pool = pool.filter(s => s.title.toLowerCase().includes(query.toLowerCase()) || s.description.toLowerCase().includes(query.toLowerCase()) || s.org.toLowerCase().includes(query.toLowerCase()));
-  if (level) pool = pool.filter(s => s.level === level);
-  if (state) pool = pool.filter(s => s.location === state || s.location === 'Nationwide');
-  if (pool.length === 0) pool = DEMO_SCHOLARSHIPS;
-  const page = pool.slice(offset, offset + 6);
-  return page.length > 0 ? page : DEMO_SCHOLARSHIPS.slice(0, 6);
-} demo scholarships
-  await new Promise(r => setTimeout(r, 800));
+  await new Promise(r => setTimeout(r, 800)); // simulate latency
   let pool = [...DEMO_SCHOLARSHIPS];
   if (query) pool = pool.filter(s => s.title.toLowerCase().includes(query.toLowerCase()) || s.description.toLowerCase().includes(query.toLowerCase()) || s.org.toLowerCase().includes(query.toLowerCase()));
   if (level) pool = pool.filter(s => s.level === level);
