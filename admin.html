@@ -5,11 +5,11 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 <title>Admin Dashboard — LetLearn</title>
 <link rel="preconnect" href="https://fonts.googleapis.com"/>
-<link href="https://fonts.googleapis.com/css2?family=Clash+Display:wght@400;500;600;700&family=Syne:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Clash+Display:wght@400;500;600;700&family=Syne:wght@400;500;600;700;800&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 html,body{height:100%}
-body{font-family:'Plus Jakarta Sans','DM Sans',sans-serif;background:#EEF2F7;color:#0F172A;display:flex;min-height:100vh;overflow-x:hidden}
+body{font-family:'Inter','DM Sans',sans-serif;background:#EEF2F7;color:#0F172A;display:flex;min-height:100vh;overflow-x:hidden}
 a{text-decoration:none;color:inherit}
 button{cursor:pointer;border:none;font-family:inherit}
 
@@ -241,9 +241,74 @@ tr:hover td{background:rgba(27,79,216,.015)}
 .mob-menu-btn span{display:block;width:20px;height:2px;background:var(--blue);border-radius:2px}
 .sidebar-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.4);z-index:199}
 .sidebar-overlay.show{display:block}
+
+/* ── LOGIN OVERLAY ────────────────────────────────────────────── */
+.admin-login-overlay {
+  position: fixed; inset: 0; z-index: 9999;
+  background: linear-gradient(135deg, #0A2463 0%, #1a3a8a 50%, #1B4FD8 100%);
+  display: flex; align-items: center; justify-content: center;
+  font-family: 'Inter', sans-serif;
+}
+.admin-login-overlay.hidden { display: none; }
+.login-card {
+  background: white; border-radius: 20px;
+  padding: 2.5rem 2.2rem; width: 100%; max-width: 380px;
+  box-shadow: 0 24px 64px rgba(0,0,0,0.25);
+  text-align: center;
+}
+.login-logo {
+  font-family: 'Clash Display', sans-serif;
+  font-weight: 700; font-size: 1.8rem; color: #0A2463; margin-bottom: .3rem;
+}
+.login-logo span { color: #F59E0B; }
+.login-subtitle { font-size: .82rem; color: #64748B; margin-bottom: 2rem; font-weight: 500; }
+.login-label { display: block; font-size: .78rem; font-weight: 600; color: #0F172A; text-align: left; margin-bottom: .4rem; }
+.login-input {
+  width: 100%; padding: .75rem 1rem; border-radius: 10px;
+  border: 1.5px solid rgba(10,36,99,.12); font-size: .9rem;
+  color: #0F172A; background: #F1F5F9; margin-bottom: 1rem;
+  font-family: inherit; transition: border-color .2s;
+}
+.login-input:focus { outline: none; border-color: #1B4FD8; background: white; }
+.login-btn {
+  width: 100%; padding: .85rem; border-radius: 50px;
+  background: #1B4FD8; color: white; font-weight: 700; font-size: .95rem;
+  font-family: inherit; cursor: pointer; border: none; transition: all .2s;
+  margin-top: .5rem;
+}
+.login-btn:hover { background: #0A2463; transform: translateY(-1px); }
+.login-error {
+  background: rgba(239,68,68,.1); color: #DC2626;
+  font-size: .8rem; font-weight: 600; padding: .6rem 1rem;
+  border-radius: 8px; margin-bottom: 1rem; display: none;
+}
+.login-error.show { display: block; }
 </style>
 </head>
 <body>
+
+<!-- ADMIN LOGIN OVERLAY -->
+<div class="admin-login-overlay" id="adminLoginOverlay">
+  <div class="login-card">
+    <div class="login-logo">Let<span>Learn</span></div>
+    <div class="login-subtitle">Admin Dashboard — Restricted Access</div>
+    <div class="login-error" id="loginError">❌ Invalid username or password</div>
+    <div style="text-align:left;margin-bottom:1rem">
+      <label class="login-label">Username</label>
+      <input type="text" id="adminUsername" class="login-input" placeholder="Enter username" autocomplete="off"/>
+    </div>
+    <div style="text-align:left;margin-bottom:1rem">
+      <label class="login-label">Password</label>
+      <div style="position:relative">
+        <input type="password" id="adminPassword" class="login-input" placeholder="Enter password" style="padding-right:3rem" onkeydown="if(event.key==='Enter')doAdminLogin()"/>
+        <button onclick="toggleAdminPw(this)" style="position:absolute;right:1rem;top:50%;transform:translateY(-50%);color:#94A3B8;font-size:.95rem;background:none;border:none;cursor:pointer">👁️</button>
+      </div>
+    </div>
+    <button class="login-btn" onclick="doAdminLogin()">Sign In to Dashboard</button>
+    <div style="margin-top:1.2rem"><a href="index.html" style="font-size:.78rem;color:#64748B;text-decoration:none;font-weight:500">← Back to LetLearn</a></div>
+  </div>
+</div>
+
 
 <!-- SIDEBAR OVERLAY (mobile) -->
 <div class="sidebar-overlay" id="sidebarOverlay" onclick="closeSidebar()"></div>
@@ -889,6 +954,38 @@ function showToast(msg) {
   t.classList.add('show');
   setTimeout(() => t.classList.remove('show'), 3500);
 }
+
+
+// ── ADMIN LOGIN ───────────────────────────────────────────────────────────
+const ADMIN_CREDS = { username: 'Admin', password: 'letlearn@admin2026' };
+
+function doAdminLogin() {
+  const u = document.getElementById('adminUsername').value.trim();
+  const p = document.getElementById('adminPassword').value;
+  const err = document.getElementById('loginError');
+  if (u === ADMIN_CREDS.username && p === ADMIN_CREDS.password) {
+    err.classList.remove('show');
+    document.getElementById('adminLoginOverlay').classList.add('hidden');
+    sessionStorage.setItem('adminAuth', '1');
+  } else {
+    err.classList.add('show');
+    document.getElementById('adminPassword').value = '';
+    document.getElementById('adminPassword').focus();
+  }
+}
+
+function toggleAdminPw(btn) {
+  const inp = document.getElementById('adminPassword');
+  inp.type = inp.type === 'password' ? 'text' : 'password';
+  btn.textContent = inp.type === 'password' ? '👁️' : '🙈';
+}
+
+// Check session on load
+(function() {
+  if (sessionStorage.getItem('adminAuth') === '1') {
+    document.getElementById('adminLoginOverlay').classList.add('hidden');
+  }
+})();
 
 // ── INIT ──────────────────────────────────────────────────────────────────
 document.addEventListener('DOMContentLoaded', () => {

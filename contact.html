@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Contact Us — LetLearn</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link href="https://fonts.googleapis.com/css2?family=Clash+Display:wght@400;500;600;700&family=Syne:wght@400;500;600;700;800&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="styles.css"/>
+<style>
+.contact-hero {
+  background: linear-gradient(135deg, #0A2463 0%, #1a3a8a 50%, #1B4FD8 100%);
+  padding: 6.5rem 5vw 3.5rem;
+  text-align: center;
+}
+.contact-hero h1 {
+  font-family: 'Syne', sans-serif;
+  font-size: clamp(2rem, 4vw, 2.6rem);
+  font-weight: 800;
+  color: white;
+  margin-bottom: 0.7rem;
+}
+.contact-hero p {
+  color: rgba(255,255,255,0.7);
+  font-size: 1rem;
+  max-width: 440px;
+  margin: 0 auto;
+}
+
+.contact-channels {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1.25rem;
+  max-width: 900px;
+  margin: -2rem auto 0;
+  padding: 0 5vw;
+  position: relative;
+  z-index: 2;
+}
+.channel-card {
+  background: white;
+  border-radius: 18px;
+  padding: 1.8rem 1.5rem;
+  text-align: center;
+  box-shadow: 0 8px 32px rgba(10,36,99,0.12);
+  text-decoration: none;
+  color: inherit;
+  transition: all 0.25s;
+  display: block;
+  border: 1.5px solid transparent;
+}
+.channel-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 16px 48px rgba(10,36,99,0.15);
+  border-color: var(--blue-mid);
+}
+.channel-icon {
+  font-size: 2.2rem;
+  margin-bottom: 0.8rem;
+  display: block;
+}
+.channel-title {
+  font-family: 'Syne', sans-serif;
+  font-weight: 700;
+  font-size: 1rem;
+  color: var(--blue-deep);
+  margin-bottom: 0.3rem;
+}
+.channel-value {
+  font-size: 0.82rem;
+  color: var(--gray);
+  font-weight: 500;
+  margin-bottom: 0.2rem;
+}
+.channel-note {
+  font-size: 0.72rem;
+  color: var(--gray-light);
+}
+
+.contact-layout {
+  max-width: 960px;
+  margin: 3.5rem auto;
+  padding: 0 5vw;
+  display: grid;
+  grid-template-columns: 1fr 1.4fr;
+  gap: 2rem;
+  align-items: start;
+}
+.contact-info h2 {
+  font-family: 'Syne', sans-serif;
+  font-size: 1.4rem;
+  font-weight: 800;
+  color: var(--blue-deep);
+  margin-bottom: 0.5rem;
+}
+.contact-info p {
+  font-size: 0.88rem;
+  color: var(--gray);
+  line-height: 1.7;
+  margin-bottom: 1.5rem;
+}
+.info-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.9rem;
+  margin-bottom: 1.1rem;
+}
+.info-icon {
+  width: 40px; height: 40px;
+  border-radius: 10px;
+  background: rgba(27,79,216,0.08);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1.1rem;
+  flex-shrink: 0;
+}
+.info-label {
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: var(--gray-light);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-bottom: 0.2rem;
+}
+.info-value {
+  font-size: 0.88rem;
+  font-weight: 600;
+  color: var(--dark);
+}
+.info-value a {
+  color: var(--blue-mid);
+  text-decoration: none;
+}
+.info-value a:hover { text-decoration: underline; }
+
+.socials-row {
+  display: flex;
+  gap: 0.6rem;
+  flex-wrap: wrap;
+  margin-top: 1.5rem;
+}
+.social-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.45rem 1rem;
+  border-radius: 50px;
+  border: 1.5px solid rgba(10,36,99,0.12);
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--dark);
+  text-decoration: none;
+  transition: all 0.2s;
+}
+.social-pill:hover {
+  background: var(--blue-mid);
+  color: white;
+  border-color: var(--blue-mid);
+}
+
+.contact-form-card {
+  background: white;
+  border-radius: 20px;
+  padding: 2.2rem;
+  box-shadow: 0 4px 32px rgba(10,36,99,0.08);
+  border: 1.5px solid rgba(10,36,99,0.06);
+}
+.contact-form-card h3 {
+  font-family: 'Syne', sans-serif;
+  font-size: 1.2rem;
+  font-weight: 800;
+  color: var(--blue-deep);
+  margin-bottom: 0.3rem;
+}
+.contact-form-card p {
+  font-size: 0.82rem;
+  color: var(--gray);
+  margin-bottom: 1.5rem;
+}
+.response-time {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  background: rgba(16,185,129,0.1);
+  color: var(--green);
+  font-size: 0.75rem;
+  font-weight: 700;
+  padding: 0.3rem 0.8rem;
+  border-radius: 50px;
+  margin-bottom: 1.5rem;
+}
+
+@media (max-width: 700px) {
+  .contact-layout { grid-template-columns: 1fr; }
+  .contact-channels { grid-template-columns: 1fr 1fr; }
+}
+@media (max-width: 480px) {
+  .contact-channels { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+<body>
+
+<nav id="nav">
+  <div class="nav-inner">
+    <a href="index.html" class="logo">Let<span>Learn</span></a>
+    <div class="nav-actions" style="margin-left:auto">
+      <a href="help.html" class="btn-ghost" style="font-size:0.85rem;padding:0.45rem 1rem">Help Centre</a>
+      <a href="index.html" class="btn-primary" style="font-size:0.85rem;padding:0.45rem 1rem">Home</a>
+    </div>
+  </div>
+</nav>
+
+<!-- HERO -->
+<div class="contact-hero">
+  <div class="section-label light" style="margin-bottom:1rem">Get In Touch</div>
+  <h1>Contact Us</h1>
+  <p>We're always happy to hear from students, tutors, and partners. Reach us any way you prefer.</p>
+</div>
+
+<!-- CHANNEL CARDS -->
+<div class="contact-channels">
+  <a href="mailto:letlearn@gmail.com" class="channel-card">
+    <span class="channel-icon">📧</span>
+    <div class="channel-title">Email</div>
+    <div class="channel-value">letlearn@gmail.com</div>
+    <div class="channel-note">Response within 24hrs</div>
+  </a>
+  <a href="https://wa.me/2349042427548" target="_blank" class="channel-card">
+    <span class="channel-icon">💬</span>
+    <div class="channel-title">WhatsApp</div>
+    <div class="channel-value">09042427548</div>
+    <div class="channel-note">Mon–Sat, 8am–8pm</div>
+  </a>
+  <a href="https://instagram.com/letlearnNG" target="_blank" class="channel-card">
+    <span class="channel-icon">📸</span>
+    <div class="channel-title">Instagram</div>
+    <div class="channel-value">@letlearnNG</div>
+    <div class="channel-note">DMs open</div>
+  </a>
+  <a href="https://twitter.com/letlearnNG" target="_blank" class="channel-card">
+    <span class="channel-icon">𝕏</span>
+    <div class="channel-title">Twitter / X</div>
+    <div class="channel-value">@letlearnNG</div>
+    <div class="channel-note">Tag us anytime</div>
+  </a>
+</div>
+
+<!-- LAYOUT -->
+<div class="contact-layout">
+
+  <!-- LEFT: INFO -->
+  <div class="contact-info">
+    <h2>We're here to help</h2>
+    <p>Whether you're a student looking for scholarships, a tutor wanting to join the platform, or a partner interested in collaborating — our team is ready to assist you.</p>
+
+    <div class="info-row">
+      <div class="info-icon">📧</div>
+      <div>
+        <div class="info-label">Email</div>
+        <div class="info-value"><a href="mailto:letlearn@gmail.com">letlearn@gmail.com</a></div>
+      </div>
+    </div>
+
+    <div class="info-row">
+      <div class="info-icon">💬</div>
+      <div>
+        <div class="info-label">WhatsApp Support</div>
+        <div class="info-value"><a href="https://wa.me/2349042427548" target="_blank">09042427548</a></div>
+      </div>
+    </div>
+
+    <div class="info-row">
+      <div class="info-icon">🕐</div>
+      <div>
+        <div class="info-label">Support Hours</div>
+        <div class="info-value">Monday – Saturday, 8:00am – 8:00pm WAT</div>
+      </div>
+    </div>
+
+    <div class="info-row">
+      <div class="info-icon">📍</div>
+      <div>
+        <div class="info-label">Based In</div>
+        <div class="info-value">Nigeria 🇳🇬 — Serving all 36 states</div>
+      </div>
+    </div>
+
+    <div class="socials-row">
+      <a href="https://twitter.com/letlearnNG" target="_blank" class="social-pill">𝕏 Twitter</a>
+      <a href="https://instagram.com/letlearnNG" target="_blank" class="social-pill">📸 Instagram</a>
+      <a href="https://tiktok.com/@letlearnNG" target="_blank" class="social-pill">▶️ TikTok</a>
+      <a href="https://wa.me/2349042427548" target="_blank" class="social-pill">💬 WhatsApp</a>
+    </div>
+  </div>
+
+  <!-- RIGHT: FORM -->
+  <div class="contact-form-card">
+    <h3>Send us a message</h3>
+    <p>Fill in the form below and we'll get back to you as soon as possible.</p>
+    <div class="response-time">⚡ Average response time: under 24 hours</div>
+
+    <div class="form-group">
+      <label>Full Name</label>
+      <input type="text" id="contactName" class="form-input" placeholder="e.g. Amaka Okafor"/>
+    </div>
+    <div class="form-group">
+      <label>Email Address</label>
+      <input type="email" id="contactEmail" class="form-input" placeholder="e.g. amaka@email.com"/>
+    </div>
+    <div class="form-group">
+      <label>I am a...</label>
+      <select id="contactType" class="form-input">
+        <option value="">Select one</option>
+        <option>Student</option>
+        <option>Tutor</option>
+        <option>Parent</option>
+        <option>Partner / Organisation</option>
+        <option>Other</option>
+      </select>
+    </div>
+    <div class="form-group">
+      <label>Subject</label>
+      <input type="text" id="contactSubject" class="form-input" placeholder="e.g. Problem with my booking"/>
+    </div>
+    <div class="form-group">
+      <label>Message</label>
+      <textarea id="contactMessage" class="form-input" rows="5" placeholder="Describe your issue or question in detail..." style="resize:vertical;height:auto"></textarea>
+    </div>
+    <button class="btn-primary full" onclick="submitContact()">Send Message →</button>
+  </div>
+
+</div>
+
+<!-- FOOTER MINI -->
+<div style="background:var(--dark);text-align:center;padding:1.5rem;font-size:0.8rem;color:rgba(255,255,255,0.4)">
+  © 2026 LetLearn NG · <a href="index.html" style="color:rgba(255,255,255,0.5)">Back to Home</a> · <a href="help.html" style="color:rgba(255,255,255,0.5)">Help Centre</a> · <a href="legal.html" style="color:rgba(255,255,255,0.5)">Legal</a>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+function submitContact() {
+  const name = document.getElementById('contactName').value.trim();
+  const email = document.getElementById('contactEmail').value.trim();
+  const msg = document.getElementById('contactMessage').value.trim();
+  if (!name || !email || !msg) { showToast('⚠️ Please fill all required fields', true); return; }
+  showToast('✅ Message sent! We\'ll be in touch within 24 hours.');
+  ['contactName','contactEmail','contactType','contactSubject','contactMessage'].forEach(id => {
+    document.getElementById(id).value = '';
+  });
+}
+
+function showToast(msg, isError = false) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.className = isError ? 'toast error show' : 'toast show';
+  setTimeout(() => t.classList.remove('show'), 4000);
+}
+
+window.addEventListener('scroll', () => {
+  document.getElementById('nav')?.classList.toggle('scrolled', window.scrollY > 20);
+});
+</script>
+</body>
+</html>

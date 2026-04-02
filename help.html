@@ -1,0 +1,560 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Help Centre — LetLearn</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link href="https://fonts.googleapis.com/css2?family=Clash+Display:wght@400;500;600;700&family=Syne:wght@400;500;600;700;800&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="styles.css"/>
+<style>
+.help-hero {
+  background: linear-gradient(135deg, #0A2463 0%, #1a3a8a 50%, #1B4FD8 100%);
+  padding: 7rem 5vw 4rem;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+.help-hero::before {
+  content: '';
+  position: absolute;
+  width: 400px; height: 400px;
+  background: radial-gradient(circle, rgba(245,158,11,0.15) 0%, transparent 70%);
+  top: -100px; right: -50px;
+  border-radius: 50%;
+}
+.help-hero h1 {
+  font-family: 'Syne', sans-serif;
+  font-size: clamp(2rem, 4vw, 2.8rem);
+  font-weight: 800;
+  color: white;
+  margin-bottom: 0.8rem;
+  position: relative;
+  z-index: 1;
+}
+.help-hero p {
+  color: rgba(255,255,255,0.7);
+  font-size: 1.05rem;
+  max-width: 500px;
+  margin: 0 auto 2rem;
+  position: relative;
+  z-index: 1;
+}
+.help-search-wrap {
+  max-width: 520px;
+  margin: 0 auto;
+  position: relative;
+  z-index: 1;
+}
+.help-search {
+  width: 100%;
+  height: 54px;
+  border-radius: 50px;
+  border: none;
+  padding: 0 1.5rem 0 3.2rem;
+  font-size: 0.95rem;
+  font-family: 'Inter', sans-serif;
+  color: var(--dark);
+  box-shadow: 0 8px 32px rgba(0,0,0,0.2);
+}
+.help-search:focus { outline: none; }
+.help-search-icon {
+  position: absolute;
+  left: 1.2rem;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 1rem;
+}
+
+/* CATEGORIES */
+.help-cats {
+  display: flex;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+  justify-content: center;
+  margin: 2.5rem 0 1rem;
+}
+.help-cat {
+  padding: 0.5rem 1.2rem;
+  border-radius: 50px;
+  border: 1.5px solid rgba(27,79,216,0.15);
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--gray);
+  background: white;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.help-cat.active, .help-cat:hover {
+  background: var(--blue-mid);
+  color: white;
+  border-color: var(--blue-mid);
+}
+
+/* FAQ */
+.faq-section {
+  max-width: 760px;
+  margin: 0 auto;
+  padding: 3rem 5vw;
+}
+.faq-group { margin-bottom: 2.5rem; }
+.faq-group-title {
+  font-family: 'Syne', sans-serif;
+  font-size: 1rem;
+  font-weight: 800;
+  color: var(--blue-deep);
+  margin-bottom: 1rem;
+  padding-bottom: 0.6rem;
+  border-bottom: 2px solid var(--gray-soft);
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+.faq-item {
+  background: white;
+  border-radius: 12px;
+  border: 1.5px solid rgba(10,36,99,0.07);
+  margin-bottom: 0.6rem;
+  overflow: hidden;
+  transition: box-shadow 0.2s;
+}
+.faq-item:hover { box-shadow: 0 4px 20px rgba(10,36,99,0.08); }
+.faq-item.hidden-faq { display: none; }
+.faq-q {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1.1rem 1.3rem;
+  cursor: pointer;
+  gap: 1rem;
+  user-select: none;
+}
+.faq-q-text {
+  font-weight: 600;
+  font-size: 0.92rem;
+  color: var(--dark);
+  line-height: 1.4;
+}
+.faq-chevron {
+  font-size: 0.8rem;
+  color: var(--gray-light);
+  transition: transform 0.3s;
+  flex-shrink: 0;
+}
+.faq-item.open .faq-chevron { transform: rotate(180deg); }
+.faq-a {
+  display: none;
+  padding: 0 1.3rem 1.1rem;
+  font-size: 0.88rem;
+  color: var(--gray);
+  line-height: 1.75;
+  border-top: 1px solid var(--gray-soft);
+  padding-top: 0.9rem;
+}
+.faq-item.open .faq-a { display: block; }
+
+/* ASK A QUESTION */
+.ask-section {
+  background: var(--gray-soft);
+  padding: 3.5rem 5vw;
+}
+.ask-inner {
+  max-width: 640px;
+  margin: 0 auto;
+  text-align: center;
+}
+.ask-inner h2 {
+  font-family: 'Syne', sans-serif;
+  font-size: 1.6rem;
+  font-weight: 800;
+  color: var(--blue-deep);
+  margin-bottom: 0.5rem;
+}
+.ask-inner p {
+  color: var(--gray);
+  font-size: 0.92rem;
+  margin-bottom: 2rem;
+  line-height: 1.6;
+}
+.ask-form {
+  background: white;
+  border-radius: 20px;
+  padding: 2rem;
+  box-shadow: 0 4px 24px rgba(10,36,99,0.07);
+  text-align: left;
+}
+
+/* STILL NEED HELP */
+.still-help {
+  padding: 3rem 5vw;
+  text-align: center;
+}
+.still-help h3 {
+  font-family: 'Syne', sans-serif;
+  font-size: 1.3rem;
+  font-weight: 800;
+  color: var(--blue-deep);
+  margin-bottom: 0.5rem;
+}
+.still-help p {
+  color: var(--gray);
+  font-size: 0.9rem;
+  margin-bottom: 1.5rem;
+}
+.still-cards {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+  flex-wrap: wrap;
+  max-width: 600px;
+  margin: 0 auto;
+}
+.still-card {
+  background: white;
+  border: 1.5px solid rgba(10,36,99,0.08);
+  border-radius: 14px;
+  padding: 1.3rem 1.5rem;
+  flex: 1;
+  min-width: 160px;
+  text-align: center;
+  transition: all 0.2s;
+  text-decoration: none;
+  color: inherit;
+  display: block;
+}
+.still-card:hover { border-color: var(--blue-mid); transform: translateY(-2px); box-shadow: 0 6px 24px rgba(27,79,216,0.1); }
+.still-card-icon { font-size: 1.8rem; margin-bottom: 0.5rem; }
+.still-card-title { font-weight: 700; font-size: 0.88rem; color: var(--blue-deep); margin-bottom: 0.2rem; }
+.still-card-sub { font-size: 0.75rem; color: var(--gray); }
+</style>
+</head>
+<body>
+
+<nav id="nav">
+  <div class="nav-inner">
+    <a href="index.html" class="logo">Let<span>Learn</span></a>
+    <div class="nav-actions" style="margin-left:auto">
+      <a href="index.html" class="btn-ghost" style="font-size:0.85rem;padding:0.45rem 1rem">← Back to Home</a>
+    </div>
+  </div>
+</nav>
+
+<!-- HERO -->
+<div class="help-hero" style="padding-top:5.5rem">
+  <div class="section-label light" style="margin-bottom:1rem">Help Centre</div>
+  <h1>How can we help you?</h1>
+  <p>Find answers to common questions about scholarships, tutors, and your LetLearn account.</p>
+  <div class="help-search-wrap">
+    <span class="help-search-icon">🔍</span>
+    <input type="text" class="help-search" id="faqSearch" placeholder="Search for answers..." oninput="filterFAQ(this.value)"/>
+  </div>
+</div>
+
+<!-- CATEGORIES -->
+<div style="background:white;padding:1.5rem 5vw;border-bottom:1px solid var(--gray-soft)">
+  <div class="help-cats" id="helpCats">
+    <button class="help-cat active" onclick="filterCat('all',this)">All Topics</button>
+    <button class="help-cat" onclick="filterCat('account',this)">👤 Account</button>
+    <button class="help-cat" onclick="filterCat('scholarships',this)">🎓 Scholarships</button>
+    <button class="help-cat" onclick="filterCat('tutors',this)">👨‍🏫 Tutors</button>
+    <button class="help-cat" onclick="filterCat('payments',this)">💳 Payments</button>
+    <button class="help-cat" onclick="filterCat('technical',this)">⚙️ Technical</button>
+  </div>
+</div>
+
+<!-- FAQ SECTION -->
+<div class="faq-section">
+
+  <!-- Account -->
+  <div class="faq-group" data-cat="account">
+    <div class="faq-group-title">👤 Account & Registration</div>
+
+    <div class="faq-item" data-cat="account">
+      <div class="faq-q" onclick="toggleFAQ(this)">
+        <span class="faq-q-text">Is LetLearn free to use?</span>
+        <span class="faq-chevron">▼</span>
+      </div>
+      <div class="faq-a">Yes! Creating an account and searching for scholarships on LetLearn is completely free. There are no hidden charges for students. Tutors set their own rates which are visible before booking.</div>
+    </div>
+
+    <div class="faq-item" data-cat="account">
+      <div class="faq-q" onclick="toggleFAQ(this)">
+        <span class="faq-q-text">How do I create an account?</span>
+        <span class="faq-chevron">▼</span>
+      </div>
+      <div class="faq-a">Click "Join Free" on the homepage or visit <a href="signup.html" style="color:var(--blue-mid);font-weight:600">letlearn.ng/signup</a>. Fill in your name, email, state, academic level, and password. You can also sign up quickly with your Google account.</div>
+    </div>
+
+    <div class="faq-item" data-cat="account">
+      <div class="faq-q" onclick="toggleFAQ(this)">
+        <span class="faq-q-text">I forgot my password. What do I do?</span>
+        <span class="faq-chevron">▼</span>
+      </div>
+      <div class="faq-a">On the Sign In page, click "Forgot password?" and enter your email address. We'll send you a password reset link. If you signed up with Google, use the "Continue with Google" option instead.</div>
+    </div>
+
+    <div class="faq-item" data-cat="account">
+      <div class="faq-q" onclick="toggleFAQ(this)">
+        <span class="faq-q-text">Can I change my state or academic level after signing up?</span>
+        <span class="faq-chevron">▼</span>
+      </div>
+      <div class="faq-a">Yes. Go to your profile settings after logging in and update your state and academic level at any time. Your scholarship recommendations will automatically refresh based on your new details.</div>
+    </div>
+  </div>
+
+  <!-- Scholarships -->
+  <div class="faq-group" data-cat="scholarships">
+    <div class="faq-group-title">🎓 Scholarships</div>
+
+    <div class="faq-item" data-cat="scholarships">
+      <div class="faq-q" onclick="toggleFAQ(this)">
+        <span class="faq-q-text">How does the AI scholarship search work?</span>
+        <span class="faq-chevron">▼</span>
+      </div>
+      <div class="faq-a">Our AI analyses your search query, state, and academic level to surface the most relevant Nigerian scholarship opportunities in seconds. Results are generated fresh for every search, so you always see current and varied opportunities.</div>
+    </div>
+
+    <div class="faq-item" data-cat="scholarships">
+      <div class="faq-q" onclick="toggleFAQ(this)">
+        <span class="faq-q-text">Are the scholarships on LetLearn real and up to date?</span>
+        <span class="faq-chevron">▼</span>
+      </div>
+      <div class="faq-a">Yes. Our AI is trained on verified Nigerian scholarship data and is regularly updated. However, we always recommend verifying deadlines and requirements directly on the official scholarship provider's website before applying.</div>
+    </div>
+
+    <div class="faq-item" data-cat="scholarships">
+      <div class="faq-q" onclick="toggleFAQ(this)">
+        <span class="faq-q-text">How do I apply for a scholarship I found?</span>
+        <span class="faq-chevron">▼</span>
+      </div>
+      <div class="faq-a">Click "Quick Apply" on any scholarship card. Fill in your name, email, and academic level. We'll email you the official application link and requirements for that scholarship directly.</div>
+    </div>
+
+    <div class="faq-item" data-cat="scholarships">
+      <div class="faq-q" onclick="toggleFAQ(this)">
+        <span class="faq-q-text">Can I search for scholarships by state?</span>
+        <span class="faq-chevron">▼</span>
+      </div>
+      <div class="faq-a">Yes! Use the state filter on the scholarship search to see scholarships specific to your state, as well as nationwide opportunities available to all Nigerian students.</div>
+    </div>
+
+    <div class="faq-item" data-cat="scholarships">
+      <div class="faq-q" onclick="toggleFAQ(this)">
+        <span class="faq-q-text">Are there scholarships for JAMB candidates?</span>
+        <span class="faq-chevron">▼</span>
+      </div>
+      <div class="faq-a">Yes. Select "SS3 / JAMB" in the Academic Level filter to see scholarships and grants specifically available for pre-university and JAMB candidates across Nigeria.</div>
+    </div>
+  </div>
+
+  <!-- Tutors -->
+  <div class="faq-group" data-cat="tutors">
+    <div class="faq-group-title">👨‍🏫 Tutors & Bookings</div>
+
+    <div class="faq-item" data-cat="tutors">
+      <div class="faq-q" onclick="toggleFAQ(this)">
+        <span class="faq-q-text">How are tutors verified on LetLearn?</span>
+        <span class="faq-chevron">▼</span>
+      </div>
+      <div class="faq-a">Every tutor goes through a 7-step application process including credential verification, identity check, subject assessment, and manual approval by our admin team. Tutors only appear on the platform after full approval.</div>
+    </div>
+
+    <div class="faq-item" data-cat="tutors">
+      <div class="faq-q" onclick="toggleFAQ(this)">
+        <span class="faq-q-text">Can I book an online session from any state?</span>
+        <span class="faq-chevron">▼</span>
+      </div>
+      <div class="faq-a">Yes. Most of our tutors offer online sessions via Google Meet or similar platforms, available to students in all 36 states. In-person sessions depend on the tutor's location.</div>
+    </div>
+
+    <div class="faq-item" data-cat="tutors">
+      <div class="faq-q" onclick="toggleFAQ(this)">
+        <span class="faq-q-text">What happens after I book a session?</span>
+        <span class="faq-chevron">▼</span>
+      </div>
+      <div class="faq-a">After booking, you'll receive a confirmation and the tutor will contact you on your provided phone number to confirm the session time and share the meeting link or location details.</div>
+    </div>
+
+    <div class="faq-item" data-cat="tutors">
+      <div class="faq-q" onclick="toggleFAQ(this)">
+        <span class="faq-q-text">My subject isn't listed. Can I still find a tutor?</span>
+        <span class="faq-chevron">▼</span>
+      </div>
+      <div class="faq-a">Yes! Scroll to the bottom of the Tutors section on the homepage and use the "Request a Tutor" form. Enter your subject, state, and phone number and we'll match you with a verified tutor within 24 hours.</div>
+    </div>
+
+    <div class="faq-item" data-cat="tutors">
+      <div class="faq-q" onclick="toggleFAQ(this)">
+        <span class="faq-q-text">How much do tutors charge?</span>
+        <span class="faq-chevron">▼</span>
+      </div>
+      <div class="faq-a">Each tutor sets their own hourly rate. Rates on LetLearn typically range from ₦2,200 to ₦4,500 per hour. The rate is always shown clearly on the tutor's card before you book.</div>
+    </div>
+  </div>
+
+  <!-- Payments -->
+  <div class="faq-group" data-cat="payments">
+    <div class="faq-group-title">💳 Payments</div>
+
+    <div class="faq-item" data-cat="payments">
+      <div class="faq-q" onclick="toggleFAQ(this)">
+        <span class="faq-q-text">How do I pay my tutor?</span>
+        <span class="faq-chevron">▼</span>
+      </div>
+      <div class="faq-a">Currently, payment is arranged directly between the student and tutor after booking confirmation. In-app payment processing via Paystack is coming in our next update.</div>
+    </div>
+
+    <div class="faq-item" data-cat="payments">
+      <div class="faq-q" onclick="toggleFAQ(this)">
+        <span class="faq-q-text">Does LetLearn take a commission from tutors?</span>
+        <span class="faq-chevron">▼</span>
+      </div>
+      <div class="faq-a">Not currently. Tutors keep 100% of their earnings during our launch phase. A small platform fee may be introduced in future as we add payment processing features.</div>
+    </div>
+  </div>
+
+  <!-- Technical -->
+  <div class="faq-group" data-cat="technical">
+    <div class="faq-group-title">⚙️ Technical</div>
+
+    <div class="faq-item" data-cat="technical">
+      <div class="faq-q" onclick="toggleFAQ(this)">
+        <span class="faq-q-text">The scholarship search isn't loading. What should I do?</span>
+        <span class="faq-chevron">▼</span>
+      </div>
+      <div class="faq-a">This can happen on slow connections. Try refreshing the page or checking your internet connection. The search works on 3G and above. If it continues, contact us at <a href="mailto:letlearn@gmail.com" style="color:var(--blue-mid);font-weight:600">letlearn@gmail.com</a>.</div>
+    </div>
+
+    <div class="faq-item" data-cat="technical">
+      <div class="faq-q" onclick="toggleFAQ(this)">
+        <span class="faq-q-text">Does LetLearn work on mobile?</span>
+        <span class="faq-chevron">▼</span>
+      </div>
+      <div class="faq-a">Yes. LetLearn is designed mobile-first and works on all smartphones including Android and iOS. No app download is needed — it runs directly in your browser.</div>
+    </div>
+
+    <div class="faq-item" data-cat="technical">
+      <div class="faq-q" onclick="toggleFAQ(this)">
+        <span class="faq-q-text">Is my personal data safe on LetLearn?</span>
+        <span class="faq-chevron">▼</span>
+      </div>
+      <div class="faq-a">Yes. We take your privacy seriously. Your data is encrypted and never sold to third parties. Read our full <a href="legal.html#privacy" style="color:var(--blue-mid);font-weight:600">Privacy Policy</a> for details.</div>
+    </div>
+  </div>
+
+</div>
+
+<!-- ASK A QUESTION -->
+<div class="ask-section">
+  <div class="ask-inner">
+    <h2>Didn't find your answer?</h2>
+    <p>Ask us anything — our team typically responds within 24 hours via email or WhatsApp.</p>
+    <div class="ask-form">
+      <div class="form-group">
+        <label>Your Name</label>
+        <input type="text" id="askName" class="form-input" placeholder="e.g. Amaka Okafor"/>
+      </div>
+      <div class="form-group">
+        <label>Email Address</label>
+        <input type="email" id="askEmail" class="form-input" placeholder="e.g. amaka@email.com"/>
+      </div>
+      <div class="form-group">
+        <label>Your Question</label>
+        <textarea id="askQuestion" class="form-input" rows="4" placeholder="Type your question here..." style="resize:vertical;height:auto"></textarea>
+      </div>
+      <button class="btn-primary full" onclick="submitQuestion()">Send Question →</button>
+    </div>
+  </div>
+</div>
+
+<!-- STILL NEED HELP -->
+<div class="still-help">
+  <h3>Still need help?</h3>
+  <p>Reach us directly through any of these channels</p>
+  <div class="still-cards">
+    <a href="mailto:letlearn@gmail.com" class="still-card">
+      <div class="still-card-icon">📧</div>
+      <div class="still-card-title">Email Us</div>
+      <div class="still-card-sub">letlearn@gmail.com</div>
+    </a>
+    <a href="https://wa.me/2349042427548" target="_blank" class="still-card">
+      <div class="still-card-icon">💬</div>
+      <div class="still-card-title">WhatsApp</div>
+      <div class="still-card-sub">09042427548</div>
+    </a>
+    <a href="https://instagram.com/letlearnNG" target="_blank" class="still-card">
+      <div class="still-card-icon">📸</div>
+      <div class="still-card-title">Instagram</div>
+      <div class="still-card-sub">@letlearnNG</div>
+    </a>
+  </div>
+</div>
+
+<!-- FOOTER MINI -->
+<div style="background:var(--dark);text-align:center;padding:1.5rem;font-size:0.8rem;color:rgba(255,255,255,0.4)">
+  © 2026 LetLearn NG · <a href="index.html" style="color:rgba(255,255,255,0.5)">Back to Home</a> · <a href="legal.html" style="color:rgba(255,255,255,0.5)">Legal</a>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+function toggleFAQ(el) {
+  const item = el.closest('.faq-item');
+  const wasOpen = item.classList.contains('open');
+  document.querySelectorAll('.faq-item.open').forEach(i => i.classList.remove('open'));
+  if (!wasOpen) item.classList.add('open');
+}
+
+function filterCat(cat, btn) {
+  document.querySelectorAll('.help-cat').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  document.querySelectorAll('.faq-item').forEach(item => {
+    if (cat === 'all' || item.dataset.cat === cat) {
+      item.style.display = '';
+    } else {
+      item.style.display = 'none';
+    }
+  });
+  document.querySelectorAll('.faq-group').forEach(group => {
+    if (cat === 'all' || group.dataset.cat === cat) {
+      group.style.display = '';
+    } else {
+      group.style.display = 'none';
+    }
+  });
+}
+
+function filterFAQ(query) {
+  const q = query.toLowerCase();
+  document.querySelectorAll('.faq-item').forEach(item => {
+    const text = item.textContent.toLowerCase();
+    item.style.display = text.includes(q) ? '' : 'none';
+  });
+}
+
+function submitQuestion() {
+  const name = document.getElementById('askName').value.trim();
+  const email = document.getElementById('askEmail').value.trim();
+  const question = document.getElementById('askQuestion').value.trim();
+  if (!name || !email || !question) {
+    showToast('⚠️ Please fill all fields', true); return;
+  }
+  showToast('✅ Question sent! We\'ll reply within 24 hours.');
+  document.getElementById('askName').value = '';
+  document.getElementById('askEmail').value = '';
+  document.getElementById('askQuestion').value = '';
+}
+
+function showToast(msg, isError = false) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.className = isError ? 'toast error show' : 'toast show';
+  setTimeout(() => t.classList.remove('show'), 4000);
+}
+
+window.addEventListener('scroll', () => {
+  document.getElementById('nav')?.classList.toggle('scrolled', window.scrollY > 20);
+});
+</script>
+</body>
+</html>

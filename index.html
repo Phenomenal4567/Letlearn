@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 <title>LetLearn — Scholarships & Tutoring for Nigerian Students</title>
 <link rel="preconnect" href="https://fonts.googleapis.com"/>
-<link href="https://fonts.googleapis.com/css2?family=Clash+Display:wght@400;500;600;700&family=Syne:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Clash+Display:wght@400;500;600;700&family=Syne:wght@400;500;600;700;800&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
 <link rel="stylesheet" href="styles.css"/>
 </head>
 <body>
@@ -111,11 +111,11 @@
 <!-- SCHOLARSHIP SEARCH -->
 <section class="section" id="scholarships">
   <div class="container">
-    <div class="section-label">AI-Powered Discovery</div>
-    <h2 class="section-title">Find Your <span class="underline-gold">Scholarship</span></h2>
-    <p class="section-sub">Tell us what you're looking for — our AI searches thousands of opportunities tailored to your state, level, and subject.</p>
+    <div class="section-label reveal from-left">AI-Powered Discovery</div>
+    <h2 class="section-title reveal from-left reveal-delay-1">Find Your <span class="underline-gold">Scholarship</span></h2>
+    <p class="section-sub reveal from-left reveal-delay-2">Tell us what you're looking for — our AI searches thousands of opportunities tailored to your state, level, and subject.</p>
 
-    <div class="search-box">
+    <div class="search-box search-box-animate">
       <div class="search-row">
         <div class="search-input-wrap">
           <span class="search-icon">🔍</span>
@@ -165,28 +165,29 @@
 <!-- HOW IT WORKS -->
 <section class="section bg-dark" id="how">
   <div class="container">
-    <div class="section-label light">Simple Process</div>
-    <h2 class="section-title light">How <span class="gradient-text">LetLearn</span> Works</h2>
+    <div class="section-label light reveal from-left">Simple Process</div>
+    <h2 class="section-title light reveal from-left reveal-delay-1">How <span class="gradient-text">LetLearn</span> Works</h2>
     <div class="steps-grid">
-      <div class="step-card">
+      <div class="steps-connector"><div class="steps-connector-fill" id="stepsLine"></div></div>
+      <div class="step-card reveal from-left">
         <div class="step-num">01</div>
         <div class="step-icon">🔍</div>
         <h3>Search</h3>
         <p>Enter your subject, state, or level. Our AI instantly surfaces relevant scholarships and tutors across Nigeria.</p>
       </div>
-      <div class="step-card">
+      <div class="step-card reveal from-right reveal-delay-1">
         <div class="step-num">02</div>
         <div class="step-icon">📌</div>
         <h3>Save & Track</h3>
         <p>Save scholarships to your personal tracker. Set status — Saved, Applied, Won — and never miss a deadline.</p>
       </div>
-      <div class="step-card">
+      <div class="step-card reveal from-left reveal-delay-2">
         <div class="step-num">03</div>
         <div class="step-icon">👨‍🏫</div>
         <h3>Book a Tutor</h3>
         <p>Browse verified tutors by subject and state. Book a session online or in-person — all within the platform.</p>
       </div>
-      <div class="step-card">
+      <div class="step-card reveal from-right reveal-delay-3">
         <div class="step-num">04</div>
         <div class="step-icon">🏆</div>
         <h3>Succeed</h3>
@@ -350,10 +351,10 @@
       <div class="footer-logo">Let<span>Learn</span></div>
       <p>Nigeria's #1 AI-powered platform for scholarship discovery and verified tutoring. Built for Nigerian students, by Nigerians.</p>
       <div class="footer-socials">
-        <a href="#">Twitter / X</a>
-        <a href="#">Instagram</a>
-        <a href="#">WhatsApp</a>
-        <a href="#">TikTok</a>
+        <a href="https://twitter.com/letlearnNG" target="_blank">Twitter / X</a>
+        <a href="https://instagram.com/letlearnNG" target="_blank">Instagram</a>
+        <a href="https://wa.me/2349042427548" target="_blank">WhatsApp</a>
+        <a href="https://tiktok.com/@letlearnNG" target="_blank">TikTok</a>
       </div>
     </div>
     <div>
@@ -365,16 +366,16 @@
     </div>
     <div>
       <div class="footer-col-title">Support</div>
-      <a href="#">Help Centre</a>
-      <a href="#">Contact Us</a>
-      <a href="#">WhatsApp Support</a>
-      <a href="#">FAQs</a>
+      <a href="help.html">Help Centre</a>
+      <a href="contact.html">Contact Us</a>
+      <a href="https://wa.me/2349042427548" target="_blank">WhatsApp Support</a>
+      <a href="help.html">FAQs</a>
     </div>
     <div>
       <div class="footer-col-title">Legal</div>
-      <a href="#">Privacy Policy</a>
-      <a href="#">Terms of Service</a>
-      <a href="#">Cookie Policy</a>
+      <a href="legal.html#privacy">Privacy Policy</a>
+      <a href="legal.html#terms">Terms of Service</a>
+      <a href="legal.html#cookies">Cookie Policy</a>
     </div>
   </div>
   <div class="footer-bottom">
@@ -424,5 +425,38 @@
 <div class="toast" id="toast"></div>
 
 <script src="main.js"></script>
+
+<script>
+// ── SCROLL REVEAL OBSERVER ────────────────────────────────────────
+(function() {
+  const revealEls = document.querySelectorAll('.reveal, .reveal-header, .search-box-animate');
+
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+        observer.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
+
+  revealEls.forEach(el => observer.observe(el));
+
+  // Steps connector line
+  const stepsSection = document.querySelector('#how');
+  const lineObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        const line = document.getElementById('stepsLine');
+        if (line) line.classList.add('active');
+        lineObserver.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.3 });
+
+  if (stepsSection) lineObserver.observe(stepsSection);
+})();
+</script>
+
 </body>
 </html>

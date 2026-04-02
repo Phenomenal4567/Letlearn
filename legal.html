@@ -1,0 +1,503 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Legal — LetLearn</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link href="https://fonts.googleapis.com/css2?family=Clash+Display:wght@400;500;600;700&family=Syne:wght@400;500;600;700;800&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="styles.css"/>
+<style>
+.legal-hero {
+  background: linear-gradient(135deg, #0A2463 0%, #1a3a8a 50%, #1B4FD8 100%);
+  padding: 6rem 5vw 3rem;
+  text-align: center;
+}
+.legal-hero h1 {
+  font-family: 'Syne', sans-serif;
+  font-size: clamp(1.8rem, 3.5vw, 2.4rem);
+  font-weight: 800;
+  color: white;
+  margin-bottom: 0.5rem;
+}
+.legal-hero p {
+  color: rgba(255,255,255,0.65);
+  font-size: 0.9rem;
+}
+
+/* TABS */
+.legal-tabs-bar {
+  background: white;
+  border-bottom: 1px solid rgba(10,36,99,0.08);
+  position: sticky;
+  top: 68px;
+  z-index: 50;
+}
+.legal-tabs {
+  max-width: 860px;
+  margin: 0 auto;
+  padding: 0 5vw;
+  display: flex;
+  gap: 0;
+}
+.legal-tab {
+  padding: 1rem 1.5rem;
+  font-size: 0.88rem;
+  font-weight: 600;
+  color: var(--gray);
+  border-bottom: 3px solid transparent;
+  cursor: pointer;
+  transition: all 0.2s;
+  background: none;
+  border-top: none;
+  border-left: none;
+  border-right: none;
+  font-family: 'Inter', sans-serif;
+  white-space: nowrap;
+}
+.legal-tab:hover { color: var(--blue-mid); }
+.legal-tab.active {
+  color: var(--blue-mid);
+  border-bottom-color: var(--blue-mid);
+}
+
+/* CONTENT */
+.legal-body {
+  max-width: 860px;
+  margin: 0 auto;
+  padding: 3rem 5vw 5rem;
+}
+.legal-page { display: none; }
+.legal-page.active { display: block; }
+
+.legal-updated {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  background: rgba(27,79,216,0.07);
+  color: var(--blue-mid);
+  font-size: 0.75rem;
+  font-weight: 600;
+  padding: 0.3rem 0.8rem;
+  border-radius: 50px;
+  margin-bottom: 2rem;
+}
+
+.legal-body h2 {
+  font-family: 'Syne', sans-serif;
+  font-size: 1.6rem;
+  font-weight: 800;
+  color: var(--blue-deep);
+  margin-bottom: 0.4rem;
+}
+.legal-body .legal-intro {
+  font-size: 0.92rem;
+  color: var(--gray);
+  line-height: 1.75;
+  margin-bottom: 2.5rem;
+  padding-bottom: 1.5rem;
+  border-bottom: 1px solid var(--gray-soft);
+}
+
+.legal-section {
+  margin-bottom: 2.2rem;
+}
+.legal-section h3 {
+  font-family: 'Syne', sans-serif;
+  font-size: 1rem;
+  font-weight: 800;
+  color: var(--blue-deep);
+  margin-bottom: 0.6rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+.legal-section p, .legal-section li {
+  font-size: 0.88rem;
+  color: var(--gray);
+  line-height: 1.8;
+  margin-bottom: 0.5rem;
+}
+.legal-section ul {
+  padding-left: 1.4rem;
+  margin-top: 0.5rem;
+}
+.legal-section li { margin-bottom: 0.3rem; }
+
+.legal-highlight {
+  background: rgba(27,79,216,0.05);
+  border-left: 4px solid var(--blue-mid);
+  border-radius: 0 8px 8px 0;
+  padding: 1rem 1.2rem;
+  margin: 1rem 0;
+  font-size: 0.87rem;
+  color: var(--dark);
+  line-height: 1.7;
+}
+
+.legal-contact-box {
+  background: var(--gray-soft);
+  border-radius: 14px;
+  padding: 1.5rem;
+  margin-top: 2.5rem;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+.legal-contact-box .icon { font-size: 2rem; flex-shrink: 0; }
+.legal-contact-box h4 {
+  font-family: 'Syne', sans-serif;
+  font-weight: 700;
+  color: var(--blue-deep);
+  margin-bottom: 0.2rem;
+  font-size: 0.95rem;
+}
+.legal-contact-box p { font-size: 0.82rem; color: var(--gray); margin: 0; }
+.legal-contact-box a { color: var(--blue-mid); font-weight: 600; }
+
+@media (max-width: 600px) {
+  .legal-tabs { overflow-x: auto; }
+  .legal-tab { padding: 0.8rem 1rem; font-size: 0.8rem; }
+}
+</style>
+</head>
+<body>
+
+<nav id="nav">
+  <div class="nav-inner">
+    <a href="index.html" class="logo">Let<span>Learn</span></a>
+    <div class="nav-actions" style="margin-left:auto">
+      <a href="index.html" class="btn-ghost" style="font-size:0.85rem;padding:0.45rem 1rem">← Home</a>
+    </div>
+  </div>
+</nav>
+
+<!-- HERO -->
+<div class="legal-hero">
+  <div class="section-label light" style="margin-bottom:0.8rem">Legal</div>
+  <h1>Legal & Policies</h1>
+  <p>Last updated: April 2026 · LetLearn NG</p>
+</div>
+
+<!-- TABS BAR -->
+<div class="legal-tabs-bar">
+  <div class="legal-tabs">
+    <button class="legal-tab active" onclick="showLegal('privacy', this)">🔒 Privacy Policy</button>
+    <button class="legal-tab" onclick="showLegal('terms', this)">📄 Terms of Service</button>
+    <button class="legal-tab" onclick="showLegal('cookies', this)">🍪 Cookie Policy</button>
+  </div>
+</div>
+
+<!-- BODY -->
+<div class="legal-body">
+
+  <!-- ── PRIVACY POLICY ── -->
+  <div class="legal-page active" id="legal-privacy">
+    <div class="legal-updated">🔒 Last updated: April 2, 2026</div>
+    <h2>Privacy Policy</h2>
+    <p class="legal-intro">
+      At LetLearn NG ("LetLearn", "we", "us"), we are committed to protecting your personal information and your right to privacy. This Privacy Policy explains what data we collect, how we use it, and your rights regarding that data. By using LetLearn, you agree to the practices described in this policy.
+    </p>
+
+    <div class="legal-section">
+      <h3>1. Information We Collect</h3>
+      <p>We collect the following categories of information when you use LetLearn:</p>
+      <ul>
+        <li><strong>Account information:</strong> Your name, email address, state of origin, and academic level when you register.</li>
+        <li><strong>Usage data:</strong> Scholarship searches, tutor bookings, pages visited, and interaction patterns on the platform.</li>
+        <li><strong>Device information:</strong> Browser type, operating system, IP address, and screen size for technical optimisation.</li>
+        <li><strong>Communications:</strong> Messages you send us via email, WhatsApp, or our contact forms.</li>
+        <li><strong>Tutor application data:</strong> Qualifications, identity documents, and professional information submitted by tutors during sign-up.</li>
+      </ul>
+    </div>
+
+    <div class="legal-section">
+      <h3>2. How We Use Your Information</h3>
+      <p>We use your data to:</p>
+      <ul>
+        <li>Provide and personalise your scholarship search experience</li>
+        <li>Connect you with verified tutors in your area</li>
+        <li>Send scholarship deadline reminders and platform updates</li>
+        <li>Process and manage tutor bookings</li>
+        <li>Improve our AI search results and platform performance</li>
+        <li>Respond to your support queries</li>
+        <li>Comply with legal obligations</li>
+      </ul>
+    </div>
+
+    <div class="legal-section">
+      <h3>3. How We Share Your Information</h3>
+      <div class="legal-highlight">
+        ✅ We do not sell your personal information to any third party, advertiser, or data broker. Ever.
+      </div>
+      <p>We may share limited data with:</p>
+      <ul>
+        <li><strong>Tutors:</strong> When you make a booking, your name and phone number are shared with the tutor to coordinate the session.</li>
+        <li><strong>Service providers:</strong> Trusted tools we use to operate the platform (e.g. Supabase for database, Cloudflare for performance). These providers are contractually bound to protect your data.</li>
+        <li><strong>Legal authorities:</strong> Where required by Nigerian law or a valid court order.</li>
+      </ul>
+    </div>
+
+    <div class="legal-section">
+      <h3>4. Data Security</h3>
+      <p>We implement industry-standard security measures including SSL encryption, secure database access controls, and regular security reviews. While we take every precaution, no internet transmission is 100% secure. We encourage you to use a strong, unique password for your account.</p>
+    </div>
+
+    <div class="legal-section">
+      <h3>5. Data Retention</h3>
+      <p>We retain your account data for as long as your account is active. You may request deletion of your account and associated data at any time by contacting us at <a href="mailto:letlearn@gmail.com" style="color:var(--blue-mid);font-weight:600">letlearn@gmail.com</a>. We will process deletion requests within 14 business days.</p>
+    </div>
+
+    <div class="legal-section">
+      <h3>6. Children's Privacy</h3>
+      <p>LetLearn is designed for use by students aged 13 and above. For users under 18, we recommend parental guidance when creating an account or booking tutors. We do not knowingly collect data from children under 13 without parental consent.</p>
+    </div>
+
+    <div class="legal-section">
+      <h3>7. Your Rights</h3>
+      <p>You have the right to:</p>
+      <ul>
+        <li>Access the personal data we hold about you</li>
+        <li>Request correction of inaccurate data</li>
+        <li>Request deletion of your account and data</li>
+        <li>Opt out of marketing communications at any time</li>
+        <li>Lodge a complaint with the relevant data protection authority</li>
+      </ul>
+      <p>To exercise any of these rights, contact us at <a href="mailto:letlearn@gmail.com" style="color:var(--blue-mid);font-weight:600">letlearn@gmail.com</a>.</p>
+    </div>
+
+    <div class="legal-section">
+      <h3>8. Changes to This Policy</h3>
+      <p>We may update this Privacy Policy from time to time. We will notify registered users of significant changes via email or an in-app notification. Your continued use of LetLearn after changes constitutes acceptance of the updated policy.</p>
+    </div>
+
+    <div class="legal-contact-box">
+      <div class="icon">📧</div>
+      <div>
+        <h4>Privacy Questions?</h4>
+        <p>Contact our team at <a href="mailto:letlearn@gmail.com">letlearn@gmail.com</a> or WhatsApp <a href="https://wa.me/2349042427548">09042427548</a></p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── TERMS OF SERVICE ── -->
+  <div class="legal-page" id="legal-terms">
+    <div class="legal-updated">📄 Last updated: April 2, 2026</div>
+    <h2>Terms of Service</h2>
+    <p class="legal-intro">
+      These Terms of Service ("Terms") govern your use of LetLearn NG ("LetLearn", "the platform"). By creating an account or using any part of our platform, you agree to these Terms. Please read them carefully. If you do not agree, do not use the platform.
+    </p>
+
+    <div class="legal-section">
+      <h3>1. Who We Are</h3>
+      <p>LetLearn NG is a Nigerian ed-tech platform that helps students discover scholarships and connect with verified tutors. We operate at <strong>letlearn-eight.vercel.app</strong> and can be reached at <a href="mailto:letlearn@gmail.com" style="color:var(--blue-mid)">letlearn@gmail.com</a>.</p>
+    </div>
+
+    <div class="legal-section">
+      <h3>2. Eligibility</h3>
+      <ul>
+        <li>You must be at least 13 years old to create an account.</li>
+        <li>Users under 18 should have parental or guardian consent.</li>
+        <li>Tutors must be at least 18 years old and a Nigerian resident to apply.</li>
+        <li>You must provide accurate information during registration.</li>
+      </ul>
+    </div>
+
+    <div class="legal-section">
+      <h3>3. Student Responsibilities</h3>
+      <p>As a student using LetLearn, you agree to:</p>
+      <ul>
+        <li>Provide accurate personal information during registration and scholarship applications</li>
+        <li>Use the platform only for lawful educational purposes</li>
+        <li>Not misuse or attempt to manipulate the AI scholarship search system</li>
+        <li>Treat tutors with respect during sessions</li>
+        <li>Not share your account credentials with others</li>
+      </ul>
+    </div>
+
+    <div class="legal-section">
+      <h3>4. Tutor Responsibilities</h3>
+      <p>As a tutor on LetLearn, you agree to:</p>
+      <ul>
+        <li>Provide accurate qualifications, identity, and professional information during application</li>
+        <li>Deliver sessions as booked and communicate promptly with students</li>
+        <li>Maintain professional conduct in all interactions</li>
+        <li>Not solicit students to use off-platform services to avoid the platform</li>
+        <li>Accept that your profile may be removed if reviews or quality fall below acceptable standards</li>
+      </ul>
+    </div>
+
+    <div class="legal-section">
+      <h3>5. Scholarship Information Disclaimer</h3>
+      <div class="legal-highlight">
+        ⚠️ Scholarship information on LetLearn is AI-generated and provided for discovery purposes only. LetLearn does not guarantee the accuracy, completeness, or current status of any scholarship listed. Always verify details directly with the scholarship provider before applying.
+      </div>
+    </div>
+
+    <div class="legal-section">
+      <h3>6. Payments</h3>
+      <p>LetLearn does not currently process payments between students and tutors. All payment arrangements are made directly between the parties. LetLearn is not liable for any payment disputes between students and tutors. In-app payments via Paystack are coming in a future update, at which point updated payment terms will apply.</p>
+    </div>
+
+    <div class="legal-section">
+      <h3>7. Intellectual Property</h3>
+      <p>All content on LetLearn — including the AI search system, design, branding, copy, and code — is the property of LetLearn NG. You may not copy, reproduce, or redistribute any part of the platform without written permission.</p>
+    </div>
+
+    <div class="legal-section">
+      <h3>8. Account Suspension & Termination</h3>
+      <p>LetLearn reserves the right to suspend or terminate accounts that:</p>
+      <ul>
+        <li>Violate these Terms</li>
+        <li>Provide false information during registration</li>
+        <li>Engage in fraudulent scholarship applications</li>
+        <li>Harass or harm other users or tutors</li>
+      </ul>
+    </div>
+
+    <div class="legal-section">
+      <h3>9. Limitation of Liability</h3>
+      <p>LetLearn is provided "as is" without warranties of any kind. We are not liable for: scholarship application outcomes, tutor session quality, loss of data, or service interruptions. Our liability is limited to the maximum extent permitted by Nigerian law.</p>
+    </div>
+
+    <div class="legal-section">
+      <h3>10. Governing Law</h3>
+      <p>These Terms are governed by the laws of the Federal Republic of Nigeria. Any disputes shall be resolved through good-faith negotiation, and if unresolved, through the appropriate courts in Nigeria.</p>
+    </div>
+
+    <div class="legal-section">
+      <h3>11. Changes to Terms</h3>
+      <p>We may update these Terms at any time. Continued use of the platform after updates constitutes acceptance of the new Terms. Significant changes will be communicated via email or in-app notification.</p>
+    </div>
+
+    <div class="legal-contact-box">
+      <div class="icon">📄</div>
+      <div>
+        <h4>Questions about our Terms?</h4>
+        <p>Email us at <a href="mailto:letlearn@gmail.com">letlearn@gmail.com</a> or WhatsApp <a href="https://wa.me/2349042427548">09042427548</a></p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── COOKIE POLICY ── -->
+  <div class="legal-page" id="legal-cookies">
+    <div class="legal-updated">🍪 Last updated: April 2, 2026</div>
+    <h2>Cookie Policy</h2>
+    <p class="legal-intro">
+      This Cookie Policy explains how LetLearn NG uses cookies and similar technologies when you visit our platform. By using LetLearn, you consent to our use of cookies as described below.
+    </p>
+
+    <div class="legal-section">
+      <h3>1. What Are Cookies?</h3>
+      <p>Cookies are small text files stored on your device when you visit a website. They help the website remember your preferences, improve performance, and understand how users interact with the site. LetLearn uses both session cookies (deleted when you close your browser) and persistent cookies (which remain for a set period).</p>
+    </div>
+
+    <div class="legal-section">
+      <h3>2. Types of Cookies We Use</h3>
+
+      <p><strong>Essential Cookies</strong></p>
+      <p>These are required for the platform to function properly. They enable you to stay logged in, remember your session, and use core features like scholarship search and booking. You cannot opt out of these.</p>
+      <ul>
+        <li>Session authentication token</li>
+        <li>Admin session cookie (for admin dashboard access)</li>
+        <li>User preferences (state, academic level)</li>
+      </ul>
+
+      <p style="margin-top:1rem"><strong>Performance Cookies</strong></p>
+      <p>These help us understand how users interact with LetLearn so we can improve the platform. Data collected is anonymous and aggregated.</p>
+      <ul>
+        <li>Page load times and performance metrics</li>
+        <li>Most searched subjects and states</li>
+        <li>Feature usage patterns</li>
+      </ul>
+
+      <p style="margin-top:1rem"><strong>Functional Cookies</strong></p>
+      <p>These remember your choices to give you a more personalised experience.</p>
+      <ul>
+        <li>Saved search filters (level, state)</li>
+        <li>Last viewed scholarship categories</li>
+        <li>Mobile menu preference</li>
+      </ul>
+    </div>
+
+    <div class="legal-section">
+      <h3>3. Third-Party Cookies</h3>
+      <p>LetLearn may use limited third-party services that set their own cookies:</p>
+      <ul>
+        <li><strong>Google Fonts:</strong> Used to load our typography. Google may set performance cookies.</li>
+        <li><strong>Cloudflare:</strong> Used for security and performance. Cloudflare sets cookies for bot protection and load balancing.</li>
+        <li><strong>Supabase:</strong> Our database provider may use session cookies for authentication.</li>
+      </ul>
+      <p>We do not use advertising or tracking cookies from ad networks.</p>
+    </div>
+
+    <div class="legal-section">
+      <h3>4. How to Control Cookies</h3>
+      <p>You can control and delete cookies through your browser settings. Here's how for common browsers:</p>
+      <ul>
+        <li><strong>Chrome:</strong> Settings → Privacy and Security → Cookies</li>
+        <li><strong>Firefox:</strong> Settings → Privacy & Security → Cookies and Site Data</li>
+        <li><strong>Safari:</strong> Preferences → Privacy → Manage Website Data</li>
+        <li><strong>Chrome on Android:</strong> Settings → Site Settings → Cookies</li>
+      </ul>
+      <div class="legal-highlight">
+        ⚠️ Note: Disabling essential cookies may prevent some features of LetLearn from working correctly, including login and scholarship search.
+      </div>
+    </div>
+
+    <div class="legal-section">
+      <h3>5. Cookie Duration</h3>
+      <ul>
+        <li><strong>Session cookies:</strong> Deleted when you close your browser</li>
+        <li><strong>Authentication cookies:</strong> Expire after 30 days of inactivity</li>
+        <li><strong>Preference cookies:</strong> Stored for up to 1 year</li>
+        <li><strong>Admin session:</strong> Cleared when the browser tab is closed</li>
+      </ul>
+    </div>
+
+    <div class="legal-section">
+      <h3>6. Updates to This Policy</h3>
+      <p>We may update this Cookie Policy as we add new features or change our service providers. Check this page periodically for updates. Continued use of LetLearn after updates means you accept the changes.</p>
+    </div>
+
+    <div class="legal-contact-box">
+      <div class="icon">🍪</div>
+      <div>
+        <h4>Cookie Questions?</h4>
+        <p>Email <a href="mailto:letlearn@gmail.com">letlearn@gmail.com</a> or WhatsApp us at <a href="https://wa.me/2349042427548">09042427548</a></p>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- FOOTER MINI -->
+<div style="background:var(--dark);text-align:center;padding:1.5rem;font-size:0.8rem;color:rgba(255,255,255,0.4)">
+  © 2026 LetLearn NG · <a href="index.html" style="color:rgba(255,255,255,0.5)">Home</a> · <a href="help.html" style="color:rgba(255,255,255,0.5)">Help Centre</a> · <a href="contact.html" style="color:rgba(255,255,255,0.5)">Contact</a>
+</div>
+
+<script>
+function showLegal(id, btn) {
+  document.querySelectorAll('.legal-page').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.legal-tab').forEach(b => b.classList.remove('active'));
+  document.getElementById('legal-' + id).classList.add('active');
+  btn.classList.add('active');
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+// Handle hash links e.g. legal.html#privacy
+window.addEventListener('DOMContentLoaded', () => {
+  const hash = window.location.hash.replace('#', '');
+  if (hash) {
+    const btn = document.querySelector(`[onclick*="${hash}"]`);
+    if (btn) showLegal(hash, btn);
+  }
+});
+
+window.addEventListener('scroll', () => {
+  document.getElementById('nav')?.classList.toggle('scrolled', window.scrollY > 20);
+});
+</script>
+</body>
+</html>

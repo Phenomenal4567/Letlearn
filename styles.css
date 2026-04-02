@@ -22,7 +22,7 @@
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 html { scroll-behavior: smooth; }
 body {
-  font-family: 'Plus Jakarta Sans', 'DM Sans', sans-serif;
+  font-family: 'Inter', 'DM Sans', sans-serif;
   background: var(--white);
   color: var(--dark);
   line-height: 1.6;
@@ -246,8 +246,8 @@ h1, h2, h3 { font-family: 'Syne', sans-serif; line-height: 1.15; }
 .nav-actions {
   display: flex;
   align-items: center;
-  gap: 0.75rem;
-  margin-left: 1rem;
+  gap: 0.5rem;
+  margin-left: auto;
 }
 
 .burger {
@@ -1452,6 +1452,99 @@ canvas { display: none; }
   .trb-input, .trb-btn { width: 100%; min-width: unset; }
 }
 
+
+/* ── SCROLL ANIMATIONS ───────────────────────────────────────────── */
+
+/* Base hidden state */
+.reveal {
+  opacity: 0;
+  transition: opacity 0.65s ease, transform 0.65s ease;
+  will-change: transform, opacity;
+}
+.reveal.from-left  { transform: translateX(-60px); }
+.reveal.from-right { transform: translateX(60px); }
+.reveal.from-bottom { transform: translateY(40px); }
+
+/* Visible state — added by JS */
+.reveal.visible {
+  opacity: 1;
+  transform: translate(0, 0);
+}
+
+/* Stagger delays for grid children */
+.reveal-delay-1 { transition-delay: 0.1s; }
+.reveal-delay-2 { transition-delay: 0.2s; }
+.reveal-delay-3 { transition-delay: 0.3s; }
+.reveal-delay-4 { transition-delay: 0.4s; }
+
+/* Section header fade-up */
+.reveal-header {
+  opacity: 0;
+  transform: translateY(28px);
+  transition: opacity 0.55s ease, transform 0.55s ease;
+}
+.reveal-header.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Scholarship card pulse on load */
+@keyframes cardEntrance {
+  from { opacity: 0; transform: translateY(24px) scale(0.97); }
+  to   { opacity: 1; transform: translateY(0) scale(1); }
+}
+.scholar-card {
+  animation: cardEntrance 0.45s ease both;
+}
+
+/* Search box slide down */
+.search-box-animate {
+  opacity: 0;
+  transform: translateY(-20px);
+  transition: opacity 0.5s ease, transform 0.5s ease;
+}
+.search-box-animate.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Step card number counter pulse */
+@keyframes stepPulse {
+  0%   { transform: scale(1); }
+  50%  { transform: scale(1.08); }
+  100% { transform: scale(1); }
+}
+.step-card.visible .step-icon {
+  animation: stepPulse 0.6s ease 0.4s both;
+  display: inline-block;
+}
+
+/* Connector line between steps */
+.steps-grid {
+  position: relative;
+}
+.steps-connector {
+  position: absolute;
+  top: 3.5rem;
+  left: 12%;
+  right: 12%;
+  height: 2px;
+  background: rgba(255,255,255,0.08);
+  display: none;
+}
+.steps-connector-fill {
+  height: 100%;
+  width: 0%;
+  background: linear-gradient(90deg, var(--gold), rgba(245,158,11,0.3));
+  border-radius: 2px;
+  transition: width 1.8s ease 0.3s;
+}
+.steps-connector-fill.active { width: 100%; }
+
+@media (min-width: 768px) {
+  .steps-connector { display: block; }
+}
+
 /* ── RESPONSIVE ──────────────────────────────────────────────────── */
 @media (max-width: 1024px) {
   .hero { grid-template-columns: 1fr; padding-top: 7rem; }
@@ -1470,6 +1563,24 @@ canvas { display: none; }
   .ts-layout { grid-template-columns: 1fr; }
   .ts-sidebar { position: static; }
   .ts-form-grid { grid-template-columns: 1fr; }
+
+  /* Fix nav buttons on mobile */
+  .nav-actions .btn-ghost {
+    padding: 0.45rem 0.9rem;
+    font-size: 0.8rem;
+    border-width: 1.5px;
+  }
+  .nav-actions .btn-primary {
+    padding: 0.45rem 0.9rem;
+    font-size: 0.8rem;
+    border-width: 1.5px;
+  }
+  .nav-inner {
+    padding: 0 4vw;
+    height: 60px;
+    gap: 0.75rem;
+  }
+  .logo { font-size: 1.25rem; }
 }
 
 @media (max-width: 600px) {
