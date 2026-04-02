@@ -308,6 +308,20 @@ function showToast(msg, isError = false) {
   setTimeout(() => t.classList.remove('show'), 4000);
 }
 
+
+// ── TUTOR REQUEST ──────────────────────────────────────────────────────────
+function submitTutorRequest() {
+  const subject = document.getElementById('requestSubject')?.value.trim();
+  const state = document.getElementById('requestState')?.value;
+  const phone = document.getElementById('requestPhone')?.value.trim();
+  if (!subject) { showToast('⚠️ Please enter a subject', true); return; }
+  if (!phone) { showToast('⚠️ Please enter your phone number', true); return; }
+  showToast(`✅ Request sent! We'll find you a ${subject} tutor within 24hrs.`);
+  document.getElementById('requestSubject').value = '';
+  document.getElementById('requestPhone').value = '';
+  document.getElementById('requestState').value = '';
+}
+
 // ── INIT ───────────────────────────────────────────────────────────────────
 document.addEventListener('DOMContentLoaded', () => {
   // Load initial scholarships
