@@ -57,21 +57,46 @@ Return only the JSON array, no markdown.`;
 }
 
 async function fetchScholarships(query, level, state, offset) {
-  // Try real Worker first
   try {
     const prompt = buildPrompt(query, level, state, offset);
-    const res = await fetch(WORKER_URL, {
+    const res = await fetch('https://openrouter.ai/api/v1/chat/completions', {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ prompt }),
-      signal: AbortSignal.timeout(25000)
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer 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',
+        'HTTP-Referer': 'https://letlearn-eight.vercel.app',
+        'X-Title': 'LetLearn',
+      },
+      body: JSON.stringify({
+        model: 'qwen/qwen3.6-plus-preview:free',
+        messages: [
+          { role: 'system', content: 'You are a helpful Nigerian education assistant. Respond with a valid JSON array only. No markdown, no backticks, no explanation.' },
+          { role: 'user', content: prompt }
+        ],
+        max_tokens: 2000,
+        temperature: 0.7,
+      }),
     });
+
     if (res.ok) {
       const data = await res.json();
-      if (Array.isArray(data)) return data;
+      const rawText = data.choices?.[0]?.message?.content ?? '';
+      const cleaned = rawText.replace(/```json/gi, '').replace(/```/g, '').trim();
+      const match = cleaned.match(/\[[\s\S]*\]/);
+      if (match) return JSON.parse(match[0]);
     }
-  } catch(e) { /* fall through to demo data */ }
+  } catch(e) { /* fall through to demo */ }
 
+  // Fallback demo data
+  await new Promise(r => setTimeout(r, 800));
+  let pool = [...DEMO_SCHOLARSHIPS];
+  if (query) pool = pool.filter(s => s.title.toLowerCase().includes(query.toLowerCase()) || s.description.toLowerCase().includes(query.toLowerCase()) || s.org.toLowerCase().includes(query.toLowerCase()));
+  if (level) pool = pool.filter(s => s.level === level);
+  if (state) pool = pool.filter(s => s.location === state || s.location === 'Nationwide');
+  if (pool.length === 0) pool = DEMO_SCHOLARSHIPS;
+  const page = pool.slice(offset, offset + 6);
+  return page.length > 0 ? page : DEMO_SCHOLARSHIPS.slice(0, 6);
+}
   // Fallback: filter demo scholarships
   await new Promise(r => setTimeout(r, 800)); // simulate latency
   let pool = [...DEMO_SCHOLARSHIPS];
