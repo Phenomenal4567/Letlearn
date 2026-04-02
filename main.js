@@ -21,9 +21,35 @@ window.addEventListener('scroll', () => {
 });
 
 // ── BURGER MENU ───────────────────────────────────────────────────────────────
-document.getElementById('burger')?.addEventListener('click', () => {
-  document.getElementById('mobileMenu')?.classList.toggle('open');
+const burger = document.getElementById('burger');
+const mobileMenu = document.getElementById('mobileMenu');
+
+function closeMobileMenu() {
+  mobileMenu?.classList.remove('open');
+  burger?.classList.remove('active');
+}
+
+burger?.addEventListener('click', () => {
+  const isOpen = mobileMenu?.classList.toggle('open');
+  burger?.classList.toggle('active', isOpen);
 });
+
+// Close when any mobile menu link is clicked
+mobileMenu?.querySelectorAll('a').forEach(link => {
+  link.addEventListener('click', closeMobileMenu);
+});
+
+// Close when clicking outside the nav
+document.addEventListener('click', (e) => {
+  if (mobileMenu?.classList.contains('open') && !e.target.closest('#nav')) {
+    closeMobileMenu();
+  }
+});
+
+// Close on scroll
+window.addEventListener('scroll', () => {
+  if (mobileMenu?.classList.contains('open')) closeMobileMenu();
+}, { passive: true });
 
 // ── SCHOLARSHIP DATA ─────────────────────────────────────────────────────────
 // Demo scholarships for when Worker is unavailable (offline/demo mode)

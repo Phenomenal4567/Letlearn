@@ -1,0 +1,1012 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Tutor Dashboard — LetLearn</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link href="https://fonts.googleapis.com/css2?family=Clash+Display:wght@400;500;600;700&family=Syne:wght@400;500;600;700;800&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="styles.css"/>
+<style>
+/* ── TUTOR DASHBOARD ── */
+.dash-page {
+  padding-top: 68px;
+  min-height: 100vh;
+  background: #F8FAFD;
+  display: flex;
+  font-family: 'Inter', sans-serif;
+}
+
+/* ── AUTH GATE ── */
+.tutor-auth-gate {
+  min-height: calc(100vh - 68px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+  background: linear-gradient(135deg, #0A2463 0%, #1a3a8a 50%, #1B4FD8 100%);
+}
+.tutor-auth-card {
+  background: white;
+  border-radius: 24px;
+  padding: 2.5rem;
+  width: 100%;
+  max-width: 420px;
+  box-shadow: 0 24px 64px rgba(10,36,99,0.2);
+}
+.tutor-auth-card h2 {
+  font-family: 'Syne', sans-serif;
+  font-size: 1.6rem;
+  font-weight: 800;
+  color: var(--blue-deep);
+  margin-bottom: 0.4rem;
+}
+.tutor-auth-card p {
+  font-size: 0.88rem;
+  color: var(--gray);
+  margin-bottom: 2rem;
+}
+.auth-tabs {
+  display: flex;
+  gap: 0;
+  border: 1.5px solid rgba(10,36,99,0.1);
+  border-radius: 12px;
+  overflow: hidden;
+  margin-bottom: 1.8rem;
+}
+.auth-tab-btn {
+  flex: 1;
+  padding: 0.65rem;
+  font-weight: 700;
+  font-size: 0.85rem;
+  background: white;
+  color: var(--gray);
+  border: none;
+  cursor: pointer;
+  font-family: inherit;
+  transition: all 0.2s;
+}
+.auth-tab-btn.active {
+  background: var(--blue-mid);
+  color: white;
+}
+
+.form-group { margin-bottom: 1rem; }
+.form-group label {
+  display: block;
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: var(--gray);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-bottom: 0.4rem;
+}
+.form-input {
+  width: 100%;
+  padding: 0.75rem 1rem;
+  border: 1.5px solid rgba(10,36,99,0.12);
+  border-radius: 10px;
+  font-size: 0.9rem;
+  font-family: 'Inter', sans-serif;
+  color: var(--dark);
+  background: #FAFBFE;
+  transition: border-color 0.2s, box-shadow 0.2s;
+  outline: none;
+}
+.form-input:focus {
+  border-color: var(--blue-mid);
+  box-shadow: 0 0 0 3px rgba(27,79,216,0.08);
+  background: white;
+}
+
+/* ── SIDEBAR ── */
+.dash-sidebar {
+  width: 240px;
+  flex-shrink: 0;
+  background: white;
+  border-right: 1.5px solid rgba(10,36,99,0.07);
+  min-height: calc(100vh - 68px);
+  position: sticky;
+  top: 68px;
+  display: flex;
+  flex-direction: column;
+  padding: 1.5rem 0;
+}
+.dash-avatar-area {
+  text-align: center;
+  padding: 0 1.5rem 1.5rem;
+  border-bottom: 1.5px solid rgba(10,36,99,0.07);
+  margin-bottom: 1rem;
+}
+.dash-avatar {
+  width: 64px; height: 64px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #B45309, var(--gold));
+  color: white;
+  display: flex; align-items: center; justify-content: center;
+  font-family: 'Syne', sans-serif;
+  font-size: 1.5rem;
+  font-weight: 800;
+  margin: 0 auto 0.75rem;
+}
+.dash-name {
+  font-family: 'Syne', sans-serif;
+  font-weight: 800;
+  font-size: 0.95rem;
+  color: var(--blue-deep);
+  margin-bottom: 0.2rem;
+}
+.verified-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  background: rgba(16,185,129,0.1);
+  color: var(--green);
+  font-size: 0.72rem;
+  font-weight: 700;
+  padding: 0.2rem 0.7rem;
+  border-radius: 50px;
+  margin-top: 0.3rem;
+}
+
+.dash-nav { flex: 1; padding: 0 0.75rem; }
+.dash-nav-item {
+  display: flex; align-items: center; gap: 0.75rem;
+  padding: 0.7rem 0.9rem; border-radius: 10px;
+  font-size: 0.88rem; font-weight: 600; color: var(--gray);
+  cursor: pointer; transition: all 0.2s; margin-bottom: 0.2rem;
+  border: none; background: none; width: 100%; text-align: left;
+  font-family: inherit;
+}
+.dash-nav-item:hover { background: rgba(245,158,11,0.08); color: var(--gold-dark); }
+.dash-nav-item.active { background: rgba(245,158,11,0.12); color: var(--gold-dark); }
+.nav-icon { font-size: 1.1rem; width: 22px; text-align: center; }
+.nav-badge {
+  margin-left: auto; background: var(--gold-dark); color: white;
+  font-size: 0.65rem; font-weight: 700;
+  padding: 0.1rem 0.5rem; border-radius: 50px;
+}
+
+.dash-sidebar-footer { padding: 1rem 1.25rem 0; border-top: 1.5px solid rgba(10,36,99,0.07); }
+.dash-logout {
+  display: flex; align-items: center; gap: 0.6rem;
+  padding: 0.6rem 0.9rem; border-radius: 10px;
+  font-size: 0.85rem; font-weight: 600; color: #EF4444;
+  cursor: pointer; transition: background 0.2s;
+  width: 100%; border: none; background: none; font-family: inherit;
+}
+.dash-logout:hover { background: rgba(239,68,68,0.08); }
+
+/* ── MAIN ── */
+.dash-main { flex: 1; padding: 2rem; }
+.dash-tab { display: none; }
+.dash-tab.active { display: block; }
+
+.dash-section-title {
+  font-family: 'Syne', sans-serif;
+  font-size: 1.4rem; font-weight: 800; color: var(--blue-deep); margin-bottom: 0.3rem;
+}
+.dash-section-sub { font-size: 0.85rem; color: var(--gray); margin-bottom: 1.8rem; }
+
+/* ── STATS ── */
+.dash-stats {
+  display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: 1rem; margin-bottom: 2rem;
+}
+.dash-stat {
+  background: white; border-radius: 14px; padding: 1.2rem 1.3rem;
+  border: 1.5px solid rgba(10,36,99,0.07); box-shadow: 0 2px 12px rgba(10,36,99,0.04);
+}
+.dash-stat-value {
+  font-family: 'Syne', sans-serif; font-size: 1.8rem; font-weight: 800;
+  color: var(--blue-deep); line-height: 1; margin-bottom: 0.3rem;
+}
+.dash-stat-label { font-size: 0.75rem; color: var(--gray); font-weight: 600; }
+.dash-stat.gold .dash-stat-value { color: var(--gold-dark); }
+.dash-stat.green .dash-stat-value { color: var(--green); }
+
+/* ── CARD ── */
+.dash-card {
+  background: white; border-radius: 16px; padding: 1.6rem;
+  border: 1.5px solid rgba(10,36,99,0.07);
+  box-shadow: 0 2px 12px rgba(10,36,99,0.04); margin-bottom: 1.25rem;
+}
+.dash-card-title {
+  font-family: 'Syne', sans-serif; font-size: 1rem; font-weight: 800; color: var(--blue-deep);
+  margin-bottom: 1.2rem; display: flex; align-items: center; justify-content: space-between;
+}
+.dash-card-title button {
+  font-size: 0.78rem; font-weight: 700; color: var(--gold-dark);
+  background: rgba(245,158,11,0.1); border: none; border-radius: 50px;
+  padding: 0.3rem 0.85rem; cursor: pointer; transition: background 0.2s; font-family: inherit;
+}
+.dash-card-title button:hover { background: rgba(245,158,11,0.18); }
+
+/* ── STUDENT TRACKER ── */
+.student-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.85rem;
+}
+.student-table th {
+  text-align: left;
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: var(--gray);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  padding: 0.5rem 0.75rem;
+  border-bottom: 1.5px solid rgba(10,36,99,0.07);
+}
+.student-table td {
+  padding: 0.8rem 0.75rem;
+  border-bottom: 1px solid rgba(10,36,99,0.05);
+  vertical-align: middle;
+}
+.student-table tr:last-child td { border-bottom: none; }
+.student-table tr:hover td { background: rgba(245,158,11,0.03); }
+
+.stu-name {
+  display: flex; align-items: center; gap: 0.75rem;
+}
+.stu-avatar {
+  width: 36px; height: 36px; border-radius: 50%;
+  background: linear-gradient(135deg, var(--blue-mid), var(--blue-deep));
+  color: white; font-family: 'Syne', sans-serif; font-weight: 800;
+  font-size: 0.8rem; display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+}
+.stu-name-text { font-weight: 600; color: var(--dark); }
+.stu-meta { font-size: 0.75rem; color: var(--gray); }
+
+.progress-bar-wrap {
+  display: flex; align-items: center; gap: 0.6rem;
+}
+.progress-bar-bg {
+  flex: 1; height: 6px; background: var(--gray-soft);
+  border-radius: 3px; overflow: hidden;
+}
+.progress-bar-fill {
+  height: 100%; border-radius: 3px;
+  background: linear-gradient(90deg, var(--gold), #F97316);
+  transition: width 0.5s;
+}
+.progress-pct { font-size: 0.75rem; font-weight: 700; color: var(--gold-dark); white-space: nowrap; }
+
+.tag {
+  display: inline-block; padding: 0.2rem 0.6rem; border-radius: 50px;
+  font-size: 0.72rem; font-weight: 700;
+}
+.tag.blue { background: rgba(27,79,216,0.1); color: var(--blue-mid); }
+.tag.gold { background: rgba(245,158,11,0.12); color: var(--gold-dark); }
+.tag.green { background: rgba(16,185,129,0.12); color: var(--green); }
+.tag.red { background: rgba(239,68,68,0.1); color: #EF4444; }
+
+.action-link {
+  color: var(--blue-mid); font-weight: 600; font-size: 0.8rem;
+  cursor: pointer; background: none; border: none; font-family: inherit; padding: 0;
+}
+.action-link:hover { text-decoration: underline; }
+
+/* ── SESSION LIST ── */
+.session-item {
+  display: flex; align-items: center; gap: 1rem;
+  padding: 0.9rem 0; border-bottom: 1px solid rgba(10,36,99,0.06);
+}
+.session-item:last-child { border-bottom: none; }
+.session-date {
+  width: 52px; height: 52px; border-radius: 12px;
+  background: rgba(27,79,216,0.08); text-align: center;
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  flex-shrink: 0;
+}
+.session-month { font-size: 0.65rem; font-weight: 700; color: var(--blue-mid); text-transform: uppercase; }
+.session-day { font-family: 'Syne', sans-serif; font-size: 1.2rem; font-weight: 800; color: var(--blue-deep); line-height: 1; }
+.session-info { flex: 1; }
+.session-name { font-weight: 700; font-size: 0.9rem; color: var(--dark); }
+.session-detail { font-size: 0.77rem; color: var(--gray); margin-top: 0.15rem; }
+.session-actions { display: flex; gap: 0.4rem; }
+
+/* ── EARNINGS CHART ── */
+.earnings-bars {
+  display: flex; align-items: flex-end; gap: 0.5rem; height: 120px; margin-bottom: 0.75rem;
+}
+.e-bar-wrap { flex: 1; display: flex; flex-direction: column; align-items: center; gap: 0.35rem; }
+.e-bar {
+  width: 100%; border-radius: 6px 6px 0 0;
+  background: linear-gradient(180deg, var(--gold), #F97316);
+  transition: height 0.6s ease; min-height: 4px;
+}
+.e-label { font-size: 0.68rem; color: var(--gray); font-weight: 600; }
+.e-amount { font-size: 0.7rem; font-weight: 700; color: var(--gold-dark); }
+
+/* ── PROFILE FORM ── */
+.profile-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+.profile-full { grid-column: 1 / -1; }
+.save-bar {
+  display: flex; align-items: center; justify-content: flex-end;
+  gap: 0.75rem; padding-top: 1.25rem;
+  border-top: 1.5px solid rgba(10,36,99,0.06); margin-top: 1.25rem;
+}
+.btn-save {
+  background: var(--blue-mid); color: white; border: none; border-radius: 50px;
+  padding: 0.6rem 1.6rem; font-weight: 700; font-size: 0.88rem;
+  cursor: pointer; transition: all 0.2s; font-family: inherit;
+}
+.btn-save:hover { background: var(--blue-deep); transform: translateY(-1px); }
+.btn-cancel {
+  background: none; color: var(--gray); border: 1.5px solid rgba(10,36,99,0.12);
+  border-radius: 50px; padding: 0.6rem 1.4rem; font-weight: 600;
+  font-size: 0.88rem; cursor: pointer; transition: all 0.2s; font-family: inherit;
+}
+
+/* ── NOTE MODAL ── */
+.modal-overlay {
+  position: fixed; inset: 0; background: rgba(10,36,99,0.45);
+  z-index: 200; display: none; align-items: center; justify-content: center; padding: 1rem;
+}
+.modal-overlay.open { display: flex; }
+.modal-box {
+  background: white; border-radius: 20px; padding: 2rem;
+  width: 100%; max-width: 460px;
+  box-shadow: 0 24px 64px rgba(10,36,99,0.2);
+}
+.modal-box h3 { font-family: 'Syne', sans-serif; font-size: 1.1rem; font-weight: 800; color: var(--blue-deep); margin-bottom: 1rem; }
+
+/* ── MOBILE ── */
+.dash-mobile-header {
+  display: none;
+  position: fixed; top: 68px; left: 0; right: 0;
+  background: white; border-bottom: 1.5px solid rgba(10,36,99,0.07);
+  z-index: 50; padding: 0.75rem 1.25rem; overflow-x: auto; gap: 0.4rem;
+}
+.dash-mobile-tab {
+  display: inline-flex; align-items: center; gap: 0.35rem;
+  padding: 0.45rem 0.9rem; border-radius: 8px; font-size: 0.8rem; font-weight: 700;
+  cursor: pointer; transition: all 0.2s; color: var(--gray);
+  border: none; background: none; font-family: inherit; white-space: nowrap; flex-shrink: 0;
+}
+.dash-mobile-tab.active { background: rgba(245,158,11,0.12); color: var(--gold-dark); }
+
+@media (max-width: 768px) {
+  .dash-sidebar { display: none; }
+  .dash-mobile-header { display: flex; }
+  .dash-main { padding: 1.25rem 1rem; padding-top: calc(1.25rem + 52px); }
+  .profile-grid { grid-template-columns: 1fr; }
+  .student-table thead { display: none; }
+  .student-table tr { display: block; padding: 0.75rem 0; border-bottom: 1.5px solid rgba(10,36,99,0.07); }
+  .student-table td { display: flex; align-items: center; justify-content: space-between; padding: 0.3rem 0.5rem; border: none; }
+  .student-table td::before { content: attr(data-label); font-size: 0.72rem; font-weight: 700; color: var(--gray); text-transform: uppercase; }
+}
+</style>
+</head>
+<body>
+
+<nav id="nav">
+  <div class="nav-inner">
+    <a href="index.html" class="logo">Let<span>Learn</span></a>
+    <div class="nav-actions" style="margin-left:auto">
+      <a href="index.html" class="btn-ghost" style="font-size:0.82rem;padding:0.4rem 1rem">← Home</a>
+      <button onclick="logOut()" class="btn-primary" style="font-size:0.82rem;padding:0.4rem 1rem;background:var(--gold-dark);border-color:var(--gold-dark)">Log Out</button>
+    </div>
+  </div>
+</nav>
+
+<!-- ── AUTH GATE (shown first) ── -->
+<div id="authGate" style="display:block">
+  <div class="tutor-auth-gate">
+    <div class="tutor-auth-card">
+      <div style="text-align:center;margin-bottom:1.5rem">
+        <div style="font-family:'Clash Display',sans-serif;font-size:1.4rem;font-weight:700;color:var(--blue-deep)">Let<span style="color:var(--gold)">Learn</span></div>
+        <div style="font-size:0.75rem;font-weight:700;letter-spacing:1.5px;color:var(--gray);text-transform:uppercase;margin-top:0.25rem">Tutor Portal</div>
+      </div>
+
+      <div class="auth-tabs">
+        <button class="auth-tab-btn active" id="authTabLogin" onclick="switchAuthTab('login')">Sign In</button>
+        <button class="auth-tab-btn" id="authTabRegister" onclick="switchAuthTab('register')">Apply as Tutor</button>
+      </div>
+
+      <!-- LOGIN FORM -->
+      <div id="loginPane">
+        <h2>Welcome back</h2>
+        <p>Sign in to your tutor account to manage students and sessions.</p>
+        <div class="form-group">
+          <label>Email Address</label>
+          <input type="email" id="tLoginEmail" class="form-input" placeholder="your@email.com"/>
+        </div>
+        <div class="form-group">
+          <label>Password</label>
+          <div style="position:relative">
+            <input type="password" id="tLoginPw" class="form-input" placeholder="Your password" style="padding-right:3rem"/>
+            <button onclick="togglePw('tLoginPw',this)" style="position:absolute;right:1rem;top:50%;transform:translateY(-50%);color:var(--gray-light);font-size:1rem;background:none;border:none;cursor:pointer">👁️</button>
+          </div>
+        </div>
+        <div style="text-align:right;margin-bottom:1.2rem"><a href="#" style="font-size:0.82rem;color:var(--blue-mid);font-weight:600">Forgot password?</a></div>
+        <button class="btn-primary full" onclick="tutorLogin()" style="background:var(--gold-dark);border-color:var(--gold-dark)">Sign In to Dashboard</button>
+        <p style="text-align:center;font-size:0.8rem;color:var(--gray);margin-top:1rem">Not a tutor yet? <a href="#" style="color:var(--blue-mid);font-weight:700" onclick="switchAuthTab('register')">Apply here</a></p>
+        <!-- Demo hint -->
+        <p style="text-align:center;font-size:0.72rem;color:var(--gray-light);margin-top:0.5rem">Demo: use any email + password</p>
+      </div>
+
+      <!-- REGISTER REDIRECT -->
+      <div id="registerPane" style="display:none">
+        <h2>Join as a Tutor</h2>
+        <p>Fill in our 7-step application to get verified and start earning on LetLearn.</p>
+        <div style="background:rgba(245,158,11,0.08);border-radius:12px;padding:1.2rem;margin-bottom:1.5rem">
+          <div style="font-family:'Syne',sans-serif;font-weight:800;color:var(--gold-dark);margin-bottom:0.4rem">Why join?</div>
+          <div style="font-size:0.83rem;color:var(--gray);line-height:1.7">
+            ✓ Earn ₦50,000–₦200,000/month<br>
+            ✓ Set your own schedule & rate<br>
+            ✓ Verified badge builds trust<br>
+            ✓ Students across all 36 states
+          </div>
+        </div>
+        <a href="tutor-signup.html" class="btn-primary full" style="display:block;text-align:center;background:var(--gold-dark);border-color:var(--gold-dark)">Start Application →</a>
+        <p style="text-align:center;font-size:0.8rem;color:var(--gray);margin-top:1rem">Already applied? <a href="#" style="color:var(--blue-mid);font-weight:700" onclick="switchAuthTab('login')">Sign in</a></p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ── DASHBOARD (hidden until login) ── -->
+<div id="dashboardWrap" style="display:none">
+
+  <!-- MOBILE TAB BAR -->
+  <div class="dash-mobile-header" id="mobileTabs">
+    <button class="dash-mobile-tab active" onclick="switchTab('overview',this)">🏠 Overview</button>
+    <button class="dash-mobile-tab" onclick="switchTab('students',this)">👥 Students</button>
+    <button class="dash-mobile-tab" onclick="switchTab('sessions',this)">📅 Sessions</button>
+    <button class="dash-mobile-tab" onclick="switchTab('earnings',this)">💰 Earnings</button>
+    <button class="dash-mobile-tab" onclick="switchTab('profile',this)">👤 Profile</button>
+  </div>
+
+  <div class="dash-page">
+    <!-- SIDEBAR -->
+    <div class="dash-sidebar">
+      <div class="dash-avatar-area">
+        <div class="dash-avatar" id="tutorAvatarSidebar">AG</div>
+        <div class="dash-name" id="tutorNameSidebar">Adaobi Gbolahan</div>
+        <div class="verified-badge">✓ Verified Tutor</div>
+      </div>
+      <div class="dash-nav">
+        <button class="dash-nav-item active" id="nav-overview" onclick="switchTab('overview',this)">
+          <span class="nav-icon">🏠</span> Overview
+        </button>
+        <button class="dash-nav-item" id="nav-students" onclick="switchTab('students',this)">
+          <span class="nav-icon">👥</span> My Students
+          <span class="nav-badge">6</span>
+        </button>
+        <button class="dash-nav-item" id="nav-sessions" onclick="switchTab('sessions',this)">
+          <span class="nav-icon">📅</span> Sessions
+          <span class="nav-badge">3</span>
+        </button>
+        <button class="dash-nav-item" id="nav-earnings" onclick="switchTab('earnings',this)">
+          <span class="nav-icon">💰</span> Earnings
+        </button>
+        <button class="dash-nav-item" id="nav-profile" onclick="switchTab('profile',this)">
+          <span class="nav-icon">👤</span> Edit Profile
+        </button>
+      </div>
+      <div class="dash-sidebar-footer">
+        <button class="dash-logout" onclick="logOut()">🚪 Log Out</button>
+      </div>
+    </div>
+
+    <!-- MAIN -->
+    <div class="dash-main">
+
+      <!-- ── OVERVIEW ── -->
+      <div class="dash-tab active" id="tab-overview">
+        <div class="dash-section-title">Welcome back, Adaobi 👋</div>
+        <div class="dash-section-sub">Here's your teaching activity at a glance.</div>
+
+        <div class="dash-stats">
+          <div class="dash-stat">
+            <div class="dash-stat-value">6</div>
+            <div class="dash-stat-label">Active Students</div>
+          </div>
+          <div class="dash-stat gold">
+            <div class="dash-stat-value">₦87k</div>
+            <div class="dash-stat-label">This Month</div>
+          </div>
+          <div class="dash-stat green">
+            <div class="dash-stat-value">4.9</div>
+            <div class="dash-stat-label">Avg Rating</div>
+          </div>
+          <div class="dash-stat">
+            <div class="dash-stat-value">3</div>
+            <div class="dash-stat-label">Upcoming</div>
+          </div>
+        </div>
+
+        <!-- Next sessions -->
+        <div class="dash-card">
+          <div class="dash-card-title">📅 Next 3 Sessions <button onclick="switchTab('sessions',null)">View All</button></div>
+          <div class="session-item">
+            <div class="session-date">
+              <div class="session-month">Apr</div>
+              <div class="session-day">10</div>
+            </div>
+            <div class="session-info">
+              <div class="session-name">Amaka Okafor</div>
+              <div class="session-detail">Mathematics · Online · 4:00pm WAT · 1hr</div>
+            </div>
+            <span class="tag blue">Upcoming</span>
+          </div>
+          <div class="session-item">
+            <div class="session-date">
+              <div class="session-month">Apr</div>
+              <div class="session-day">12</div>
+            </div>
+            <div class="session-info">
+              <div class="session-name">Emeka Ibe</div>
+              <div class="session-detail">Mathematics · In-Person · 2:00pm WAT · 2hrs</div>
+            </div>
+            <span class="tag blue">Upcoming</span>
+          </div>
+          <div class="session-item">
+            <div class="session-date">
+              <div class="session-month">Apr</div>
+              <div class="session-day">15</div>
+            </div>
+            <div class="session-info">
+              <div class="session-name">Chidi Nwosu</div>
+              <div class="session-detail">Further Maths · Online · 5:00pm WAT · 1.5hrs</div>
+            </div>
+            <span class="tag blue">Upcoming</span>
+          </div>
+        </div>
+
+        <!-- Top students -->
+        <div class="dash-card">
+          <div class="dash-card-title">🌟 Top Performing Students <button onclick="switchTab('students',null)">See All</button></div>
+          <table class="student-table">
+            <thead><tr><th>Student</th><th>Subject</th><th>Progress</th><th>Sessions</th></tr></thead>
+            <tbody>
+              <tr>
+                <td data-label="Student"><div class="stu-name"><div class="stu-avatar">EI</div><div><div class="stu-name-text">Emeka Ibe</div><div class="stu-meta">SS3 · Enugu</div></div></div></td>
+                <td data-label="Subject"><span class="tag blue">Mathematics</span></td>
+                <td data-label="Progress"><div class="progress-bar-wrap"><div class="progress-bar-bg"><div class="progress-bar-fill" style="width:88%"></div></div><span class="progress-pct">88%</span></div></td>
+                <td data-label="Sessions">12</td>
+              </tr>
+              <tr>
+                <td data-label="Student"><div class="stu-name"><div class="stu-avatar">AO</div><div><div class="stu-name-text">Amaka Okafor</div><div class="stu-meta">100L · Lagos</div></div></div></td>
+                <td data-label="Subject"><span class="tag blue">Mathematics</span></td>
+                <td data-label="Progress"><div class="progress-bar-wrap"><div class="progress-bar-bg"><div class="progress-bar-fill" style="width:74%"></div></div><span class="progress-pct">74%</span></div></td>
+                <td data-label="Sessions">8</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- ── STUDENTS TAB ── -->
+      <div class="dash-tab" id="tab-students">
+        <div class="dash-section-title">My Students</div>
+        <div class="dash-section-sub">Track each student's progress, notes, and session history.</div>
+
+        <!-- Search / filter row -->
+        <div style="display:flex;gap:0.75rem;margin-bottom:1.25rem;flex-wrap:wrap">
+          <input type="text" id="stuSearch" class="form-input" placeholder="Search by name or subject..." style="max-width:300px;margin:0" oninput="filterStudents()"/>
+          <select id="stuSubjectFilter" class="form-input" style="max-width:180px;margin:0" onchange="filterStudents()">
+            <option value="">All Subjects</option>
+            <option>Mathematics</option>
+            <option>Further Maths</option>
+            <option>Statistics</option>
+          </select>
+        </div>
+
+        <div class="dash-card" style="padding:0;overflow:hidden">
+          <div style="padding:1.2rem 1.6rem;border-bottom:1.5px solid rgba(10,36,99,0.07)">
+            <div class="dash-card-title" style="margin:0">Students Tracker</div>
+          </div>
+          <div style="overflow-x:auto">
+            <table class="student-table" id="studentsTable">
+              <thead>
+                <tr>
+                  <th>Student</th>
+                  <th>Subject</th>
+                  <th>Progress</th>
+                  <th>Sessions</th>
+                  <th>Last Session</th>
+                  <th>Status</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody id="studentsTbody">
+                <!-- populated by JS -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── SESSIONS TAB ── -->
+      <div class="dash-tab" id="tab-sessions">
+        <div class="dash-section-title">Sessions</div>
+        <div class="dash-section-sub">All your upcoming and completed tutoring sessions.</div>
+
+        <div class="dash-card">
+          <div class="dash-card-title">Upcoming Sessions</div>
+          <div class="session-item">
+            <div class="session-date"><div class="session-month">Apr</div><div class="session-day">10</div></div>
+            <div class="session-info">
+              <div class="session-name">Amaka Okafor</div>
+              <div class="session-detail">Mathematics · Online (Google Meet) · 4:00pm · 1hr · ₦3,500</div>
+            </div>
+            <div class="session-actions">
+              <span class="tag blue">Upcoming</span>
+              <button class="btn-save" style="font-size:0.75rem;padding:0.3rem 0.8rem" onclick="showToast('Session confirmed!')">Confirm</button>
+            </div>
+          </div>
+          <div class="session-item">
+            <div class="session-date"><div class="session-month">Apr</div><div class="session-day">12</div></div>
+            <div class="session-info">
+              <div class="session-name">Emeka Ibe</div>
+              <div class="session-detail">Mathematics · In-Person · 2:00pm · 2hrs · ₦7,000</div>
+            </div>
+            <div class="session-actions">
+              <span class="tag blue">Upcoming</span>
+              <button class="btn-save" style="font-size:0.75rem;padding:0.3rem 0.8rem" onclick="showToast('Session confirmed!')">Confirm</button>
+            </div>
+          </div>
+          <div class="session-item">
+            <div class="session-date"><div class="session-month">Apr</div><div class="session-day">15</div></div>
+            <div class="session-info">
+              <div class="session-name">Chidi Nwosu</div>
+              <div class="session-detail">Further Maths · Online · 5:00pm · 1.5hrs · ₦5,250</div>
+            </div>
+            <div class="session-actions">
+              <span class="tag blue">Upcoming</span>
+              <button class="btn-save" style="font-size:0.75rem;padding:0.3rem 0.8rem" onclick="showToast('Session confirmed!')">Confirm</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="dash-card">
+          <div class="dash-card-title">Past Sessions (March 2026)</div>
+          <div class="session-item">
+            <div class="session-date"><div class="session-month">Mar</div><div class="session-day">28</div></div>
+            <div class="session-info">
+              <div class="session-name">Amaka Okafor</div>
+              <div class="session-detail">Mathematics · Online · 1hr · ₦3,500</div>
+            </div>
+            <span class="tag green">Completed ★★★★★</span>
+          </div>
+          <div class="session-item">
+            <div class="session-date"><div class="session-month">Mar</div><div class="session-day">25</div></div>
+            <div class="session-info">
+              <div class="session-name">Folake Adeyemi</div>
+              <div class="session-detail">Statistics · Online · 2hrs · ₦7,000</div>
+            </div>
+            <span class="tag green">Completed ★★★★★</span>
+          </div>
+          <div class="session-item">
+            <div class="session-date"><div class="session-month">Mar</div><div class="session-day">20</div></div>
+            <div class="session-info">
+              <div class="session-name">Emeka Ibe</div>
+              <div class="session-detail">Mathematics · In-Person · 2hrs · ₦7,000</div>
+            </div>
+            <span class="tag green">Completed ★★★★★</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── EARNINGS TAB ── -->
+      <div class="dash-tab" id="tab-earnings">
+        <div class="dash-section-title">Earnings</div>
+        <div class="dash-section-sub">Track your income and payment history.</div>
+
+        <div class="dash-stats">
+          <div class="dash-stat gold">
+            <div class="dash-stat-value">₦87k</div>
+            <div class="dash-stat-label">April (so far)</div>
+          </div>
+          <div class="dash-stat gold">
+            <div class="dash-stat-value">₦143k</div>
+            <div class="dash-stat-label">March Total</div>
+          </div>
+          <div class="dash-stat green">
+            <div class="dash-stat-value">₦512k</div>
+            <div class="dash-stat-label">2026 Total</div>
+          </div>
+          <div class="dash-stat">
+            <div class="dash-stat-value">48</div>
+            <div class="dash-stat-label">Total Sessions</div>
+          </div>
+        </div>
+
+        <div class="dash-card">
+          <div class="dash-card-title">Monthly Earnings (2026)</div>
+          <div class="earnings-bars" id="earningsBars"></div>
+          <div style="display:flex;justify-content:space-between;padding:0 0.25rem">
+            <span style="font-size:0.7rem;color:var(--gray)">Jan</span>
+            <span style="font-size:0.7rem;color:var(--gray)">Feb</span>
+            <span style="font-size:0.7rem;color:var(--gray)">Mar</span>
+            <span style="font-size:0.7rem;color:var(--gray)">Apr</span>
+          </div>
+        </div>
+
+        <div class="dash-card">
+          <div class="dash-card-title">Recent Payments</div>
+          <table class="student-table">
+            <thead><tr><th>Date</th><th>Student</th><th>Sessions</th><th>Amount</th><th>Status</th></tr></thead>
+            <tbody>
+              <tr><td>Mar 31</td><td>Emeka Ibe</td><td>4 sessions</td><td style="font-weight:700;color:var(--green)">₦28,000</td><td><span class="tag green">Paid</span></td></tr>
+              <tr><td>Mar 31</td><td>Amaka Okafor</td><td>3 sessions</td><td style="font-weight:700;color:var(--green)">₦10,500</td><td><span class="tag green">Paid</span></td></tr>
+              <tr><td>Mar 31</td><td>Folake Adeyemi</td><td>5 sessions</td><td style="font-weight:700;color:var(--green)">₦35,000</td><td><span class="tag green">Paid</span></td></tr>
+              <tr><td>Mar 31</td><td>Chidi Nwosu</td><td>4 sessions</td><td style="font-weight:700;color:var(--green)">₦21,000</td><td><span class="tag green">Paid</span></td></tr>
+              <tr><td>Apr 15</td><td>All Students</td><td>—</td><td style="font-weight:700;color:var(--gold-dark)">₦15,750</td><td><span class="tag gold">Pending</span></td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- ── PROFILE TAB ── -->
+      <div class="dash-tab" id="tab-profile">
+        <div class="dash-section-title">Edit Profile</div>
+        <div class="dash-section-sub">Keep your tutor profile up to date to attract more students.</div>
+
+        <div class="dash-card">
+          <div class="dash-card-title">Personal Information</div>
+          <div class="profile-grid">
+            <div class="form-group"><label>First Name</label><input type="text" id="tpFirst" class="form-input" value="Adaobi"/></div>
+            <div class="form-group"><label>Last Name</label><input type="text" id="tpLast" class="form-input" value="Gbolahan"/></div>
+            <div class="form-group"><label>Email</label><input type="email" id="tpEmail" class="form-input" value="adaobi@letlearn.ng"/></div>
+            <div class="form-group"><label>Phone</label><input type="tel" id="tpPhone" class="form-input" placeholder="08012345678"/></div>
+            <div class="form-group"><label>State</label>
+              <select id="tpState" class="form-input">
+                <option>Lagos</option><option>Abia</option><option>FCT Abuja</option><option>Rivers</option><option>Kano</option>
+              </select>
+            </div>
+            <div class="form-group"><label>Teaching Mode</label>
+              <select id="tpMode" class="form-input">
+                <option>Both (Online & In-Person)</option>
+                <option>Online Only</option>
+                <option>In-Person Only</option>
+              </select>
+            </div>
+          </div>
+          <div class="save-bar">
+            <button class="btn-cancel">Discard</button>
+            <button class="btn-save" onclick="saveTutorProfile()">Save Changes</button>
+          </div>
+        </div>
+
+        <div class="dash-card">
+          <div class="dash-card-title">Professional Details</div>
+          <div class="profile-grid">
+            <div class="form-group"><label>Hourly Rate (₦)</label><input type="number" id="tpRate" class="form-input" value="3500"/></div>
+            <div class="form-group"><label>Years of Experience</label><input type="number" id="tpExp" class="form-input" value="5"/></div>
+            <div class="form-group"><label>Highest Qualification</label>
+              <select id="tpQual" class="form-input">
+                <option>BSc</option><option>MSc</option><option>PhD</option><option>HND</option><option>NCE</option>
+              </select>
+            </div>
+            <div class="form-group"><label>University / Institution</label><input type="text" id="tpUni" class="form-input" placeholder="e.g. University of Lagos"/></div>
+            <div class="form-group profile-full"><label>Subjects Taught</label>
+              <input type="text" id="tpSubjects" class="form-input" value="Mathematics, Further Maths, Statistics" placeholder="Comma-separated subjects"/>
+            </div>
+            <div class="form-group profile-full"><label>Bio (shown on your public profile)</label>
+              <textarea id="tpBio" class="form-input" rows="4" style="height:auto;resize:vertical" placeholder="Tell students about yourself, your teaching style, and results...">BSc Mathematics (UNILAG). 5+ years teaching Mathematics at secondary and university level. Specialist in JAMB and WAEC preparation. 90%+ of my students improve by at least 30 marks.</textarea>
+            </div>
+          </div>
+          <div class="save-bar">
+            <button class="btn-cancel">Discard</button>
+            <button class="btn-save" onclick="saveTutorProfile()">Save Professional Info</button>
+          </div>
+        </div>
+
+        <div class="dash-card">
+          <div class="dash-card-title" style="color:#EF4444">Account</div>
+          <div style="display:flex;align-items:center;justify-content:space-between;padding:0.75rem 0">
+            <div>
+              <div style="font-size:0.88rem;font-weight:600;color:var(--dark)">Change Password</div>
+              <div style="font-size:0.77rem;color:var(--gray)">Update your account password</div>
+            </div>
+            <button class="security-action" style="font-size:0.8rem;font-weight:700;color:var(--blue-mid);background:rgba(27,79,216,0.08);border:none;border-radius:50px;padding:0.35rem 0.9rem;cursor:pointer;font-family:inherit" onclick="showToast('Password change coming soon!')">Change</button>
+          </div>
+          <div style="display:flex;align-items:center;justify-content:space-between;padding:0.75rem 0;border-top:1px solid rgba(10,36,99,0.06)">
+            <div>
+              <div style="font-size:0.88rem;font-weight:600;color:var(--dark)">Pause Account</div>
+              <div style="font-size:0.77rem;color:var(--gray)">Temporarily hide your profile from new bookings</div>
+            </div>
+            <button style="font-size:0.8rem;font-weight:700;color:var(--gold-dark);background:rgba(245,158,11,0.1);border:none;border-radius:50px;padding:0.35rem 0.9rem;cursor:pointer;font-family:inherit" onclick="showToast('Account paused. Your profile is now hidden.')">Pause</button>
+          </div>
+        </div>
+      </div>
+
+    </div><!-- end dash-main -->
+  </div><!-- end dash-page -->
+
+</div><!-- end dashboardWrap -->
+
+<!-- NOTE MODAL -->
+<div class="modal-overlay" id="noteModal" onclick="closeNote(event)">
+  <div class="modal-box">
+    <h3>📝 Notes for <span id="noteStudentName"></span></h3>
+    <div class="form-group">
+      <label>Session Notes</label>
+      <textarea id="noteText" class="form-input" rows="5" style="height:auto;resize:vertical" placeholder="Add notes about this student's progress, strengths, areas to improve..."></textarea>
+    </div>
+    <div class="form-group">
+      <label>Next Focus Area</label>
+      <input type="text" id="nextFocus" class="form-input" placeholder="e.g. Quadratic equations, Essay writing..."/>
+    </div>
+    <div style="display:flex;gap:0.75rem;justify-content:flex-end;margin-top:0.5rem">
+      <button class="btn-cancel" onclick="document.getElementById('noteModal').classList.remove('open')">Cancel</button>
+      <button class="btn-save" onclick="saveNote()">Save Note</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+// ── STUDENTS DATA ──
+const studentsData = [
+  { id: 1, name: 'Amaka Okafor', initials: 'AO', level: '100L', state: 'Lagos', subject: 'Mathematics', sessions: 8, progress: 74, lastSession: 'Mar 28', status: 'active' },
+  { id: 2, name: 'Emeka Ibe', initials: 'EI', level: 'SS3', state: 'Enugu', subject: 'Mathematics', sessions: 12, progress: 88, lastSession: 'Mar 25', status: 'active' },
+  { id: 3, name: 'Chidi Nwosu', initials: 'CN', level: 'SS2', state: 'Anambra', subject: 'Further Maths', sessions: 6, progress: 61, lastSession: 'Mar 18', status: 'active' },
+  { id: 4, name: 'Folake Adeyemi', initials: 'FA', level: '200L', state: 'Ogun', subject: 'Statistics', sessions: 10, progress: 80, lastSession: 'Mar 25', status: 'active' },
+  { id: 5, name: 'Musa Abdullahi', initials: 'MA', level: 'JAMB', state: 'Kano', subject: 'Mathematics', sessions: 4, progress: 45, lastSession: 'Mar 10', status: 'inactive' },
+  { id: 6, name: 'Sola Okonkwo', initials: 'SO', level: '300L', state: 'Lagos', subject: 'Statistics', sessions: 5, progress: 55, lastSession: 'Feb 28', status: 'inactive' },
+];
+
+let activeNoteStudent = null;
+
+function renderStudents(list) {
+  const tbody = document.getElementById('studentsTbody');
+  if (!list.length) {
+    tbody.innerHTML = `<tr><td colspan="7" style="text-align:center;padding:2rem;color:var(--gray)">No students found.</td></tr>`;
+    return;
+  }
+  tbody.innerHTML = list.map(s => `
+    <tr>
+      <td data-label="Student">
+        <div class="stu-name">
+          <div class="stu-avatar">${s.initials}</div>
+          <div>
+            <div class="stu-name-text">${s.name}</div>
+            <div class="stu-meta">${s.level} · ${s.state}</div>
+          </div>
+        </div>
+      </td>
+      <td data-label="Subject"><span class="tag blue">${s.subject}</span></td>
+      <td data-label="Progress">
+        <div class="progress-bar-wrap">
+          <div class="progress-bar-bg"><div class="progress-bar-fill" style="width:${s.progress}%"></div></div>
+          <span class="progress-pct">${s.progress}%</span>
+        </div>
+      </td>
+      <td data-label="Sessions">${s.sessions}</td>
+      <td data-label="Last Session">${s.lastSession}</td>
+      <td data-label="Status"><span class="tag ${s.status === 'active' ? 'green' : 'red'}">${s.status === 'active' ? '● Active' : '○ Inactive'}</span></td>
+      <td data-label="Actions">
+        <button class="action-link" onclick="openNote('${s.name}')">📝 Notes</button>
+      </td>
+    </tr>
+  `).join('');
+}
+
+function filterStudents() {
+  const q = document.getElementById('stuSearch').value.toLowerCase();
+  const subj = document.getElementById('stuSubjectFilter').value;
+  const filtered = studentsData.filter(s => {
+    const matchQ = !q || s.name.toLowerCase().includes(q) || s.subject.toLowerCase().includes(q);
+    const matchS = !subj || s.subject === subj;
+    return matchQ && matchS;
+  });
+  renderStudents(filtered);
+}
+
+// ── NOTES ──
+function openNote(name) {
+  activeNoteStudent = name;
+  document.getElementById('noteStudentName').textContent = name;
+  document.getElementById('noteText').value = '';
+  document.getElementById('nextFocus').value = '';
+  document.getElementById('noteModal').classList.add('open');
+}
+function closeNote(e) {
+  if (e.target === document.getElementById('noteModal')) document.getElementById('noteModal').classList.remove('open');
+}
+function saveNote() {
+  document.getElementById('noteModal').classList.remove('open');
+  showToast(`📝 Notes saved for ${activeNoteStudent}`);
+}
+
+// ── EARNINGS CHART ──
+function renderEarningsChart() {
+  const data = [
+    { month: 'Jan', amount: 95000, max: 160000 },
+    { month: 'Feb', amount: 112000, max: 160000 },
+    { month: 'Mar', amount: 143000, max: 160000 },
+    { month: 'Apr', amount: 87000, max: 160000 },
+  ];
+  const wrap = document.getElementById('earningsBars');
+  if (!wrap) return;
+  wrap.innerHTML = data.map(d => `
+    <div class="e-bar-wrap">
+      <div class="e-amount">₦${(d.amount/1000).toFixed(0)}k</div>
+      <div class="e-bar" style="height:${Math.round((d.amount/d.max)*90)}px"></div>
+    </div>
+  `).join('');
+}
+
+// ── AUTH ──
+function switchAuthTab(tab) {
+  document.getElementById('loginPane').style.display = tab === 'login' ? 'block' : 'none';
+  document.getElementById('registerPane').style.display = tab === 'register' ? 'block' : 'none';
+  document.getElementById('authTabLogin').classList.toggle('active', tab === 'login');
+  document.getElementById('authTabRegister').classList.toggle('active', tab === 'register');
+}
+
+function tutorLogin() {
+  const email = document.getElementById('tLoginEmail').value.trim();
+  const pw = document.getElementById('tLoginPw').value;
+  if (!email || !pw) { showToast('⚠️ Please enter email and password', true); return; }
+  showToast('✅ Welcome back, Adaobi!');
+  setTimeout(() => {
+    document.getElementById('authGate').style.display = 'none';
+    document.getElementById('dashboardWrap').style.display = 'block';
+    renderStudents(studentsData);
+    renderEarningsChart();
+  }, 900);
+}
+
+function togglePw(id, btn) {
+  const el = document.getElementById(id);
+  el.type = el.type === 'password' ? 'text' : 'password';
+  btn.textContent = el.type === 'password' ? '👁️' : '🙈';
+}
+
+// ── TAB SWITCHING ──
+function switchTab(name, clickedEl) {
+  document.querySelectorAll('.dash-tab').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('.dash-nav-item').forEach(n => n.classList.remove('active'));
+  document.querySelectorAll('.dash-mobile-tab').forEach(n => n.classList.remove('active'));
+  document.getElementById('tab-' + name)?.classList.add('active');
+  document.getElementById('nav-' + name)?.classList.add('active');
+  if (clickedEl) clickedEl.classList.add('active');
+  else {
+    document.querySelectorAll('.dash-mobile-tab').forEach(t => {
+      if (t.getAttribute('onclick')?.includes("'" + name + "'")) t.classList.add('active');
+    });
+  }
+  if (name === 'earnings') renderEarningsChart();
+  if (name === 'students') renderStudents(studentsData);
+}
+
+function saveTutorProfile() {
+  const first = document.getElementById('tpFirst').value.trim();
+  const last = document.getElementById('tpLast').value.trim();
+  if (first && last) {
+    document.getElementById('tutorAvatarSidebar').textContent = (first[0]+last[0]).toUpperCase();
+    document.getElementById('tutorNameSidebar').textContent = first + ' ' + last;
+  }
+  showToast('✅ Profile updated!');
+}
+
+function logOut() {
+  showToast('👋 Logged out. Redirecting...');
+  setTimeout(() => {
+    document.getElementById('dashboardWrap').style.display = 'none';
+    document.getElementById('authGate').style.display = 'block';
+    window.scrollTo(0,0);
+  }, 1200);
+}
+
+function showToast(msg, isError = false) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.className = isError ? 'toast error show' : 'toast show';
+  setTimeout(() => t.classList.remove('show'), 4000);
+}
+
+window.addEventListener('scroll', () => {
+  document.getElementById('nav')?.classList.toggle('scrolled', window.scrollY > 20);
+});
+</script>
+</body>
+</html>

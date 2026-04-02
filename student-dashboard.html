@@ -1,0 +1,1173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>My Dashboard — LetLearn</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link href="https://fonts.googleapis.com/css2?family=Clash+Display:wght@400;500;600;700&family=Syne:wght@400;500;600;700;800&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="styles.css"/>
+<style>
+/* ── DASHBOARD LAYOUT ── */
+.dash-page {
+  padding-top: 68px;
+  min-height: 100vh;
+  background: #F8FAFD;
+  display: flex;
+  font-family: 'Inter', sans-serif;
+}
+
+/* ── SIDEBAR ── */
+.dash-sidebar {
+  width: 240px;
+  flex-shrink: 0;
+  background: white;
+  border-right: 1.5px solid rgba(10,36,99,0.07);
+  min-height: calc(100vh - 68px);
+  position: sticky;
+  top: 68px;
+  display: flex;
+  flex-direction: column;
+  padding: 1.5rem 0;
+}
+.dash-avatar-area {
+  text-align: center;
+  padding: 0 1.5rem 1.5rem;
+  border-bottom: 1.5px solid rgba(10,36,99,0.07);
+  margin-bottom: 1rem;
+}
+.dash-avatar {
+  width: 64px; height: 64px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--blue-mid), var(--blue-deep));
+  color: white;
+  display: flex; align-items: center; justify-content: center;
+  font-family: 'Syne', sans-serif;
+  font-size: 1.5rem;
+  font-weight: 800;
+  margin: 0 auto 0.75rem;
+  position: relative;
+}
+.dash-avatar-edit {
+  position: absolute;
+  bottom: -2px; right: -2px;
+  width: 22px; height: 22px;
+  border-radius: 50%;
+  background: var(--gold);
+  color: var(--blue-deep);
+  font-size: 0.65rem;
+  display: flex; align-items: center; justify-content: center;
+  cursor: pointer;
+  border: 2px solid white;
+}
+.dash-name {
+  font-family: 'Syne', sans-serif;
+  font-weight: 800;
+  font-size: 0.95rem;
+  color: var(--blue-deep);
+  margin-bottom: 0.2rem;
+}
+.dash-level {
+  font-size: 0.75rem;
+  color: var(--gray);
+  font-weight: 500;
+}
+.dash-level span {
+  display: inline-block;
+  background: rgba(27,79,216,0.08);
+  color: var(--blue-mid);
+  padding: 0.15rem 0.6rem;
+  border-radius: 50px;
+  font-weight: 700;
+  font-size: 0.7rem;
+  margin-top: 0.25rem;
+}
+
+.dash-nav {
+  flex: 1;
+  padding: 0 0.75rem;
+}
+.dash-nav-item {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.7rem 0.9rem;
+  border-radius: 10px;
+  font-size: 0.88rem;
+  font-weight: 600;
+  color: var(--gray);
+  cursor: pointer;
+  transition: all 0.2s;
+  margin-bottom: 0.2rem;
+  border: none;
+  background: none;
+  width: 100%;
+  text-align: left;
+}
+.dash-nav-item:hover { background: rgba(27,79,216,0.06); color: var(--blue-mid); }
+.dash-nav-item.active { background: rgba(27,79,216,0.1); color: var(--blue-mid); }
+.dash-nav-item .nav-icon { font-size: 1.1rem; width: 22px; text-align: center; }
+.dash-nav-item .nav-badge {
+  margin-left: auto;
+  background: var(--blue-mid);
+  color: white;
+  font-size: 0.65rem;
+  font-weight: 700;
+  padding: 0.1rem 0.5rem;
+  border-radius: 50px;
+}
+
+.dash-sidebar-footer {
+  padding: 1rem 1.25rem 0;
+  border-top: 1.5px solid rgba(10,36,99,0.07);
+}
+.dash-logout {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 0.6rem 0.9rem;
+  border-radius: 10px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: #EF4444;
+  cursor: pointer;
+  transition: background 0.2s;
+  width: 100%;
+  border: none;
+  background: none;
+}
+.dash-logout:hover { background: rgba(239,68,68,0.08); }
+
+/* ── MAIN CONTENT ── */
+.dash-main {
+  flex: 1;
+  padding: 2rem;
+  max-width: 900px;
+}
+
+.dash-tab {
+  display: none;
+}
+.dash-tab.active {
+  display: block;
+}
+
+.dash-section-title {
+  font-family: 'Syne', sans-serif;
+  font-size: 1.4rem;
+  font-weight: 800;
+  color: var(--blue-deep);
+  margin-bottom: 0.3rem;
+}
+.dash-section-sub {
+  font-size: 0.85rem;
+  color: var(--gray);
+  margin-bottom: 1.8rem;
+}
+
+/* ── STATS ROW ── */
+.dash-stats {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: 1rem;
+  margin-bottom: 2rem;
+}
+.dash-stat {
+  background: white;
+  border-radius: 14px;
+  padding: 1.2rem 1.3rem;
+  border: 1.5px solid rgba(10,36,99,0.07);
+  box-shadow: 0 2px 12px rgba(10,36,99,0.04);
+}
+.dash-stat-value {
+  font-family: 'Syne', sans-serif;
+  font-size: 1.8rem;
+  font-weight: 800;
+  color: var(--blue-deep);
+  line-height: 1;
+  margin-bottom: 0.3rem;
+}
+.dash-stat-label {
+  font-size: 0.75rem;
+  color: var(--gray);
+  font-weight: 600;
+}
+.dash-stat.gold .dash-stat-value { color: var(--gold-dark); }
+.dash-stat.green .dash-stat-value { color: var(--green); }
+
+/* ── CARD CONTAINER ── */
+.dash-card {
+  background: white;
+  border-radius: 16px;
+  padding: 1.6rem;
+  border: 1.5px solid rgba(10,36,99,0.07);
+  box-shadow: 0 2px 12px rgba(10,36,99,0.04);
+  margin-bottom: 1.25rem;
+}
+.dash-card-title {
+  font-family: 'Syne', sans-serif;
+  font-size: 1rem;
+  font-weight: 800;
+  color: var(--blue-deep);
+  margin-bottom: 1.2rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.dash-card-title button {
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: var(--blue-mid);
+  background: rgba(27,79,216,0.08);
+  border: none;
+  border-radius: 50px;
+  padding: 0.3rem 0.85rem;
+  cursor: pointer;
+  transition: background 0.2s;
+  font-family: inherit;
+}
+.dash-card-title button:hover { background: rgba(27,79,216,0.14); }
+
+/* ── PROFILE FORM ── */
+.profile-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+}
+.profile-full { grid-column: 1 / -1; }
+
+.form-group label {
+  display: block;
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: var(--gray);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-bottom: 0.4rem;
+}
+.form-input {
+  width: 100%;
+  padding: 0.7rem 1rem;
+  border: 1.5px solid rgba(10,36,99,0.12);
+  border-radius: 10px;
+  font-size: 0.9rem;
+  font-family: 'Inter', sans-serif;
+  color: var(--dark);
+  background: #FAFBFE;
+  transition: border-color 0.2s, box-shadow 0.2s;
+  outline: none;
+}
+.form-input:focus {
+  border-color: var(--blue-mid);
+  box-shadow: 0 0 0 3px rgba(27,79,216,0.08);
+  background: white;
+}
+.form-input[readonly] {
+  background: var(--gray-soft);
+  color: var(--gray);
+  cursor: not-allowed;
+}
+
+.save-bar {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 0.75rem;
+  padding-top: 1.25rem;
+  border-top: 1.5px solid rgba(10,36,99,0.06);
+  margin-top: 1.25rem;
+}
+.btn-save {
+  background: var(--blue-mid);
+  color: white;
+  border: none;
+  border-radius: 50px;
+  padding: 0.6rem 1.6rem;
+  font-weight: 700;
+  font-size: 0.88rem;
+  cursor: pointer;
+  transition: all 0.2s;
+  font-family: inherit;
+}
+.btn-save:hover { background: var(--blue-deep); transform: translateY(-1px); }
+.btn-cancel {
+  background: none;
+  color: var(--gray);
+  border: 1.5px solid rgba(10,36,99,0.12);
+  border-radius: 50px;
+  padding: 0.6rem 1.4rem;
+  font-weight: 600;
+  font-size: 0.88rem;
+  cursor: pointer;
+  transition: all 0.2s;
+  font-family: inherit;
+}
+.btn-cancel:hover { border-color: var(--gray); }
+
+/* ── SCHOLARSHIP TRACKER ── */
+.tracker-tabs {
+  display: flex;
+  gap: 0.4rem;
+  margin-bottom: 1.2rem;
+  background: var(--gray-soft);
+  border-radius: 10px;
+  padding: 4px;
+}
+.tracker-tab {
+  flex: 1;
+  text-align: center;
+  padding: 0.55rem;
+  border-radius: 8px;
+  font-size: 0.8rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s;
+  color: var(--gray);
+  border: none;
+  background: none;
+  font-family: inherit;
+}
+.tracker-tab.active {
+  background: white;
+  color: var(--blue-mid);
+  box-shadow: 0 2px 8px rgba(10,36,99,0.08);
+}
+
+.tracker-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+  padding: 1rem 0;
+  border-bottom: 1.5px solid rgba(10,36,99,0.06);
+}
+.tracker-item:last-child { border-bottom: none; }
+.tracker-icon {
+  width: 42px; height: 42px;
+  border-radius: 10px;
+  background: rgba(27,79,216,0.08);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1.2rem;
+  flex-shrink: 0;
+}
+.tracker-body { flex: 1; }
+.tracker-title {
+  font-family: 'Syne', sans-serif;
+  font-weight: 700;
+  font-size: 0.9rem;
+  color: var(--dark);
+  margin-bottom: 0.2rem;
+}
+.tracker-meta {
+  font-size: 0.77rem;
+  color: var(--gray);
+  display: flex;
+  gap: 0.8rem;
+  flex-wrap: wrap;
+}
+.tracker-actions {
+  display: flex;
+  gap: 0.4rem;
+  align-items: center;
+  flex-shrink: 0;
+}
+.status-pill {
+  display: inline-block;
+  padding: 0.25rem 0.75rem;
+  border-radius: 50px;
+  font-size: 0.72rem;
+  font-weight: 700;
+}
+.status-pill.saved { background: rgba(27,79,216,0.1); color: var(--blue-mid); }
+.status-pill.applied { background: rgba(245,158,11,0.12); color: var(--gold-dark); }
+.status-pill.won { background: rgba(16,185,129,0.12); color: var(--green); }
+.status-pill.rejected { background: rgba(239,68,68,0.1); color: #EF4444; }
+
+.tracker-btn {
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--gray);
+  background: var(--gray-soft);
+  border: none;
+  border-radius: 6px;
+  padding: 0.3rem 0.7rem;
+  cursor: pointer;
+  font-family: inherit;
+  transition: all 0.2s;
+}
+.tracker-btn:hover { color: var(--blue-mid); background: rgba(27,79,216,0.08); }
+.tracker-btn.danger:hover { color: #EF4444; background: rgba(239,68,68,0.08); }
+
+/* ── BOOKINGS ── */
+.booking-card {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 1rem;
+  background: var(--gray-soft);
+  border-radius: 12px;
+  margin-bottom: 0.75rem;
+}
+.booking-avatar {
+  width: 44px; height: 44px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--blue-mid), var(--blue-deep));
+  color: white;
+  font-family: 'Syne', sans-serif;
+  font-weight: 800;
+  font-size: 1rem;
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+}
+.booking-info { flex: 1; }
+.booking-name {
+  font-family: 'Syne', sans-serif;
+  font-weight: 700;
+  font-size: 0.9rem;
+  color: var(--dark);
+}
+.booking-detail {
+  font-size: 0.77rem;
+  color: var(--gray);
+  margin-top: 0.15rem;
+}
+.booking-status {
+  font-size: 0.75rem;
+  font-weight: 700;
+  padding: 0.25rem 0.75rem;
+  border-radius: 50px;
+}
+.booking-status.upcoming { background: rgba(27,79,216,0.1); color: var(--blue-mid); }
+.booking-status.completed { background: rgba(16,185,129,0.12); color: var(--green); }
+.booking-status.cancelled { background: rgba(239,68,68,0.1); color: #EF4444; }
+
+/* ── NOTIFICATIONS ── */
+.notif-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.9rem;
+  padding: 0.9rem 0;
+  border-bottom: 1.5px solid rgba(10,36,99,0.06);
+}
+.notif-item:last-child { border-bottom: none; }
+.notif-icon {
+  width: 38px; height: 38px;
+  border-radius: 10px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1.1rem;
+  flex-shrink: 0;
+}
+.notif-icon.blue { background: rgba(27,79,216,0.1); }
+.notif-icon.gold { background: rgba(245,158,11,0.12); }
+.notif-icon.green { background: rgba(16,185,129,0.12); }
+.notif-text {
+  font-size: 0.85rem;
+  color: var(--dark);
+  line-height: 1.5;
+}
+.notif-time {
+  font-size: 0.72rem;
+  color: var(--gray-light);
+  margin-top: 0.15rem;
+}
+.notif-dot {
+  width: 7px; height: 7px;
+  border-radius: 50%;
+  background: var(--blue-mid);
+  flex-shrink: 0;
+  margin-top: 6px;
+}
+
+/* ── PASSWORD CHANGE ── */
+.security-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1rem 0;
+  border-bottom: 1.5px solid rgba(10,36,99,0.06);
+}
+.security-item:last-child { border-bottom: none; }
+.security-label { font-size: 0.88rem; font-weight: 600; color: var(--dark); }
+.security-sub { font-size: 0.77rem; color: var(--gray); margin-top: 0.15rem; }
+.security-action {
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: var(--blue-mid);
+  background: rgba(27,79,216,0.08);
+  border: none;
+  border-radius: 50px;
+  padding: 0.35rem 0.9rem;
+  cursor: pointer;
+  font-family: inherit;
+  transition: background 0.2s;
+  white-space: nowrap;
+}
+.security-action:hover { background: rgba(27,79,216,0.15); }
+
+/* ── MOBILE SIDEBAR TOGGLE ── */
+.dash-mobile-header {
+  display: none;
+  position: fixed;
+  top: 68px;
+  left: 0; right: 0;
+  background: white;
+  border-bottom: 1.5px solid rgba(10,36,99,0.07);
+  z-index: 50;
+  padding: 0.75rem 1.25rem;
+  overflow-x: auto;
+  gap: 0.4rem;
+}
+.dash-mobile-tab {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.45rem 0.9rem;
+  border-radius: 8px;
+  font-size: 0.8rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s;
+  color: var(--gray);
+  border: none;
+  background: none;
+  font-family: inherit;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+.dash-mobile-tab.active { background: rgba(27,79,216,0.1); color: var(--blue-mid); }
+
+/* Select status dropdown */
+.status-select {
+  border: 1.5px solid rgba(10,36,99,0.1);
+  border-radius: 6px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  font-family: inherit;
+  color: var(--dark);
+  background: white;
+  padding: 0.25rem 0.5rem;
+  cursor: pointer;
+  outline: none;
+}
+
+@media (max-width: 768px) {
+  .dash-sidebar { display: none; }
+  .dash-mobile-header { display: flex; }
+  .dash-main { padding: 1.25rem 1rem; padding-top: calc(1.25rem + 52px); }
+  .profile-grid { grid-template-columns: 1fr; }
+  .dash-stats { grid-template-columns: 1fr 1fr; }
+}
+@media (max-width: 480px) {
+  .tracker-actions { flex-direction: column; align-items: flex-end; gap: 0.25rem; }
+}
+</style>
+</head>
+<body>
+
+<nav id="nav">
+  <div class="nav-inner">
+    <a href="index.html" class="logo">Let<span>Learn</span></a>
+    <div class="nav-actions" style="margin-left:auto">
+      <a href="index.html" class="btn-ghost" style="font-size:0.82rem;padding:0.4rem 1rem">← Home</a>
+      <button onclick="logOut()" class="btn-primary" style="font-size:0.82rem;padding:0.4rem 1rem">Log Out</button>
+    </div>
+  </div>
+</nav>
+
+<!-- MOBILE TAB BAR -->
+<div class="dash-mobile-header" id="mobileTabs">
+  <button class="dash-mobile-tab active" onclick="switchTab('overview',this)">🏠 Overview</button>
+  <button class="dash-mobile-tab" onclick="switchTab('profile',this)">👤 Profile</button>
+  <button class="dash-mobile-tab" onclick="switchTab('scholarships',this)">🎓 Scholarships</button>
+  <button class="dash-mobile-tab" onclick="switchTab('bookings',this)">📅 Bookings</button>
+  <button class="dash-mobile-tab" onclick="switchTab('notifications',this)">🔔 Alerts</button>
+  <button class="dash-mobile-tab" onclick="switchTab('security',this)">🔒 Security</button>
+</div>
+
+<div class="dash-page">
+  <!-- SIDEBAR -->
+  <div class="dash-sidebar">
+    <div class="dash-avatar-area">
+      <div class="dash-avatar" id="sidebarAvatar">
+        AO
+        <div class="dash-avatar-edit" onclick="switchTab('profile', null)">✏️</div>
+      </div>
+      <div class="dash-name" id="sidebarName">Amaka Okafor</div>
+      <div class="dash-level"><span id="sidebarLevel">Undergraduate</span></div>
+    </div>
+
+    <div class="dash-nav">
+      <button class="dash-nav-item active" id="nav-overview" onclick="switchTab('overview',this)">
+        <span class="nav-icon">🏠</span> Overview
+      </button>
+      <button class="dash-nav-item" id="nav-profile" onclick="switchTab('profile',this)">
+        <span class="nav-icon">👤</span> Edit Profile
+      </button>
+      <button class="dash-nav-item" id="nav-scholarships" onclick="switchTab('scholarships',this)">
+        <span class="nav-icon">🎓</span> My Scholarships
+        <span class="nav-badge" id="savedBadge">3</span>
+      </button>
+      <button class="dash-nav-item" id="nav-bookings" onclick="switchTab('bookings',this)">
+        <span class="nav-icon">📅</span> My Bookings
+      </button>
+      <button class="dash-nav-item" id="nav-notifications" onclick="switchTab('notifications',this)">
+        <span class="nav-icon">🔔</span> Notifications
+        <span class="nav-badge">2</span>
+      </button>
+      <button class="dash-nav-item" id="nav-security" onclick="switchTab('security',this)">
+        <span class="nav-icon">🔒</span> Security
+      </button>
+    </div>
+
+    <div class="dash-sidebar-footer">
+      <button class="dash-logout" onclick="logOut()">🚪 Log Out</button>
+    </div>
+  </div>
+
+  <!-- MAIN CONTENT -->
+  <div class="dash-main">
+
+    <!-- ── OVERVIEW TAB ── -->
+    <div class="dash-tab active" id="tab-overview">
+      <div class="dash-section-title">Welcome back, Amaka 👋</div>
+      <div class="dash-section-sub">Here's a snapshot of your LetLearn activity.</div>
+
+      <div class="dash-stats">
+        <div class="dash-stat">
+          <div class="dash-stat-value" id="stat-saved">3</div>
+          <div class="dash-stat-label">Saved Scholarships</div>
+        </div>
+        <div class="dash-stat gold">
+          <div class="dash-stat-value" id="stat-applied">1</div>
+          <div class="dash-stat-label">Applied</div>
+        </div>
+        <div class="dash-stat green">
+          <div class="dash-stat-value" id="stat-won">0</div>
+          <div class="dash-stat-label">Won</div>
+        </div>
+        <div class="dash-stat">
+          <div class="dash-stat-value">2</div>
+          <div class="dash-stat-label">Tutor Sessions</div>
+        </div>
+      </div>
+
+      <!-- Deadline alerts -->
+      <div class="dash-card">
+        <div class="dash-card-title">⚠️ Upcoming Deadlines</div>
+        <div class="tracker-item">
+          <div class="tracker-icon">🎓</div>
+          <div class="tracker-body">
+            <div class="tracker-title">Dangote Foundation Scholarship</div>
+            <div class="tracker-meta"><span>📅 Deadline: Jul 01, 2026</span><span style="color:#EF4444;font-weight:700">⏳ 90 days left</span></div>
+          </div>
+          <span class="status-pill saved">Saved</span>
+        </div>
+        <div class="tracker-item">
+          <div class="tracker-icon">💡</div>
+          <div class="tracker-body">
+            <div class="tracker-title">MTN Foundation Scholarship</div>
+            <div class="tracker-meta"><span>📅 Deadline: Aug 15, 2026</span><span>135 days left</span></div>
+          </div>
+          <span class="status-pill applied">Applied</span>
+        </div>
+        <div class="tracker-item">
+          <div class="tracker-icon">🏛️</div>
+          <div class="tracker-body">
+            <div class="tracker-title">CBN Undergraduate Scholarship</div>
+            <div class="tracker-meta"><span>📅 Deadline: Sep 01, 2026</span><span>152 days left</span></div>
+          </div>
+          <span class="status-pill saved">Saved</span>
+        </div>
+      </div>
+
+      <!-- Next session -->
+      <div class="dash-card">
+        <div class="dash-card-title">📅 Next Session <button onclick="switchTab('bookings',null)">View All</button></div>
+        <div class="booking-card">
+          <div class="booking-avatar">AG</div>
+          <div class="booking-info">
+            <div class="booking-name">Adaobi Gbolahan</div>
+            <div class="booking-detail">Mathematics · Online (Google Meet) · Thu Apr 10, 2026 · 4:00pm</div>
+          </div>
+          <span class="booking-status upcoming">Upcoming</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── PROFILE TAB ── -->
+    <div class="dash-tab" id="tab-profile">
+      <div class="dash-section-title">Edit Profile</div>
+      <div class="dash-section-sub">Update your personal information and academic details.</div>
+
+      <!-- Avatar upload -->
+      <div class="dash-card">
+        <div class="dash-card-title">Profile Photo</div>
+        <div style="display:flex;align-items:center;gap:1.5rem;flex-wrap:wrap">
+          <div class="dash-avatar" style="width:80px;height:80px;font-size:2rem" id="profileAvatarBig">AO</div>
+          <div>
+            <div style="font-size:0.88rem;font-weight:600;color:var(--dark);margin-bottom:0.3rem">Your initials avatar</div>
+            <div style="font-size:0.78rem;color:var(--gray);margin-bottom:0.75rem">Upload a photo or we'll use your initials</div>
+            <button class="btn-save" style="font-size:0.8rem;padding:0.45rem 1.2rem" onclick="showToast('Photo upload coming soon!')">Upload Photo</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Personal info -->
+      <div class="dash-card">
+        <div class="dash-card-title">Personal Information</div>
+        <div class="profile-grid">
+          <div class="form-group">
+            <label>First Name</label>
+            <input type="text" id="pFirstName" class="form-input" value="Amaka"/>
+          </div>
+          <div class="form-group">
+            <label>Last Name</label>
+            <input type="text" id="pLastName" class="form-input" value="Okafor"/>
+          </div>
+          <div class="form-group">
+            <label>Email Address</label>
+            <input type="email" id="pEmail" class="form-input" value="amaka@email.com"/>
+          </div>
+          <div class="form-group">
+            <label>Phone Number</label>
+            <input type="tel" id="pPhone" class="form-input" placeholder="e.g. 08012345678"/>
+          </div>
+          <div class="form-group">
+            <label>Date of Birth</label>
+            <input type="date" id="pDob" class="form-input" value="2002-03-15"/>
+          </div>
+          <div class="form-group">
+            <label>Gender</label>
+            <select id="pGender" class="form-input">
+              <option>Female</option>
+              <option>Male</option>
+              <option>Prefer not to say</option>
+            </select>
+          </div>
+        </div>
+        <div class="save-bar">
+          <button class="btn-cancel" onclick="showToast('Changes discarded')">Discard</button>
+          <button class="btn-save" onclick="savePersonal()">Save Changes</button>
+        </div>
+      </div>
+
+      <!-- Academic info -->
+      <div class="dash-card">
+        <div class="dash-card-title">Academic Details</div>
+        <div class="profile-grid">
+          <div class="form-group">
+            <label>Academic Level</label>
+            <select id="pLevel" class="form-input" onchange="updateLevelBadge()">
+              <option>Undergraduate</option>
+              <option>Student (Secondary)</option>
+              <option>Postgraduate</option>
+              <option>JAMB Candidate</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>State of Origin</label>
+            <select id="pState" class="form-input">
+              <option>Lagos</option>
+              <option>Abia</option><option>Adamawa</option><option>Akwa Ibom</option>
+              <option>Anambra</option><option>Bauchi</option><option>Bayelsa</option>
+              <option>Benue</option><option>Borno</option><option>Cross River</option>
+              <option>Delta</option><option>Ebonyi</option><option>Edo</option>
+              <option>Ekiti</option><option>Enugu</option><option>FCT Abuja</option>
+              <option>Gombe</option><option>Imo</option><option>Jigawa</option>
+              <option>Kaduna</option><option>Kano</option><option>Katsina</option>
+              <option>Kebbi</option><option>Kogi</option><option>Kwara</option>
+              <option>Nasarawa</option><option>Niger</option>
+              <option>Ogun</option><option>Ondo</option><option>Osun</option>
+              <option>Oyo</option><option>Plateau</option><option>Rivers</option>
+              <option>Sokoto</option><option>Taraba</option><option>Yobe</option><option>Zamfara</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>University / School</label>
+            <input type="text" id="pSchool" class="form-input" placeholder="e.g. University of Lagos"/>
+          </div>
+          <div class="form-group">
+            <label>Course / Department</label>
+            <input type="text" id="pCourse" class="form-input" placeholder="e.g. Computer Science"/>
+          </div>
+          <div class="form-group">
+            <label>Current CGPA / Grade</label>
+            <input type="text" id="pCGPA" class="form-input" placeholder="e.g. 3.7 / 5.0"/>
+          </div>
+          <div class="form-group">
+            <label>Graduation Year</label>
+            <input type="text" id="pGrad" class="form-input" placeholder="e.g. 2027"/>
+          </div>
+          <div class="form-group profile-full">
+            <label>Scholarship Interests (subjects/fields)</label>
+            <input type="text" id="pInterests" class="form-input" placeholder="e.g. Engineering, STEM, Medicine, Law"/>
+          </div>
+        </div>
+        <div class="save-bar">
+          <button class="btn-cancel" onclick="showToast('Changes discarded')">Discard</button>
+          <button class="btn-save" onclick="saveAcademic()">Save Academic Info</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── SCHOLARSHIPS TAB ── -->
+    <div class="dash-tab" id="tab-scholarships">
+      <div class="dash-section-title">My Scholarships</div>
+      <div class="dash-section-sub">Track every scholarship you've saved or applied for.</div>
+
+      <div class="dash-card">
+        <div class="dash-card-title">
+          All Scholarships
+          <button onclick="window.location='index.html#scholarships'">+ Find More</button>
+        </div>
+        <div class="tracker-tabs">
+          <button class="tracker-tab active" onclick="filterTracker('all',this)">All (4)</button>
+          <button class="tracker-tab" onclick="filterTracker('saved',this)">Saved</button>
+          <button class="tracker-tab" onclick="filterTracker('applied',this)">Applied</button>
+          <button class="tracker-tab" onclick="filterTracker('won',this)">Won 🏆</button>
+        </div>
+        <div id="trackerList">
+          <!-- populated by JS -->
+        </div>
+      </div>
+    </div>
+
+    <!-- ── BOOKINGS TAB ── -->
+    <div class="dash-tab" id="tab-bookings">
+      <div class="dash-section-title">My Tutor Bookings</div>
+      <div class="dash-section-sub">Manage your upcoming and past tutoring sessions.</div>
+
+      <div class="dash-card">
+        <div class="dash-card-title">Upcoming Sessions <button onclick="window.location='index.html#tutors'">Book New</button></div>
+        <div class="booking-card">
+          <div class="booking-avatar">AG</div>
+          <div class="booking-info">
+            <div class="booking-name">Adaobi Gbolahan</div>
+            <div class="booking-detail">Mathematics · Online · Thu Apr 10, 2026 · 4:00pm WAT</div>
+          </div>
+          <span class="booking-status upcoming">Upcoming</span>
+        </div>
+        <div class="booking-card">
+          <div class="booking-avatar" style="background:linear-gradient(135deg,var(--green),#059669)">BL</div>
+          <div class="booking-info">
+            <div class="booking-name">Babatunde Lawal</div>
+            <div class="booking-detail">Economics · In-Person · Sat Apr 19, 2026 · 10:00am WAT</div>
+          </div>
+          <span class="booking-status upcoming">Upcoming</span>
+        </div>
+      </div>
+
+      <div class="dash-card">
+        <div class="dash-card-title">Past Sessions</div>
+        <div class="booking-card">
+          <div class="booking-avatar" style="background:linear-gradient(135deg,var(--purple),#6D28D9)">NE</div>
+          <div class="booking-info">
+            <div class="booking-name">Ngozi Eze</div>
+            <div class="booking-detail">English · Online · Mon Mar 25, 2026</div>
+          </div>
+          <span class="booking-status completed">Completed ★★★★★</span>
+        </div>
+        <div class="booking-card">
+          <div class="booking-avatar" style="background:linear-gradient(135deg,#F97316,#DC2626)">YA</div>
+          <div class="booking-info">
+            <div class="booking-name">Yetunde Adebisi</div>
+            <div class="booking-detail">Biology · In-Person · Fri Mar 14, 2026</div>
+          </div>
+          <span class="booking-status completed">Completed ★★★★☆</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── NOTIFICATIONS TAB ── -->
+    <div class="dash-tab" id="tab-notifications">
+      <div class="dash-section-title">Notifications</div>
+      <div class="dash-section-sub">Stay up to date on deadlines and platform activity.</div>
+
+      <div class="dash-card">
+        <div class="dash-card-title">Recent Alerts <button onclick="markAllRead()">Mark all read</button></div>
+
+        <div class="notif-item">
+          <div class="notif-icon gold">⚠️</div>
+          <div style="flex:1">
+            <div class="notif-text"><strong>Deadline Alert:</strong> Dangote Foundation Scholarship closes in 90 days. Don't miss it!</div>
+            <div class="notif-time">2 hours ago</div>
+          </div>
+          <div class="notif-dot"></div>
+        </div>
+        <div class="notif-item">
+          <div class="notif-icon blue">📅</div>
+          <div style="flex:1">
+            <div class="notif-text"><strong>Session Reminder:</strong> You have a Mathematics session with Adaobi Gbolahan on Apr 10 at 4pm.</div>
+            <div class="notif-time">Yesterday</div>
+          </div>
+          <div class="notif-dot"></div>
+        </div>
+        <div class="notif-item">
+          <div class="notif-icon green">🎉</div>
+          <div style="flex:1">
+            <div class="notif-text">New scholarships matching your profile in <strong>Lagos</strong> have been added — 5 new opportunities!</div>
+            <div class="notif-time">Mar 30, 2026</div>
+          </div>
+        </div>
+        <div class="notif-item">
+          <div class="notif-icon blue">📧</div>
+          <div style="flex:1">
+            <div class="notif-text">Your interest in <strong>MTN Foundation Scholarship</strong> was registered. Check your email for next steps.</div>
+            <div class="notif-time">Mar 28, 2026</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── SECURITY TAB ── -->
+    <div class="dash-tab" id="tab-security">
+      <div class="dash-section-title">Security & Privacy</div>
+      <div class="dash-section-sub">Keep your account safe and control your data.</div>
+
+      <div class="dash-card">
+        <div class="dash-card-title">Account Security</div>
+
+        <div class="security-item">
+          <div>
+            <div class="security-label">Password</div>
+            <div class="security-sub">Last changed: Never · Use a strong, unique password</div>
+          </div>
+          <button class="security-action" onclick="togglePwSection()">Change</button>
+        </div>
+
+        <!-- Change password form (hidden) -->
+        <div id="pwSection" style="display:none;padding:1rem 0;border-bottom:1.5px solid rgba(10,36,99,0.06)">
+          <div class="profile-grid" style="margin-bottom:1rem">
+            <div class="form-group">
+              <label>Current Password</label>
+              <input type="password" id="pwCurrent" class="form-input" placeholder="••••••••"/>
+            </div>
+            <div style="display:none" class="form-group"></div>
+            <div class="form-group">
+              <label>New Password</label>
+              <input type="password" id="pwNew" class="form-input" placeholder="Min 8 characters"/>
+            </div>
+            <div class="form-group">
+              <label>Confirm New Password</label>
+              <input type="password" id="pwConfirm" class="form-input" placeholder="Repeat new password"/>
+            </div>
+          </div>
+          <button class="btn-save" style="font-size:0.85rem" onclick="changePassword()">Update Password</button>
+        </div>
+
+        <div class="security-item">
+          <div>
+            <div class="security-label">Email Address</div>
+            <div class="security-sub" id="secEmailDisplay">amaka@email.com</div>
+          </div>
+          <button class="security-action" onclick="showToast('Email change coming soon!')">Change</button>
+        </div>
+        <div class="security-item">
+          <div>
+            <div class="security-label">Two-Factor Authentication</div>
+            <div class="security-sub">Add extra security to your account</div>
+          </div>
+          <button class="security-action" onclick="showToast('2FA setup coming soon!')">Enable</button>
+        </div>
+        <div class="security-item">
+          <div>
+            <div class="security-label">Login Notifications</div>
+            <div class="security-sub">Get notified of new sign-ins</div>
+          </div>
+          <button class="security-action" onclick="toggleNotif(this)">Enabled ✓</button>
+        </div>
+      </div>
+
+      <div class="dash-card">
+        <div class="dash-card-title" style="color:#EF4444">Danger Zone</div>
+        <div class="security-item">
+          <div>
+            <div class="security-label">Delete Account</div>
+            <div class="security-sub">This will permanently delete all your data from LetLearn</div>
+          </div>
+          <button class="security-action" style="color:#EF4444;background:rgba(239,68,68,0.08)" onclick="confirmDelete()">Delete</button>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- end dash-main -->
+</div><!-- end dash-page -->
+
+<div class="toast" id="toast"></div>
+
+<script>
+// ── TRACKER DATA ──
+const trackerData = [
+  { id: 1, title: 'MTN Foundation Scholarship', org: 'MTN Nigeria · Nationwide', amount: '₦300,000', deadline: 'Aug 15, 2026', status: 'applied', icon: '🎓' },
+  { id: 2, title: 'Dangote Foundation Scholarship', org: 'Dangote Foundation · Nationwide', amount: 'Full Tuition', deadline: 'Jul 01, 2026', status: 'saved', icon: '💡' },
+  { id: 3, title: 'CBN Undergraduate Scholarship', org: 'Central Bank of Nigeria', amount: '₦400,000', deadline: 'Sep 01, 2026', status: 'saved', icon: '🏛️' },
+  { id: 4, title: 'Lagos State Government Scholarship', org: 'Lagos State Govt · Lagos', amount: '₦250,000', deadline: 'Oct 10, 2026', status: 'saved', icon: '🌍' },
+];
+
+function renderTracker(filter = 'all') {
+  const list = document.getElementById('trackerList');
+  const filtered = filter === 'all' ? trackerData : trackerData.filter(s => s.status === filter);
+
+  if (filtered.length === 0) {
+    list.innerHTML = `<div style="text-align:center;padding:2rem;color:var(--gray);font-size:0.88rem">No scholarships in this category yet.<br><a href="index.html#scholarships" style="color:var(--blue-mid);font-weight:600">Find scholarships →</a></div>`;
+    return;
+  }
+
+  list.innerHTML = filtered.map(s => `
+    <div class="tracker-item" id="tracker-${s.id}">
+      <div class="tracker-icon">${s.icon}</div>
+      <div class="tracker-body">
+        <div class="tracker-title">${s.title}</div>
+        <div class="tracker-meta">
+          <span>${s.org}</span>
+          <span style="font-weight:700;color:var(--blue-deep)">${s.amount}</span>
+          <span>📅 ${s.deadline}</span>
+        </div>
+      </div>
+      <div class="tracker-actions">
+        <select class="status-select" onchange="updateStatus(${s.id}, this.value)">
+          <option value="saved" ${s.status==='saved'?'selected':''}>💾 Saved</option>
+          <option value="applied" ${s.status==='applied'?'selected':''}>📤 Applied</option>
+          <option value="won" ${s.status==='won'?'selected':''}>🏆 Won</option>
+          <option value="rejected" ${s.status==='rejected'?'selected':''}>❌ Rejected</option>
+        </select>
+        <button class="tracker-btn danger" onclick="removeTracker(${s.id})">🗑</button>
+      </div>
+    </div>
+  `).join('');
+}
+
+function filterTracker(filter, btn) {
+  document.querySelectorAll('.tracker-tab').forEach(t => t.classList.remove('active'));
+  btn.classList.add('active');
+  renderTracker(filter);
+}
+
+function updateStatus(id, newStatus) {
+  const item = trackerData.find(s => s.id === id);
+  if (item) {
+    item.status = newStatus;
+    updateStats();
+    showToast(`✅ Status updated to "${newStatus}"`);
+  }
+}
+
+function removeTracker(id) {
+  const idx = trackerData.findIndex(s => s.id === id);
+  if (idx > -1) {
+    trackerData.splice(idx, 1);
+    renderTracker('all');
+    updateStats();
+    showToast('🗑 Scholarship removed from tracker');
+  }
+}
+
+function updateStats() {
+  document.getElementById('stat-saved').textContent = trackerData.filter(s => s.status === 'saved').length;
+  document.getElementById('stat-applied').textContent = trackerData.filter(s => s.status === 'applied').length;
+  document.getElementById('stat-won').textContent = trackerData.filter(s => s.status === 'won').length;
+  document.getElementById('savedBadge').textContent = trackerData.length;
+}
+
+// ── TAB SWITCHING ──
+function switchTab(name, clickedEl) {
+  // Hide all tabs
+  document.querySelectorAll('.dash-tab').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('.dash-nav-item').forEach(n => n.classList.remove('active'));
+  document.querySelectorAll('.dash-mobile-tab').forEach(n => n.classList.remove('active'));
+
+  document.getElementById('tab-' + name)?.classList.add('active');
+  document.getElementById('nav-' + name)?.classList.add('active');
+
+  // mobile
+  if (clickedEl) {
+    clickedEl.classList.add('active');
+  } else {
+    // find matching mobile tab
+    document.querySelectorAll('.dash-mobile-tab').forEach(t => {
+      if (t.getAttribute('onclick')?.includes("'" + name + "'")) t.classList.add('active');
+    });
+  }
+
+  if (name === 'scholarships') renderTracker('all');
+}
+
+// ── PROFILE SAVE ──
+function savePersonal() {
+  const first = document.getElementById('pFirstName').value.trim();
+  const last = document.getElementById('pLastName').value.trim();
+  if (!first || !last) { showToast('⚠️ Name cannot be empty', true); return; }
+  const initials = (first[0] + last[0]).toUpperCase();
+  document.getElementById('sidebarAvatar').innerHTML = initials + `<div class="dash-avatar-edit" onclick="switchTab('profile',null)">✏️</div>`;
+  document.getElementById('profileAvatarBig').textContent = initials;
+  document.getElementById('sidebarName').textContent = first + ' ' + last;
+  showToast('✅ Personal info saved!');
+}
+
+function saveAcademic() {
+  const level = document.getElementById('pLevel').value;
+  document.getElementById('sidebarLevel').textContent = level;
+  showToast('✅ Academic info saved!');
+}
+
+function updateLevelBadge() {
+  document.getElementById('sidebarLevel').textContent = document.getElementById('pLevel').value;
+}
+
+// ── SECURITY ──
+function togglePwSection() {
+  const s = document.getElementById('pwSection');
+  s.style.display = s.style.display === 'none' ? 'block' : 'none';
+}
+
+function changePassword() {
+  const curr = document.getElementById('pwCurrent').value;
+  const nw = document.getElementById('pwNew').value;
+  const conf = document.getElementById('pwConfirm').value;
+  if (!curr || !nw || !conf) { showToast('⚠️ Please fill all fields', true); return; }
+  if (nw.length < 8) { showToast('⚠️ New password must be 8+ characters', true); return; }
+  if (nw !== conf) { showToast('⚠️ Passwords do not match', true); return; }
+  showToast('🔒 Password updated successfully!');
+  document.getElementById('pwSection').style.display = 'none';
+  ['pwCurrent','pwNew','pwConfirm'].forEach(id => document.getElementById(id).value = '');
+}
+
+function toggleNotif(btn) {
+  const isEnabled = btn.textContent.includes('✓');
+  btn.textContent = isEnabled ? 'Disabled' : 'Enabled ✓';
+  showToast(isEnabled ? 'Notifications disabled' : 'Notifications enabled');
+}
+
+function confirmDelete() {
+  if (confirm('Are you sure? This will permanently delete your account and all data.')) {
+    showToast('Account deletion request sent. You will receive an email.');
+  }
+}
+
+function markAllRead() {
+  document.querySelectorAll('.notif-dot').forEach(d => d.remove());
+  showToast('All notifications marked as read');
+}
+
+function logOut() {
+  showToast('👋 Logged out. Redirecting...');
+  setTimeout(() => window.location.href = 'index.html', 1500);
+}
+
+// ── TOAST ──
+function showToast(msg, isError = false) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.className = isError ? 'toast error show' : 'toast show';
+  setTimeout(() => t.classList.remove('show'), 4000);
+}
+
+// ── NAV SCROLL ──
+window.addEventListener('scroll', () => {
+  document.getElementById('nav')?.classList.toggle('scrolled', window.scrollY > 20);
+});
+
+// ── INIT ──
+renderTracker('all');
+</script>
+</body>
+</html>

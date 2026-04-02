@@ -167,9 +167,8 @@ function signUp() {
   const state = document.getElementById('signupState').value;
   if (!name || !email || !pw || !state) { showToast('⚠️ Please fill all fields', true); return; }
   if (pw.length < 8) { showToast('⚠️ Password must be 8+ characters', true); return; }
-  // Simulate success
   showToast('🎉 Account created! Welcome to LetLearn.');
-  setTimeout(() => window.location.href = 'index.html', 1800);
+  setTimeout(() => window.location.href = 'student-dashboard.html', 1800);
 }
 
 function signIn() {
@@ -177,7 +176,7 @@ function signIn() {
   const pw = document.getElementById('loginPassword').value;
   if (!email || !pw) { showToast('⚠️ Please enter your email and password', true); return; }
   showToast('👋 Signed in successfully!');
-  setTimeout(() => window.location.href = 'index.html', 1500);
+  setTimeout(() => window.location.href = 'student-dashboard.html', 1500);
 }
 
 function googleSignIn() {
