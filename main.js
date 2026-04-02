@@ -64,7 +64,7 @@ async function fetchScholarships(query, level, state, offset) {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        'Authorization': 'Bearer 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',
+        'Authorization': 'Bearer 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',
         'HTTP-Referer': 'https://letlearn-eight.vercel.app',
         'X-Title': 'LetLearn',
       },
